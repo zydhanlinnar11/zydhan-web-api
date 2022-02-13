@@ -5,8 +5,8 @@ namespace Domain\Auth\Repositories;
 use Domain\Auth\Models\Entity\User;
 use Domain\Auth\Models\Value\UserId;
 
-interface UserRepository
+interface UserRepositoryInterface
 {
-    public function findById(UserId $user): ?User;
+    public function findById(UserId $userId): ?User;
     public function create(User $user): User;
 }
