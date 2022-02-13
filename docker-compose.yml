@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+    lumen-docker:
+        container_name: lumen-docker
+        image: zydhanlinnar11/lumen-docker
+        volumes:
+            - ./src:/var/www/html
+        env_file: .env
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        networks:
+            - nginx-proxy-network
+
+networks:
+    nginx-proxy-network:
+        external: true
