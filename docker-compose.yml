@@ -1,7 +1,7 @@
 version: '3.8'
 services:
-    lumen-docker:
-        container_name: lumen-docker
+    zydhan-web-api:
+        container_name: zydhan-web-api
         image: zydhanlinnar11/lumen-docker
         volumes:
             - ./src:/var/www/html
