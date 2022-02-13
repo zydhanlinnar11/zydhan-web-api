@@ -5,6 +5,7 @@ services:
         image: zydhanlinnar11/lumen-docker
         volumes:
             - ./src:/var/www/html
+            - ./database:/database
         env_file: .env
         extra_hosts:
             - "host.docker.internal:host-gateway"
