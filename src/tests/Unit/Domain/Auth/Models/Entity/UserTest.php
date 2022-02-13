@@ -1,7 +1,9 @@
 <?php
 
 use Domain\Auth\Models\Entity\User;
+use Domain\Auth\Models\Value\HashedPassword;
 use Domain\Auth\Models\Value\UserId;
+use Illuminate\Support\Facades\Hash;
 use Ramsey\Uuid\Uuid;
 
 class UserTest extends TestCase
@@ -9,7 +11,7 @@ class UserTest extends TestCase
     private UserId $userId;
     private string $name;
     private string $email;
-    private string $password;
+    private HashedPassword $password;
     private string $username;
     private bool $isAdmin;
 
@@ -19,7 +21,7 @@ class UserTest extends TestCase
         $faker = \Faker\Factory::create();
         $this->name = $faker->name();
         $this->email = $faker->email();
-        $this->password = $faker->password();
+        $this->password = new HashedPassword($faker->password());
         $this->username = $faker->userName();
         $this->isAdmin = $faker->boolean();
     }
@@ -30,7 +32,7 @@ class UserTest extends TestCase
             userId: $this->userId,
             name: $this->name,
             email: $this->email,
-            password: $this->password,
+            newPassword: $this->password,
             username: $this->username,
             admin: $this->isAdmin
         );
@@ -43,7 +45,7 @@ class UserTest extends TestCase
             userId: $this->userId,
             name: $this->name,
             email: $this->email,
-            password: $this->password,
+            newPassword: $this->password,
             username: $this->username,
             admin: $this->isAdmin
         );
@@ -55,7 +57,7 @@ class UserTest extends TestCase
             userId: new UserId(Uuid::uuid4()),
             name: $faker->name(),
             email: $faker->email(),
-            password: $faker->password(),
+            newPassword: new HashedPassword($faker->password()),
             username: $faker->userName(),
             admin: $faker->boolean()
         )));
@@ -67,7 +69,7 @@ class UserTest extends TestCase
             userId: $this->userId,
             name: $this->name,
             email: $this->email,
-            password: $this->password,
+            newPassword: $this->password,
             username: $this->username,
             admin: $this->isAdmin
         ))->getUserId()->equals($this->userId));
@@ -79,7 +81,7 @@ class UserTest extends TestCase
             userId: $this->userId,
             name: $this->name,
             email: $this->email,
-            password: $this->password,
+            newPassword: $this->password,
             username: $this->username,
             admin: $this->isAdmin
         ))->getName() === $this->name);
@@ -91,22 +93,10 @@ class UserTest extends TestCase
             userId: $this->userId,
             name: $this->name,
             email: $this->email,
-            password: $this->password,
+            newPassword: $this->password,
             username: $this->username,
             admin: $this->isAdmin
         ))->getEmail() === $this->email);
-    }
-
-    public function testBisaGetPassword()
-    {
-        $this->assertTrue((new User(
-            userId: $this->userId,
-            name: $this->name,
-            email: $this->email,
-            password: $this->password,
-            username: $this->username,
-            admin: $this->isAdmin
-        ))->getPassword() === $this->password);
     }
 
     public function testBisaGetUsername()
@@ -115,7 +105,7 @@ class UserTest extends TestCase
             userId: $this->userId,
             name: $this->name,
             email: $this->email,
-            password: $this->password,
+            newPassword: $this->password,
             username: $this->username,
             admin: $this->isAdmin
         ))->getUsername() === $this->username);
@@ -127,7 +117,7 @@ class UserTest extends TestCase
             userId: $this->userId,
             name: $this->name,
             email: $this->email,
-            password: $this->password,
+            newPassword: $this->password,
             username: $this->username,
             admin: $this->isAdmin
         ))->isAdmin() === $this->isAdmin);
