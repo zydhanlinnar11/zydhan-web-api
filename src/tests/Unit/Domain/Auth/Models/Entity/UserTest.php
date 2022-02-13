@@ -38,6 +38,29 @@ class UserTest extends TestCase
         $this->assertInstanceOf(User::class, $user);
     }
 
+    public function testBisaFungsiEqualsBekerja() {
+        $user = new User(
+            userId: $this->userId,
+            name: $this->name,
+            email: $this->email,
+            password: $this->password,
+            username: $this->username,
+            admin: $this->isAdmin
+        );
+
+        $this->assertTrue($user->equals($user));
+        
+        $faker = \Faker\Factory::create();
+        $this->assertNotTrue($user->equals(new User(
+            userId: new UserId(Uuid::uuid4()),
+            name: $faker->name(),
+            email: $faker->email(),
+            password: $faker->password(),
+            username: $faker->userName(),
+            admin: $faker->boolean()
+        )));
+    }
+
     public function testBisaGetUserId()
     {
         $this->assertTrue((new User(

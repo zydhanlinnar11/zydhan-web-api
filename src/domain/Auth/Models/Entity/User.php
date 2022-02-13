@@ -62,4 +62,17 @@ class User
     {
         return $this->admin;
     }
+
+    public function equals(User $user): bool
+    {
+        $userIdEqual = $user->getUserId()->equals($this->getUserId());
+        $nameEqual = $user->getName() === $this->getName();
+        $emailEqual = $user->getEmail() === $this->getEmail();
+        $passwordEqual = $user->getPassword() === $this->getPassword();
+        $usernameEqual = $user->getUsername() === $this->getUsername();
+        $isAdminEqual = $user->isAdmin() === $this->isAdmin();
+
+        return ($userIdEqual && $nameEqual && $emailEqual
+            && $passwordEqual && $usernameEqual && $isAdminEqual);
+    }
 }
