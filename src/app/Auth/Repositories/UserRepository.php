@@ -2,7 +2,7 @@
 
 namespace App\Auth\Repositories;
 
-use App\Auth\Exceptions\ModelAlreadyExistsException;
+use App\Auth\Exceptions\EmailAlreadyExistException;
 use Domain\Auth\Models\Entity\User;
 use Domain\Auth\Models\Value\UserId;
 use Domain\Auth\Repositories\UserRepositoryInterface;
@@ -32,7 +32,7 @@ class UserRepository implements UserRepositoryInterface
         $existingUser = $this->findByEmail($user->getEmail());
 
         if ($existingUser) {
-            throw new ModelAlreadyExistsException('user_with_that_email_is_already_exists');
+            throw new EmailAlreadyExistException('user_with_that_email_is_already_exists');
         }
 
         DB::table('users')->insert($this->userDataToArray($user));

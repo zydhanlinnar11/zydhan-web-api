@@ -1,6 +1,6 @@
 <?php
 
-use App\Auth\Exceptions\ModelAlreadyExistsException;
+use App\Auth\Exceptions\EmailAlreadyExistException;
 use App\Auth\Repositories\UserRepository;
 use Domain\Auth\Models\Entity\User;
 use Domain\Auth\Models\Value\HashedPassword;
@@ -95,7 +95,7 @@ class UserRepositoryTest extends TestCase
         $queryBuilder->shouldReceive('first')
             ->once()
             ->andReturn($result);
-        $this->expectException(ModelAlreadyExistsException::class);
+        $this->expectException(EmailAlreadyExistException::class);
         $this->expectExceptionMessage('user_with_that_email_is_already_exists');
 
         $this->userRepository->create($this->user);
