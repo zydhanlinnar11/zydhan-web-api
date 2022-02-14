@@ -2,7 +2,7 @@
 
 namespace Domain\Auth\Services;
 
-interface GenerateHashServiceInterface
+interface HashServiceInterface
 {
     public function generate(string $text): string;
 }

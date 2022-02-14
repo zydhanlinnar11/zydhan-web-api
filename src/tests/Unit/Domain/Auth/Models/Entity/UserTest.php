@@ -2,7 +2,7 @@
 
 use Domain\Auth\Models\Entity\User;
 use Domain\Auth\Models\Value\UserId;
-use Domain\Auth\Services\GenerateHashServiceInterface;
+use Domain\Auth\Services\HashServiceInterface;
 use Illuminate\Support\Facades\Hash;
 use Ramsey\Uuid\Uuid;
 
@@ -14,13 +14,13 @@ class UserTest extends TestCase
     private string $hashedPassword;
     private string $username;
     private bool $isAdmin;
-    private GenerateHashServiceInterface $generateHashService;
+    private HashServiceInterface $generateHashService;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->generateHashService = $this->app->make(GenerateHashServiceInterface::class);
+        $this->generateHashService = $this->app->make(HashServiceInterface::class);
         $this->userId = new UserId(Uuid::uuid4());
         $faker = \Faker\Factory::create();
         $this->name = $faker->name();

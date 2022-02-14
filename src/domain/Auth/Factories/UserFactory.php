@@ -4,13 +4,13 @@ namespace Domain\Auth\Factories;
 
 use Domain\Auth\Models\Entity\User;
 use Domain\Auth\Models\Value\UserId;
-use Domain\Auth\Services\GenerateHashServiceInterface;
+use Domain\Auth\Services\HashServiceInterface;
 use Faker\Factory;
 
 class UserFactory
 {
     public function __construct(
-        private GenerateHashServiceInterface $generateHashService
+        private HashServiceInterface $generateHashService
     ) { }
 
     public function generateRandom() : User
