@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 
 class UserRepository implements UserRepositoryInterface
 {
+    
+
     public function findByEmail(string $email): ?User
     {
         $result = DB::table('users')->where('email', $email)->first();
@@ -29,12 +31,6 @@ class UserRepository implements UserRepositoryInterface
 
     public function create(User $user): User
     {
-        $existingUser = $this->findByEmail($user->getEmail());
-
-        if ($existingUser) {
-            throw new EmailAlreadyExistException('user_with_that_email_is_already_exists');
-        }
-
         DB::table('users')->insert($this->userDataToArray($user));
 
         // Return without new password

@@ -71,52 +71,38 @@ class UserRepositoryTest extends TestCase
         $this->assertTrue($this->user->equals($user));
     }
 
-    public function testTidakBisaBuatUserDenganEmailYangSudahAda()
-    {
-        $queryBuilder = $this->queryBuilderMock;
+    // public function testTidakBisaBuatUserDenganEmailYangSudahAda()
+    // {
+    //     $queryBuilder = $this->queryBuilderMock;
 
-        DB::shouldReceive('table')
-            ->once()
-            ->with('users')
-            ->andReturn($queryBuilder);
+    //     DB::shouldReceive('table')
+    //         ->once()
+    //         ->with('users')
+    //         ->andReturn($queryBuilder);
 
-        $queryBuilder->shouldReceive('where')
-            ->once()
-            ->with('email', $this->user->getEmail())
-            ->andReturn($queryBuilder);
+    //     $queryBuilder->shouldReceive('where')
+    //         ->once()
+    //         ->with('email', $this->user->getEmail())
+    //         ->andReturn($queryBuilder);
 
-        $result = new stdClass();
-        $result->id = $this->user->getUserId()->getId();
-        $result->name = $this->user->getName();
-        $result->email = $this->user->getEmail();
-        $result->username = $this->user->getUsername();
-        $result->is_admin = $this->user->isAdmin();
+    //     $result = new stdClass();
+    //     $result->id = $this->user->getUserId()->getId();
+    //     $result->name = $this->user->getName();
+    //     $result->email = $this->user->getEmail();
+    //     $result->username = $this->user->getUsername();
+    //     $result->is_admin = $this->user->isAdmin();
 
-        $queryBuilder->shouldReceive('first')
-            ->once()
-            ->andReturn($result);
-        $this->expectException(EmailAlreadyExistException::class);
-        $this->expectExceptionMessage('user_with_that_email_is_already_exists');
+    //     $queryBuilder->shouldReceive('first')
+    //         ->once()
+    //         ->andReturn($result);
+    //     $this->expectException(EmailAlreadyExistException::class);
+    //     $this->expectExceptionMessage('user_with_that_email_is_already_exists');
 
-        $this->userRepository->create($this->user);
-    }
+    //     $this->userRepository->create($this->user);
+    // }
 
     public function testBisaBuatUser() {
         $queryBuilder = $this->queryBuilderMock;
-
-        DB::shouldReceive('table')
-            ->once()
-            ->with('users')
-            ->andReturn($queryBuilder);
-
-        $queryBuilder->shouldReceive('where')
-            ->once()
-            ->with('email', $this->user->getEmail())
-            ->andReturn($queryBuilder);
-
-        $queryBuilder->shouldReceive('first')
-            ->once()
-            ->andReturn(null);
 
         DB::shouldReceive('table')
             ->once()
