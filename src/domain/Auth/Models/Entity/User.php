@@ -2,7 +2,6 @@
 
 namespace Domain\Auth\Models\Entity;
 
-use Domain\Auth\Models\Value\HashedPassword;
 use Domain\Auth\Models\Value\UserId;
 
 class User
@@ -13,7 +12,7 @@ class User
         private string $email,
         private string $username,
         private bool $admin,
-        private ?HashedPassword $newPassword = NULL,
+        private string $hashedPassword,
     ) { }
 
     public function getUserId(): UserId
@@ -31,9 +30,9 @@ class User
         return $this->email;
     }
 
-    public function getNewPassword(): ?HashedPassword
+    public function getHashedPassword(): ?string
     {
-        return $this->newPassword;
+        return $this->hashedPassword;
     }
 
     public function getUsername(): string

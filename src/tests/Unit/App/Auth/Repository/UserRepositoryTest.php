@@ -1,13 +1,12 @@
 <?php
 
-use App\Auth\Exceptions\EmailAlreadyExistException;
 use App\Auth\Repositories\UserRepository;
 use Domain\Auth\Models\Entity\User;
-use Domain\Auth\Models\Value\HashedPassword;
 use Domain\Auth\Models\Value\UserId;
 use Domain\Auth\Repositories\UserRepositoryInterface;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Mockery\MockInterface;
 use Ramsey\Uuid\Uuid;
 
@@ -28,7 +27,7 @@ class UserRepositoryTest extends TestCase
             userId: new UserId(Uuid::uuid4()),
             name: $faker->name(),
             email: $faker->email(),
-            newPassword: new HashedPassword($faker->password()),
+            hashedPassword: Hash::make($faker->password()),
             username: $faker->userName(),
             admin: $faker->boolean()
         );
@@ -61,6 +60,7 @@ class UserRepositoryTest extends TestCase
         $result->email = $this->user->getEmail();
         $result->username = $this->user->getUsername();
         $result->is_admin = $this->user->isAdmin();
+        $result->password = $this->user->getHashedPassword();
 
         $queryBuilder->shouldReceive('first')
             ->once()
@@ -118,7 +118,7 @@ class UserRepositoryTest extends TestCase
                     'id' => $user->getUserId()->getId(),
                     'name' => $user->getName(),
                     'email' => $user->getEmail(),
-                    'password' => $user->getNewPassword()->getHashedPassword(),
+                    'password' => $user->getHashedPassword(),
                     'username' => $user->getUsername(),
                     'is_admin' => $user->isAdmin(),
                 ]);

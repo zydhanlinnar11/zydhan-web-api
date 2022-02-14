@@ -2,7 +2,6 @@
 
 namespace App\Auth\Repositories;
 
-use App\Auth\Exceptions\EmailAlreadyExistException;
 use Domain\Auth\Models\Entity\User;
 use Domain\Auth\Models\Value\UserId;
 use Domain\Auth\Repositories\UserRepositoryInterface;
@@ -10,8 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class UserRepository implements UserRepositoryInterface
 {
-    
-
     public function findByEmail(string $email): ?User
     {
         $result = DB::table('users')->where('email', $email)->first();
@@ -26,6 +23,7 @@ class UserRepository implements UserRepositoryInterface
             email: $result->email,
             username: $result->username,
             admin: $result->is_admin,
+            hashedPassword: $result->password,
         );
     }
 
@@ -33,14 +31,7 @@ class UserRepository implements UserRepositoryInterface
     {
         DB::table('users')->insert($this->userDataToArray($user));
 
-        // Return without new password
-        return new User(
-            userId: $user->getUserId(),
-            name: $user->getName(),
-            email: $user->getEmail(),
-            username: $user->getUsername(),
-            admin: $user->isAdmin(),
-        );
+        return $user;
     }
 
     private function userDataToArray(User $user) {
@@ -50,13 +41,8 @@ class UserRepository implements UserRepositoryInterface
             'email' => $user->getEmail(),
             'username' => $user->getUsername(),
             'is_admin' => $user->isAdmin(),
+            'password' => $user->getHashedPassword(),
         ];
-
-        $newPassword = $user->getNewPassword();
-
-        if ($newPassword) {
-            $data = array_merge($data, ['password' => $newPassword->getHashedPassword()]);
-        }
 
         return $data;
     }

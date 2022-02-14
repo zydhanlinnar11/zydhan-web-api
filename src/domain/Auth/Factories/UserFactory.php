@@ -3,13 +3,17 @@
 namespace Domain\Auth\Factories;
 
 use Domain\Auth\Models\Entity\User;
-use Domain\Auth\Models\Value\HashedPassword;
 use Domain\Auth\Models\Value\UserId;
+use Domain\Auth\Services\GenerateHashServiceInterface;
 use Faker\Factory;
 
 class UserFactory
 {
-    public static function generateRandom() : User
+    public function __construct(
+        private GenerateHashServiceInterface $generateHashService
+    ) { }
+
+    public function generateRandom() : User
     {
         $faker = Factory::create();
 
@@ -19,7 +23,7 @@ class UserFactory
             email: $faker->email(),
             username: $faker->userName(),
             admin: $faker->boolean(),
-            newPassword: new HashedPassword($faker->password()),
+            hashedPassword: $this->generateHashService->generate($faker->password()),
         );
     }
 }

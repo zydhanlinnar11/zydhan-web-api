@@ -91,7 +91,7 @@ $app->configure('app');
 |
 */
 
-$app->register(App\Auth\Providers\AppServiceProvider::class);
+$app->register(App\Providers\DependencyServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 

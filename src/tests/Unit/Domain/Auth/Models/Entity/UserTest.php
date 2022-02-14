@@ -1,7 +1,6 @@
 <?php
 
 use Domain\Auth\Models\Entity\User;
-use Domain\Auth\Models\Value\HashedPassword;
 use Domain\Auth\Models\Value\UserId;
 use Illuminate\Support\Facades\Hash;
 use Ramsey\Uuid\Uuid;
@@ -11,17 +10,19 @@ class UserTest extends TestCase
     private UserId $userId;
     private string $name;
     private string $email;
-    private HashedPassword $password;
+    private string $hashedPassword;
     private string $username;
     private bool $isAdmin;
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->userId = new UserId(Uuid::uuid4());
         $faker = \Faker\Factory::create();
         $this->name = $faker->name();
         $this->email = $faker->email();
-        $this->password = new HashedPassword($faker->password());
+        $this->hashedPassword = Hash::make($faker->password());
         $this->username = $faker->userName();
         $this->isAdmin = $faker->boolean();
     }
@@ -32,7 +33,7 @@ class UserTest extends TestCase
             userId: $this->userId,
             name: $this->name,
             email: $this->email,
-            newPassword: $this->password,
+            hashedPassword: $this->hashedPassword,
             username: $this->username,
             admin: $this->isAdmin
         );
@@ -45,7 +46,7 @@ class UserTest extends TestCase
             userId: $this->userId,
             name: $this->name,
             email: $this->email,
-            newPassword: $this->password,
+            hashedPassword: $this->hashedPassword,
             username: $this->username,
             admin: $this->isAdmin
         );
@@ -57,7 +58,7 @@ class UserTest extends TestCase
             userId: new UserId(Uuid::uuid4()),
             name: $faker->name(),
             email: $faker->email(),
-            newPassword: new HashedPassword($faker->password()),
+            hashedPassword: Hash::make($faker->password()),
             username: $faker->userName(),
             admin: $faker->boolean()
         )));
@@ -69,7 +70,7 @@ class UserTest extends TestCase
             userId: $this->userId,
             name: $this->name,
             email: $this->email,
-            newPassword: $this->password,
+            hashedPassword: $this->hashedPassword,
             username: $this->username,
             admin: $this->isAdmin
         ))->getUserId()->equals($this->userId));
@@ -81,7 +82,7 @@ class UserTest extends TestCase
             userId: $this->userId,
             name: $this->name,
             email: $this->email,
-            newPassword: $this->password,
+            hashedPassword: $this->hashedPassword,
             username: $this->username,
             admin: $this->isAdmin
         ))->getName() === $this->name);
@@ -93,7 +94,7 @@ class UserTest extends TestCase
             userId: $this->userId,
             name: $this->name,
             email: $this->email,
-            newPassword: $this->password,
+            hashedPassword: $this->hashedPassword,
             username: $this->username,
             admin: $this->isAdmin
         ))->getEmail() === $this->email);
@@ -105,7 +106,7 @@ class UserTest extends TestCase
             userId: $this->userId,
             name: $this->name,
             email: $this->email,
-            newPassword: $this->password,
+            hashedPassword: $this->hashedPassword,
             username: $this->username,
             admin: $this->isAdmin
         ))->getUsername() === $this->username);
@@ -117,7 +118,7 @@ class UserTest extends TestCase
             userId: $this->userId,
             name: $this->name,
             email: $this->email,
-            newPassword: $this->password,
+            hashedPassword: $this->hashedPassword,
             username: $this->username,
             admin: $this->isAdmin
         ))->isAdmin() === $this->isAdmin);

@@ -18,7 +18,7 @@ class CheckUserEmailUniqueServiceTest extends TestCase
 
     public function testThrowEmailAlreadyExistExceptionIfUserEmailIsNotUnique()
     {
-        $userFactory = new UserFactory();
+        $userFactory = $this->app->make(UserFactory::class);
         $user = $userFactory->generateRandom();
 
         $this->userRepository->shouldReceive('findByEmail')

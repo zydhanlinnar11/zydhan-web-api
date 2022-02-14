@@ -7,7 +7,7 @@ class UserFactoryTest extends TestCase
 {
     public function testBisaGenerateRandom()
     {
-        $userFactory = new UserFactory();
+        $userFactory = $this->app->make(UserFactory::class);
 
         $this->assertInstanceOf(User::class, $userFactory->generateRandom());
     }
