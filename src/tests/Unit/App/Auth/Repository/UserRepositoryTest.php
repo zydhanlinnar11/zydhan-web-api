@@ -4,6 +4,7 @@ use App\Auth\Repositories\UserRepository;
 use Domain\Auth\Models\Entity\User;
 use Domain\Auth\Models\Value\UserId;
 use Domain\Auth\Repositories\UserRepositoryInterface;
+use Domain\Auth\Services\GenerateHashServiceInterface;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -21,13 +22,14 @@ class UserRepositoryTest extends TestCase
         parent::setUp();
 
         $this->queryBuilderMock = Mockery::mock(Builder::class);
+        $generateHashService = $this->app->make(GenerateHashServiceInterface::class);
 
         $faker = \Faker\Factory::create();
         $this->user = new User(
             userId: new UserId(Uuid::uuid4()),
             name: $faker->name(),
             email: $faker->email(),
-            hashedPassword: Hash::make($faker->password()),
+            hashedPassword: $generateHashService->generate($faker->password()),
             username: $faker->userName(),
             admin: $faker->boolean()
         );
