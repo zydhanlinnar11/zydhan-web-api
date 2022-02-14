@@ -11,8 +11,8 @@ class User
         private string $name,
         private string $email,
         private string $username,
-        private bool $admin,
         private string $hashedPassword,
+        private bool $admin = false,
     ) { }
 
     public function getUserId(): UserId
