@@ -2,6 +2,7 @@
 
 namespace Infrastructure\Auth\Repositories;
 
+use DateTime;
 use Domain\Auth\Models\Entity\User;
 use Domain\Auth\Models\Value\UserId;
 use Domain\Auth\Repositories\UserRepositoryInterface;
@@ -29,7 +30,10 @@ class UserRepository implements UserRepositoryInterface
 
     public function create(User $user): User
     {
-        DB::table('users')->insert($this->userDataToArray($user));
+        $data = $this->userDataToArray($user);
+        $data = array_merge($data, ['created_at' => $data['updated_at']]);
+
+        DB::table('users')->insert($data);
 
         return $user;
     }
@@ -42,6 +46,7 @@ class UserRepository implements UserRepositoryInterface
             'username' => $user->getUsername(),
             'is_admin' => $user->isAdmin(),
             'password' => $user->getHashedPassword(),
+            'updated_at' => new DateTime()
         ];
 
         return $data;

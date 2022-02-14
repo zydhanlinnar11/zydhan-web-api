@@ -72,36 +72,6 @@ class UserRepositoryTest extends TestCase
         $this->assertTrue($this->user->equals($user));
     }
 
-    // public function testTidakBisaBuatUserDenganEmailYangSudahAda()
-    // {
-    //     $queryBuilder = $this->queryBuilderMock;
-
-    //     DB::shouldReceive('table')
-    //         ->once()
-    //         ->with('users')
-    //         ->andReturn($queryBuilder);
-
-    //     $queryBuilder->shouldReceive('where')
-    //         ->once()
-    //         ->with('email', $this->user->getEmail())
-    //         ->andReturn($queryBuilder);
-
-    //     $result = new stdClass();
-    //     $result->id = $this->user->getUserId()->getId();
-    //     $result->name = $this->user->getName();
-    //     $result->email = $this->user->getEmail();
-    //     $result->username = $this->user->getUsername();
-    //     $result->is_admin = $this->user->isAdmin();
-
-    //     $queryBuilder->shouldReceive('first')
-    //         ->once()
-    //         ->andReturn($result);
-    //     $this->expectException(EmailAlreadyExistException::class);
-    //     $this->expectExceptionMessage('user_with_that_email_is_already_exists');
-
-    //     $this->userRepository->create($this->user);
-    // }
-
     public function testBisaBuatUser() {
         $queryBuilder = $this->queryBuilderMock;
 
@@ -115,14 +85,16 @@ class UserRepositoryTest extends TestCase
         $queryBuilder->shouldReceive('insert')
             ->once()
             ->with(Mockery::on(function(array $data) use($user) {
-                $this->assertEquals($data, [
-                    'id' => $user->getUserId()->getId(),
-                    'name' => $user->getName(),
-                    'email' => $user->getEmail(),
-                    'password' => $user->getHashedPassword(),
-                    'username' => $user->getUsername(),
-                    'is_admin' => $user->isAdmin(),
-                ]);
+                $this->assertEquals($data['id'], $user->getUserId()->getId()); 
+                $this->assertEquals($data['name'], $user->getName()); 
+                $this->assertEquals($data['email'], $user->getEmail()); 
+                $this->assertEquals($data['password'], $user->getHashedPassword()); 
+                $this->assertEquals($data['username'], $user->getUsername()); 
+                $this->assertEquals($data['is_admin'], $user->isAdmin()); 
+                $this->assertArrayHasKey('created_at', $data);
+                $this->assertArrayHasKey('updated_at', $data);
+                $this->assertNotNull($data['created_at']);
+                $this->assertNotNull($data['updated_at']);
                 return true;
             }));
 
