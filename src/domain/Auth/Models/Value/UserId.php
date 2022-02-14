@@ -9,8 +9,12 @@ class UserId
 {
     private string $id;
 
-    public function __construct(string $id)
+    public function __construct(?string $id = NULL)
     {
+        if (!$id) {
+            $id = Uuid::uuid4()->toString();
+        }
+
         if (!Uuid::isValid($id)) {
             throw new InvalidArgumentException('user_id_is_not_valid_uuid');
         }

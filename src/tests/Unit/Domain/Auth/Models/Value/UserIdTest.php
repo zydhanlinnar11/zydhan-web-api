@@ -11,6 +11,14 @@ class UserIdTest extends TestCase
         $this->assertInstanceOf(UserId::class, new UserId(Uuid::uuid4()));
     }
 
+    public function testGenerateJikaParameterNull()
+    {
+        $userId = new UserId();
+
+        $this->assertInstanceOf(UserId::class, new UserId(Uuid::uuid4()));
+        $this->assertNotNull($userId->getId());
+    }
+
     public function testTidakBisaDiinstansiasiJikaBukanUuid()
     {
         $this->expectException(\Exception::class);
