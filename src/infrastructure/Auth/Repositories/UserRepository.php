@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Auth\Repositories;
+namespace Infrastructure\Auth\Repositories;
 
 use Domain\Auth\Models\Entity\User;
 use Domain\Auth\Models\Value\UserId;

@@ -1,13 +1,12 @@
 <?php
 
-use App\Auth\Repositories\UserRepository;
 use Domain\Auth\Models\Entity\User;
 use Domain\Auth\Models\Value\UserId;
 use Domain\Auth\Repositories\UserRepositoryInterface;
 use Domain\Auth\Services\HashServiceInterface;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
+use Infrastructure\Auth\Repositories\UserRepository;
 use Mockery\MockInterface;
 use Ramsey\Uuid\Uuid;
 
@@ -39,7 +38,7 @@ class UserRepositoryTest extends TestCase
 
     public function testBisaDiinstansiasi()
     {
-        $this->assertInstanceOf(UserRepository::class, new UserRepository());
+        $this->assertInstanceOf(UserRepositoryInterface::class, $this->userRepository);
     }
 
     public function testFindByEmailMengembalikanUserYangBenar()
