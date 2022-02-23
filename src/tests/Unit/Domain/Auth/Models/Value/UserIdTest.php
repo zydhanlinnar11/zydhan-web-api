@@ -3,6 +3,7 @@
 use Domain\Auth\Models\Value\UserId;
 use Illuminate\Support\Str;
 use Ramsey\Uuid\Uuid;
+use Tests\TestCase;
 
 class UserIdTest extends TestCase
 {

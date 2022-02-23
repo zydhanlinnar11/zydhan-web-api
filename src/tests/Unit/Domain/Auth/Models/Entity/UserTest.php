@@ -5,6 +5,7 @@ use Domain\Auth\Models\Value\UserId;
 use Domain\Auth\Services\HashServiceInterface;
 use Illuminate\Support\Facades\Hash;
 use Ramsey\Uuid\Uuid;
+use Tests\TestCase;
 
 class UserTest extends TestCase
 {

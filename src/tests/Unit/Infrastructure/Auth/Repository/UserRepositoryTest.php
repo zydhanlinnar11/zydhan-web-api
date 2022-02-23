@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Infrastructure\Auth\Repositories\UserRepository;
 use Mockery\MockInterface;
 use Ramsey\Uuid\Uuid;
+use Tests\TestCase;
 
 class UserRepositoryTest extends TestCase
 {

@@ -10,6 +10,7 @@ use Domain\Auth\Services\CheckUserEmailUniqueService;
 use Domain\Auth\Services\HashServiceInterface;
 use Faker\Factory;
 use Mockery\MockInterface;
+use Tests\TestCase;
 
 class RegisterUserTest extends TestCase
 {
