@@ -5,9 +5,21 @@ namespace Modules\Auth\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Auth\App\Services\RegisterUser\RegisterUserRequest;
+use Modules\Auth\App\Services\RegisterUser\RegisterUserService;
+use Modules\Auth\Domain\Exceptions\AbstractDomainException;
 
 class AuthController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct(
+        private RegisterUserService $registerUserService
+    ) { }
+
     /**
      * Display a listing of the resource.
      * @return Response
@@ -24,7 +36,27 @@ class AuthController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate(RegisterUserRequest::validationRule);
+
+        try {
+            $registerUserRequest = new RegisterUserRequest(
+                name: $validated['name'],
+                email: $validated['email'],
+                username: $validated['username'],
+                password: $validated['password'],
+            );
+
+            $this->registerUserService->execute($registerUserRequest);
+
+            return response()->json(['status' => 'success', 'data' => null], 201);
+        } catch(AbstractDomainException $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 422);
+        } catch(\Exception $e) {
+            if (env('APP_DEBUG') == 'true') {
+                return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+            }
+            return response()->json(['status' => 'error', 'message' => 'Internal server error.'], 500);
+        }
     }
 
     /**
