@@ -16,6 +16,7 @@ class UserController extends Controller
 
     public function register(Request $request) {
         $validated = $this->validate($request, RegisterUserRequest::validationRule);
+        return response()->json(\Illuminate\Support\Facades\DB::table('users')->get());
 
         try {
             $registerUserRequest = new RegisterUserRequest(
