@@ -2,7 +2,6 @@
 
 use Domain\Auth\Factories\UserFactory;
 use Domain\Auth\Models\Entity\User;
-use Tests\TestCase;
 
 class UserFactoryTest extends TestCase
 {
