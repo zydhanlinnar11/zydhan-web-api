@@ -1,13 +1,13 @@
 <?php
 
-use Domain\Auth\Models\Entity\User;
-use Domain\Auth\Models\Value\UserId;
-use Domain\Auth\Repositories\UserRepositoryInterface;
-use Domain\Auth\Services\HashServiceInterface;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
-use Infrastructure\Auth\Repositories\UserRepository;
 use Mockery\MockInterface;
+use Modules\Auth\Domain\Models\Entity\User;
+use Modules\Auth\Domain\Models\Value\UserId;
+use Modules\Auth\Domain\Repositories\UserRepositoryInterface;
+use Modules\Auth\Domain\Services\HashServiceInterface;
+use Modules\Auth\Infrastructure\Repositories\UserRepository;
 use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
 

@@ -1,22 +1,18 @@
 <?php
 
-use App\Auth\Services\RegisterUser\RegisterUserRequest;
-use App\Auth\Services\RegisterUser\RegisterUserService;
-use Domain\Auth\Factories\UserFactory;
-use Domain\Auth\Models\Entity\User;
-use Domain\Auth\Models\Value\UserId;
-use Domain\Auth\Repositories\UserRepositoryInterface;
-use Domain\Auth\Services\CheckUserEmailUniqueService;
-use Domain\Auth\Services\HashServiceInterface;
 use Faker\Factory;
-use Mockery\MockInterface;
+use Modules\Auth\App\Services\RegisterUser\RegisterUserRequest;
+use Modules\Auth\App\Services\RegisterUser\RegisterUserService;
+use Modules\Auth\Domain\Repositories\UserRepositoryInterface;
+use Modules\Auth\Domain\Services\CheckUserEmailUniqueService;
+use Modules\Auth\Domain\Services\HashServiceInterface;
 use Tests\TestCase;
 
 class RegisterUserTest extends TestCase
 {
-    private MockInterface $checkUserEmailUniqueService;
-    private MockInterface $hashService;
-    private MockInterface $userRepository;
+    private CheckUserEmailUniqueService $checkUserEmailUniqueService;
+    private HashServiceInterface $hashService;
+    private UserRepositoryInterface $userRepository;
     private RegisterUserService $registerUserService;
     private RegisterUserRequest $registerUserRequest;
 
@@ -27,12 +23,6 @@ class RegisterUserTest extends TestCase
         $this->checkUserEmailUniqueService = Mockery::mock(CheckUserEmailUniqueService::class);
         $this->hashService = Mockery::mock(HashServiceInterface::class);
         $this->userRepository = Mockery::mock(UserRepositoryInterface::class);
-
-        $this->registerUserService = new RegisterUserService(
-            $this->checkUserEmailUniqueService,
-            $this->hashService,
-            $this->userRepository
-        );
 
         $faker = Factory::create();
         $this->registerUserRequest = new RegisterUserRequest(
@@ -53,6 +43,11 @@ class RegisterUserTest extends TestCase
         $this->userRepository->shouldReceive('create')
             ->once();
 
-        $this->registerUserService->execute($this->registerUserRequest);
+        $registerUserService = new RegisterUserService(
+            $this->checkUserEmailUniqueService,
+            $this->hashService,
+            $this->userRepository
+        );
+        $registerUserService->execute($this->registerUserRequest);
     }
 }

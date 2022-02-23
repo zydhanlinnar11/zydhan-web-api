@@ -1,7 +1,7 @@
 <?php
 
-use Domain\Auth\Models\Value\UserId;
 use Illuminate\Support\Str;
+use Modules\Auth\Domain\Models\Value\UserId;
 use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
 

@@ -1,9 +1,9 @@
 <?php
 
-use Domain\Auth\Models\Entity\User;
-use Domain\Auth\Models\Value\UserId;
-use Domain\Auth\Services\HashServiceInterface;
 use Illuminate\Support\Facades\Hash;
+use Modules\Auth\Domain\Models\Entity\User;
+use Modules\Auth\Domain\Models\Value\UserId;
+use Modules\Auth\Domain\Services\HashServiceInterface;
 use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
 
