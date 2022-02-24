@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Hash;
 use Modules\Auth\Domain\Models\Entity\User;
 use Modules\Auth\Domain\Models\Value\UserId;
-use Modules\Auth\Domain\Services\HashServiceInterface;
 use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
 
@@ -15,18 +14,16 @@ class UserTest extends TestCase
     private string $hashedPassword;
     private string $username;
     private bool $isAdmin;
-    private HashServiceInterface $generateHashService;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->generateHashService = $this->app->make(HashServiceInterface::class);
         $this->userId = new UserId(Uuid::uuid4());
         $faker = \Faker\Factory::create();
         $this->name = $faker->name();
         $this->email = $faker->email();
-        $this->hashedPassword = $this->generateHashService->generate($faker->password());
+        $this->hashedPassword = Hash::make($faker->password());
         $this->username = $faker->userName();
         $this->isAdmin = $faker->boolean();
     }
@@ -62,7 +59,7 @@ class UserTest extends TestCase
             userId: new UserId(Uuid::uuid4()),
             name: $faker->name(),
             email: $faker->email(),
-            hashedPassword: $this->generateHashService->generate($faker->password()),
+            hashedPassword: Hash::make($faker->password()),
             username: $faker->userName(),
             admin: $faker->boolean()
         )));

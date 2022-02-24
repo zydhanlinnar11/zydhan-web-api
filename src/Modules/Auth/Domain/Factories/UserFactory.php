@@ -3,15 +3,12 @@
 namespace Modules\Auth\Domain\Factories;
 
 use Faker\Factory;
+use Illuminate\Support\Facades\Hash;
 use Modules\Auth\Domain\Models\Entity\User;
 use Modules\Auth\Domain\Models\Value\UserId;
-use Modules\Auth\Domain\Services\HashServiceInterface;
 
 class UserFactory
 {
-    public function __construct(
-        private HashServiceInterface $generateHashService
-    ) { }
 
     public function generateRandom() : User
     {
@@ -23,7 +20,7 @@ class UserFactory
             email: $faker->email(),
             username: $faker->userName(),
             admin: $faker->boolean(),
-            hashedPassword: $this->generateHashService->generate($faker->password()),
+            hashedPassword: Hash::make($faker->password()),
         );
     }
 }

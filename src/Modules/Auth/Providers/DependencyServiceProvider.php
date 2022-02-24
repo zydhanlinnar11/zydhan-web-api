@@ -4,8 +4,6 @@ namespace Modules\Auth\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Modules\Auth\Domain\Repositories\UserRepositoryInterface;
-use Modules\Auth\Domain\Services\HashServiceInterface;
-use Modules\Auth\Infrastructure\HashFacadeService;
 use Modules\Auth\Infrastructure\Repositories\UserRepository;
 
 class DependencyServiceProvider extends ServiceProvider
@@ -17,7 +15,6 @@ class DependencyServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(HashServiceInterface::class, HashFacadeService::class);
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
     }
 

@@ -1,17 +1,16 @@
 <?php
 
 use Faker\Factory;
+use Illuminate\Support\Facades\Hash;
 use Modules\Auth\App\Services\RegisterUser\RegisterUserRequest;
 use Modules\Auth\App\Services\RegisterUser\RegisterUserService;
 use Modules\Auth\Domain\Repositories\UserRepositoryInterface;
 use Modules\Auth\Domain\Services\CheckUserEmailUniqueService;
-use Modules\Auth\Domain\Services\HashServiceInterface;
 use Tests\TestCase;
 
 class RegisterUserTest extends TestCase
 {
     private CheckUserEmailUniqueService $checkUserEmailUniqueService;
-    private HashServiceInterface $hashService;
     private UserRepositoryInterface $userRepository;
     private RegisterUserService $registerUserService;
     private RegisterUserRequest $registerUserRequest;
@@ -21,7 +20,6 @@ class RegisterUserTest extends TestCase
         parent::setUp();
 
         $this->checkUserEmailUniqueService = Mockery::mock(CheckUserEmailUniqueService::class);
-        $this->hashService = Mockery::mock(HashServiceInterface::class);
         $this->userRepository = Mockery::mock(UserRepositoryInterface::class);
 
         $faker = Factory::create();
@@ -34,7 +32,7 @@ class RegisterUserTest extends TestCase
     }
 
     public function testSuccessExecute() {
-        $this->hashService->shouldReceive('generate')
+        Hash::shouldReceive('make')
             ->once()->andReturn('test-hasssshhhhhh');
 
         $this->checkUserEmailUniqueService->shouldReceive('execute')
@@ -45,7 +43,6 @@ class RegisterUserTest extends TestCase
 
         $registerUserService = new RegisterUserService(
             $this->checkUserEmailUniqueService,
-            $this->hashService,
             $this->userRepository
         );
         $registerUserService->execute($this->registerUserRequest);

@@ -2,11 +2,11 @@
 
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Mockery\MockInterface;
 use Modules\Auth\Domain\Models\Entity\User;
 use Modules\Auth\Domain\Models\Value\UserId;
 use Modules\Auth\Domain\Repositories\UserRepositoryInterface;
-use Modules\Auth\Domain\Services\HashServiceInterface;
 use Modules\Auth\Infrastructure\Repositories\UserRepository;
 use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
@@ -22,14 +22,13 @@ class UserRepositoryTest extends TestCase
         parent::setUp();
 
         $this->queryBuilderMock = Mockery::mock(Builder::class);
-        $generateHashService = $this->app->make(HashServiceInterface::class);
 
         $faker = \Faker\Factory::create();
         $this->user = new User(
             userId: new UserId(Uuid::uuid4()),
             name: $faker->name(),
             email: $faker->email(),
-            hashedPassword: $generateHashService->generate($faker->password()),
+            hashedPassword: Hash::make($faker->password()),
             username: $faker->userName(),
             admin: $faker->boolean()
         );
