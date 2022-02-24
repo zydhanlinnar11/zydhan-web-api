@@ -78,7 +78,6 @@ class UserRegistrationTest extends TestCase
         ];
 
         $response = $this->postJson('/api/auth/register', $data);
-        var_dump($response->decodeResponseJson());
         $response->assertStatus(201);
     }
 }
