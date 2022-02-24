@@ -30,27 +30,27 @@ class UserRegistrationTest extends TestCase
         ];
 
         unset($data['name']);
-        $response = $this->postJson('/api/auth/register', $data);
+        $response = $this->postJson('/auth/register', $data);
         $response->assertStatus(422);
 
         unset($data['email']);
         $data['name'] = $this->faker->name();
-        $response = $this->postJson('/api/auth/register', $data);
+        $response = $this->postJson('/auth/register', $data);
         $response->assertStatus(422);
 
         unset($data['username']);
         $data['email'] = $this->faker->email();
-        $response = $this->postJson('/api/auth/register', $data);
+        $response = $this->postJson('/auth/register', $data);
         $response->assertStatus(422);
 
         unset($data['password']);
         $data['username'] = $this->faker->username();
-        $response = $this->postJson('/api/auth/register', $data);
+        $response = $this->postJson('/auth/register', $data);
         $response->assertStatus(422);
 
         unset($data['password_confirmation']);
         $data['password'] = $this->faker->password();
-        $response = $this->postJson('/api/auth/register', $data);
+        $response = $this->postJson('/auth/register', $data);
         $response->assertStatus(422);
     }
 
@@ -63,7 +63,7 @@ class UserRegistrationTest extends TestCase
             'password_confirmation' => 'pass_different'
         ];
 
-        $response = $this->postJson('/api/auth/register', $data);
+        $response = $this->postJson('/auth/register', $data);
         $response->assertStatus(422);
     }
 
@@ -77,7 +77,7 @@ class UserRegistrationTest extends TestCase
             'password_confirmation' => $password
         ];
 
-        $response = $this->postJson('/api/auth/register', $data);
+        $response = $this->postJson('/auth/register', $data);
         $response->assertStatus(201);
     }
 }
