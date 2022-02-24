@@ -103,6 +103,37 @@ class UserRepositoryTest extends TestCase
         $this->assertTrue($this->user->equals($user));
     }
 
+    public function testFindByIdMengembalikanUserYangBenar()
+    {
+        $queryBuilder = $this->queryBuilderMock;
+
+        DB::shouldReceive('table')
+            ->once()
+            ->with('users')
+            ->andReturn($queryBuilder);
+
+        $queryBuilder->shouldReceive('where')
+            ->once()
+            ->with('id', $this->user->getUserId()->getId())
+            ->andReturn($queryBuilder);
+
+        $result = new stdClass();
+        $result->id = $this->user->getUserId()->getId();
+        $result->name = $this->user->getName();
+        $result->email = $this->user->getEmail();
+        $result->username = $this->user->getUsername();
+        $result->is_admin = $this->user->isAdmin();
+        $result->password = $this->user->getHashedPassword();
+
+        $queryBuilder->shouldReceive('first')
+            ->once()
+            ->andReturn($result);
+
+        $user = $this->userRepository->findById($this->user->getUserId());
+
+        $this->assertTrue($this->user->equals($user));
+    }
+
     public function testBisaBuatUser() {
         $queryBuilder = $this->queryBuilderMock;
 
