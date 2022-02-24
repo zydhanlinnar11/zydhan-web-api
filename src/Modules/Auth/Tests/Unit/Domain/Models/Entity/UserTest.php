@@ -124,4 +124,34 @@ class UserTest extends TestCase
             admin: $this->isAdmin
         ))->isAdmin() === $this->isAdmin);
     }
+
+    public function testPasswordSalahReturnFalse()
+    {
+        $faker = \Faker\Factory::create();
+        $password = $faker->password();
+        $user = new User(
+            userId: $this->userId,
+            name: $this->name,
+            email: $this->email,
+            hashedPassword: Hash::make($password),
+            username: $this->username,
+            admin: $this->isAdmin
+        );
+        $this->assertFalse($user->isPasswordCorrect($password . $faker->password()));
+    }
+
+    public function testPasswordBenarReturnTrue()
+    {
+        $faker = \Faker\Factory::create();
+        $password = $faker->password();
+        $user = new User(
+            userId: $this->userId,
+            name: $this->name,
+            email: $this->email,
+            hashedPassword: Hash::make($password),
+            username: $this->username,
+            admin: $this->isAdmin
+        );
+        $this->assertTrue($user->isPasswordCorrect($password));
+    }
 }

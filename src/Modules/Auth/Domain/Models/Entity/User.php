@@ -2,6 +2,7 @@
 
 namespace Modules\Auth\Domain\Models\Entity;
 
+use Illuminate\Support\Facades\Hash;
 use Modules\Auth\Domain\Models\Value\UserId;
 
 class User
@@ -54,5 +55,10 @@ class User
         $isAdminEqual = $user->isAdmin() === $this->isAdmin();
 
         return ($userIdEqual && $nameEqual && $emailEqual && $usernameEqual && $isAdminEqual);
+    }
+
+    public function isPasswordCorrect(string $password): bool
+    {
+        return Hash::check($password, $this->hashedPassword);
     }
 }
