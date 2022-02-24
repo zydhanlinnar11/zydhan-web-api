@@ -32,11 +32,6 @@ class User implements Authenticatable
         return $this->email;
     }
 
-    public function getHashedPassword(): ?string
-    {
-        return $this->hashedPassword;
-    }
-
     public function getUsername(): string
     {
         return $this->username;
@@ -75,7 +70,7 @@ class User implements Authenticatable
 
     public function getAuthPassword(): string
     {
-        return $this->getHashedPassword();
+        return $this->hashedPassword;
     }
 
     public function getRememberToken(): string

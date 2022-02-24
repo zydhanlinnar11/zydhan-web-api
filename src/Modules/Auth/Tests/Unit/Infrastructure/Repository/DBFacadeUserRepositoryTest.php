@@ -61,7 +61,7 @@ class UserRepositoryTest extends TestCase
         $result->email = $this->user->getEmail();
         $result->username = $this->user->getUsername();
         $result->is_admin = $this->user->isAdmin();
-        $result->password = $this->user->getHashedPassword();
+        $result->password = $this->user->getAuthPassword();
 
         $queryBuilder->shouldReceive('first')
             ->once()
@@ -92,7 +92,7 @@ class UserRepositoryTest extends TestCase
         $result->email = $this->user->getEmail();
         $result->username = $this->user->getUsername();
         $result->is_admin = $this->user->isAdmin();
-        $result->password = $this->user->getHashedPassword();
+        $result->password = $this->user->getAuthPassword();
 
         $queryBuilder->shouldReceive('first')
             ->once()
@@ -123,7 +123,7 @@ class UserRepositoryTest extends TestCase
         $result->email = $this->user->getEmail();
         $result->username = $this->user->getUsername();
         $result->is_admin = $this->user->isAdmin();
-        $result->password = $this->user->getHashedPassword();
+        $result->password = $this->user->getAuthPassword();
 
         $queryBuilder->shouldReceive('first')
             ->once()
@@ -150,7 +150,7 @@ class UserRepositoryTest extends TestCase
                 $this->assertEquals($data['id'], $user->getUserId()->getId()); 
                 $this->assertEquals($data['name'], $user->getName()); 
                 $this->assertEquals($data['email'], $user->getEmail()); 
-                $this->assertEquals($data['password'], $user->getHashedPassword()); 
+                $this->assertEquals($data['password'], $user->getAuthPassword()); 
                 $this->assertEquals($data['username'], $user->getUsername()); 
                 $this->assertEquals($data['is_admin'], $user->isAdmin()); 
                 $this->assertArrayHasKey('created_at', $data);

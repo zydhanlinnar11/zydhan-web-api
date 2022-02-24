@@ -38,7 +38,7 @@ class DBFacadeUserRepository implements UserRepositoryInterface
             'email' => $user->getEmail(),
             'username' => $user->getUsername(),
             'is_admin' => $user->isAdmin(),
-            'password' => $user->getHashedPassword(),
+            'password' => $user->getAuthPassword(),
             'updated_at' => new DateTime()
         ];
 
