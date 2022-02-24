@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
-use Modules\Auth\App\Services\Login\LoginRequest;
 use Modules\Auth\App\Services\RegisterUser\RegisterUserRequest;
 use Modules\Auth\App\Services\RegisterUser\RegisterUserService;
 use Modules\Auth\Domain\Exceptions\AbstractDomainException;
+use Modules\Auth\Http\Requests\LoginRequest;
 
 class AuthController extends Controller
 {
@@ -92,11 +92,9 @@ class AuthController extends Controller
         //
     }
 
-    public function login(Request $request) {
-        $validated = $request->validate(LoginRequest::validationRule);
-        
+    public function login(LoginRequest $request) {
         try {
-            if(Auth::attempt($validated)) {
+            if(Auth::attempt($request->validated(['username', 'password']))) {
                 return response()->json(['status' => 'success', 'data' => null], 200);
             }
 
