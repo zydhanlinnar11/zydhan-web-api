@@ -27,7 +27,7 @@ class RegisterUserService
             hashedPassword: $hashedPassword
         );
 
-        $this->checkUserEmailUniqueService->execute($user);
+        $this->checkUserEmailUniqueService->execute($user->getEmail());
 
         $this->userRepository->create($user);
     }

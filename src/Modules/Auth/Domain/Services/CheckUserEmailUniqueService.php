@@ -12,9 +12,9 @@ class CheckUserEmailUniqueService
         private UserRepositoryInterface $userRepository,
     ) { }
 
-    public function execute(User $user) : void
+    public function execute(string $email) : void
     {
-        $existingUser = $this->userRepository->findByEmail($user->getEmail());
+        $existingUser = $this->userRepository->findByEmail($email);
 
         if ($existingUser) {
             throw new EmailAlreadyExistException();
