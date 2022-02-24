@@ -66,4 +66,15 @@ class DBFacadeUserRepository implements UserRepositoryInterface
             hashedPassword: $result->password,
         );
     }
+
+    public function findById(UserId $userId): ?User
+    {
+        $result = DB::table('users')->where('id', $userId->getId())->first();
+        
+        if (!$result) {
+            return null;
+        }
+
+        return $this->mapDBResultToModel($result);
+    }
 }

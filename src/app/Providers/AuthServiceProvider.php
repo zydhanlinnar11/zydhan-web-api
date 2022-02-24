@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
+use Modules\Auth\Infrastructure\Repositories\DBFacadeUserRepository;
+use Modules\Auth\Providers\UserProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,6 +27,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Auth::provider('auth_module', function() {
+            return new UserProvider(new DBFacadeUserRepository());
+        });
     }
 }

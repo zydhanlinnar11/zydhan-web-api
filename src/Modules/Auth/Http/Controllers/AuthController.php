@@ -5,6 +5,8 @@ namespace Modules\Auth\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
+use Modules\Auth\App\Services\Login\LoginRequest;
 use Modules\Auth\App\Services\RegisterUser\RegisterUserRequest;
 use Modules\Auth\App\Services\RegisterUser\RegisterUserService;
 use Modules\Auth\Domain\Exceptions\AbstractDomainException;
@@ -88,5 +90,22 @@ class AuthController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function login(Request $request) {
+        $validated = $request->validate(LoginRequest::validationRule);
+        
+        try {
+            if(Auth::attempt($validated)) {
+                return response()->json(['status' => 'success', 'data' => null], 200);
+            }
+
+            return response()->json(['status' => 'error', 'message' => 'Invalid credentials'], 401);
+        } catch(\Exception $e) {
+            if (env('APP_DEBUG') == 'true') {
+                return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+            }
+            return response()->json(['status' => 'error', 'message' => 'Internal server error.'], 500);
+        }
     }
 }

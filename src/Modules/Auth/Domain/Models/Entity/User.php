@@ -2,10 +2,11 @@
 
 namespace Modules\Auth\Domain\Models\Entity;
 
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Hash;
 use Modules\Auth\Domain\Models\Value\UserId;
 
-class User
+class User implements Authenticatable
 {
     public function __construct(
         private UserId $userId,
@@ -60,5 +61,35 @@ class User
     public function isPasswordCorrect(string $password): bool
     {
         return Hash::check($password, $this->hashedPassword);
+    }
+
+    public function getAuthIdentifierName(): string
+    {
+        return 'id';
+    }
+
+    public function getAuthIdentifier(): string
+    {
+        return $this->getUserId()->getId();
+    }
+
+    public function getAuthPassword(): string
+    {
+        return $this->getHashedPassword();
+    }
+
+    public function getRememberToken(): string
+    {
+        return '';
+    }
+
+    public function getRememberTokenName(): string
+    {
+        return '';
+    }
+
+    public function setRememberToken($value)
+    {
+        return;
     }
 }

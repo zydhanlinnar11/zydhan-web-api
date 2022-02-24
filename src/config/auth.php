@@ -60,15 +60,20 @@ return [
     */
 
     'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\User::class,
-        ],
+        // 'users' => [
+        //     'driver' => 'eloquent',
+        //     'model' => App\Models\User::class,
+        // ],
 
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+
+        'users' => [
+            'driver' => 'auth_module',
+            'model' => \Modules\Auth\Domain\Models\Entity\User::class,
+        ],
     ],
 
     /*
