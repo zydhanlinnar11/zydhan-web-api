@@ -18,14 +18,7 @@ class DBFacadeUserRepository implements UserRepositoryInterface
             return null;
         }
 
-        return new User(
-            userId: new UserId($result->id),
-            name: $result->name,
-            email: $result->email,
-            username: $result->username,
-            admin: $result->is_admin,
-            hashedPassword: $result->password,
-        );
+        return $this->mapDBResultToModel($result);
     }
 
     public function create(User $user): User
@@ -50,5 +43,27 @@ class DBFacadeUserRepository implements UserRepositoryInterface
         ];
 
         return $data;
+    }
+
+    public function findByUsername(string $username): ?User
+    {
+        $result = DB::table('users')->where('username', $username)->first();
+        
+        if (!$result) {
+            return null;
+        }
+
+        return $this->mapDBResultToModel($result);
+    }
+
+    private function mapDBResultToModel(object $result): User {
+        return new User(
+            userId: new UserId($result->id),
+            name: $result->name,
+            email: $result->email,
+            username: $result->username,
+            admin: $result->is_admin,
+            hashedPassword: $result->password,
+        );
     }
 }
