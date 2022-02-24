@@ -8,7 +8,7 @@ use Modules\Auth\Domain\Models\Value\UserId;
 use Modules\Auth\Domain\Repositories\UserRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 
-class UserRepository implements UserRepositoryInterface
+class DBFacadeUserRepository implements UserRepositoryInterface
 {
     public function findByEmail(string $email): ?User
     {

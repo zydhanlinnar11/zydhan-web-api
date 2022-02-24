@@ -4,7 +4,7 @@ namespace Modules\Auth\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Modules\Auth\Domain\Repositories\UserRepositoryInterface;
-use Modules\Auth\Infrastructure\Repositories\UserRepository;
+use Modules\Auth\Infrastructure\Repositories\DBFacadeUserRepository;
 
 class DependencyServiceProvider extends ServiceProvider
 {
@@ -15,7 +15,7 @@ class DependencyServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+        $this->app->bind(UserRepositoryInterface::class, DBFacadeUserRepository::class);
     }
 
     /**

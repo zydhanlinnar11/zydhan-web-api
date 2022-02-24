@@ -7,7 +7,7 @@ use Mockery\MockInterface;
 use Modules\Auth\Domain\Models\Entity\User;
 use Modules\Auth\Domain\Models\Value\UserId;
 use Modules\Auth\Domain\Repositories\UserRepositoryInterface;
-use Modules\Auth\Infrastructure\Repositories\UserRepository;
+use Modules\Auth\Infrastructure\Repositories\DBFacadeUserRepository;
 use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
 
@@ -33,7 +33,7 @@ class UserRepositoryTest extends TestCase
             admin: $faker->boolean()
         );
 
-        $this->userRepository = new UserRepository();
+        $this->userRepository = new DBFacadeUserRepository();
     }
 
     public function testBisaDiinstansiasi()
