@@ -2,32 +2,25 @@
 
 namespace Modules\Auth\App\Services\RegisterUser;
 
-use Illuminate\Support\Facades\Hash;
-use Modules\Auth\Domain\Models\Entity\User;
-use Modules\Auth\Domain\Models\Value\UserId;
+use Modules\Auth\Domain\Factories\UserFactory;
 use Modules\Auth\Domain\Repositories\UserRepositoryInterface;
-use Modules\Auth\Domain\Services\CheckUserEmailUniqueService;
 
 class RegisterUserService
 {
     public function __construct(        
-        private CheckUserEmailUniqueService $checkUserEmailUniqueService,
         private UserRepositoryInterface $userRepository
     ) { }
 
     public function execute(RegisterUserRequest $registerUserRequest): void
     {
-        $hashedPassword = Hash::make($registerUserRequest->password);
+        $userFactory = new UserFactory($this->userRepository);
 
-        $user = new User(
-            userId: new UserId(),
-            name: $registerUserRequest->name,
-            email: $registerUserRequest->email,
-            username: $registerUserRequest->username,
-            hashedPassword: $hashedPassword
+        $user = $userFactory->createNewUser(
+            $registerUserRequest->name,
+            $registerUserRequest->email,
+            $registerUserRequest->username,
+            $registerUserRequest->password
         );
-
-        $this->checkUserEmailUniqueService->execute($user->getEmail());
 
         $this->userRepository->create($user);
     }
