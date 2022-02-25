@@ -2,7 +2,7 @@ version: '3.8'
 services:
     zydhan-web-api:
         container_name: zydhan-web-api
-        image: zydhanlinnar11/lumen-docker
+        image: zydhanlinnar11/laravel-docker-image:latest
         volumes:
             - ./src:/var/www/html
             - ./database:/database
