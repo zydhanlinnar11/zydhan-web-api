@@ -2,20 +2,19 @@
 
 namespace Modules\Auth\App\Services\RegisterUser;
 
-use Modules\Auth\Domain\Factories\UserFactory;
+use Modules\Auth\Domain\Factories\UserFactoryInterface;
 use Modules\Auth\Domain\Repositories\UserRepositoryInterface;
 
 class RegisterUserService
 {
     public function __construct(        
-        private UserRepositoryInterface $userRepository
+        private UserFactoryInterface $userFactory,
+        private UserRepositoryInterface $userRepository,
     ) { }
 
     public function execute(RegisterUserRequest $registerUserRequest): void
     {
-        $userFactory = new UserFactory($this->userRepository);
-
-        $user = $userFactory->createNewUser(
+        $user = $this->userFactory->createNewUser(
             $registerUserRequest->name,
             $registerUserRequest->email,
             $registerUserRequest->username,
