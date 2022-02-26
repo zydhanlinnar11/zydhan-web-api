@@ -75,4 +75,15 @@ class DBFacadeUserRepository implements UserRepositoryInterface
 
         return $this->mapDBResultToModel($result);
     }
+
+    public function findBySocialId(SocialId $socialId): ?User
+    {
+        $result = DB::table('users')->where($socialId->getSocialProvider()->name() . '_id', '=', $socialId->getId())->first();
+        
+        if (!$result) {
+            return null;
+        }
+
+        return $this->mapDBResultToModel($result);
+    }
 }

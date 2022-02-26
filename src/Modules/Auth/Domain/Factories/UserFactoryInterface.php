@@ -3,6 +3,7 @@
 namespace Modules\Auth\Domain\Factories;
 
 use Modules\Auth\Domain\Models\Entity\User;
+use Modules\Auth\Domain\Models\Value\SocialProvider;
 
 interface UserFactoryInterface
 {
@@ -10,6 +11,13 @@ interface UserFactoryInterface
         string $name,
         string $email,
         string $password,
+    ) : User;
+
+    public function createNewUserFromSocial(
+        string $name,
+        string $email,
+        SocialProvider $socialProvider,
+        string $socialId
     ) : User;
 
     public function generateRandom() : User;
