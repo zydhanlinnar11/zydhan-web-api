@@ -53,8 +53,10 @@ class User implements Authenticatable
         $nameEqual = $user->getName() === $this->getName();
         $emailEqual = $user->getEmail() === $this->getEmail();
         $isAdminEqual = $user->isAdmin() === $this->isAdmin();
+        $isGoogleIdEqual = $user->getGoogleId()?->getId() === $this->getGoogleId()?->getId();
+        $isGithubIdEqual = $user->getGithubId()?->getId() === $this->getGithubId()?->getId();
 
-        return ($userIdEqual && $nameEqual && $emailEqual && $isAdminEqual);
+        return ($userIdEqual && $nameEqual && $emailEqual && $isAdminEqual && $isGithubIdEqual && $isGoogleIdEqual);
     }
 
     public function isPasswordCorrect(string $password): bool

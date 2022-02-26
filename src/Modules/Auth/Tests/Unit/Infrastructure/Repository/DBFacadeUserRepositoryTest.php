@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Mockery\MockInterface;
 use Modules\Auth\Domain\Models\Entity\User;
+use Modules\Auth\Domain\Models\Value\SocialId;
+use Modules\Auth\Domain\Models\Value\SocialProvider;
 use Modules\Auth\Domain\Models\Value\UserId;
 use Modules\Auth\Domain\Repositories\UserRepositoryInterface;
 use Modules\Auth\Infrastructure\Repositories\DBFacadeUserRepository;
@@ -30,7 +32,9 @@ class UserRepositoryTest extends TestCase
             email: $faker->email(),
             hashedPassword: Hash::make($faker->password()),
             admin: $faker->boolean(),
-            rememberToken: 'token'
+            rememberToken: 'token',
+            googleId: new SocialId(Uuid::uuid4(), SocialProvider::GOOGLE),
+            githubId: new SocialId(Uuid::uuid4(), SocialProvider::GITHUB),
         );
 
         $this->userRepository = new DBFacadeUserRepository();
@@ -61,6 +65,8 @@ class UserRepositoryTest extends TestCase
         $result->email = $this->user->getEmail();
         $result->is_admin = $this->user->isAdmin();
         $result->password = $this->user->getAuthPassword();
+        $result->google_id = $this->user->getGoogleId()->getId();
+        $result->github_id = $this->user->getGithubId()->getId();
         $result->remember_token = null;
 
         $queryBuilder->shouldReceive('first')
@@ -92,6 +98,8 @@ class UserRepositoryTest extends TestCase
         $result->email = $this->user->getEmail();
         $result->is_admin = $this->user->isAdmin();
         $result->password = $this->user->getAuthPassword();
+        $result->google_id = $this->user->getGoogleId()->getId();
+        $result->github_id = $this->user->getGithubId()->getId();
         $result->remember_token = null;
 
         $queryBuilder->shouldReceive('first')
@@ -119,6 +127,8 @@ class UserRepositoryTest extends TestCase
         $result->is_admin = $this->user->isAdmin();
         $result->password = $this->user->getAuthPassword();
         $result->remember_token = $this->user->getRememberToken();
+        $result->google_id = $this->user->getGoogleId()->getId();
+        $result->github_id = $this->user->getGithubId()->getId();
 
         $queryBuilder->shouldReceive('where')->once()->andReturn($queryBuilder);
         $queryBuilder->shouldReceive('first')->once()->andReturn($result);
@@ -135,6 +145,10 @@ class UserRepositoryTest extends TestCase
                 $this->assertArrayHasKey('updated_at', $data);
                 $this->assertNotNull($data['updated_at']);
                 $this->assertNotNull($data['remember_token']);
+                $this->assertEquals($data['google_id'], $user->getGoogleId()->getId()); 
+                $this->assertNotNull($data['google_id']);
+                $this->assertEquals($data['github_id'], $user->getGithubId()->getId()); 
+                $this->assertNotNull($data['github_id']);
                 return true;
             }));
 
@@ -167,6 +181,10 @@ class UserRepositoryTest extends TestCase
                 $this->assertNotNull($data['created_at']);
                 $this->assertNotNull($data['updated_at']);
                 $this->assertNotNull($data['remember_token']);
+                $this->assertEquals($data['google_id'], $user->getGoogleId()->getId()); 
+                $this->assertNotNull($data['google_id']);
+                $this->assertEquals($data['github_id'], $user->getGithubId()->getId()); 
+                $this->assertNotNull($data['github_id']);
                 return true;
             }));
 

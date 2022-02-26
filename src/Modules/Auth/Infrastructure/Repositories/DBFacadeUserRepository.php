@@ -7,6 +7,8 @@ use Modules\Auth\Domain\Models\Entity\User;
 use Modules\Auth\Domain\Models\Value\UserId;
 use Modules\Auth\Domain\Repositories\UserRepositoryInterface;
 use Illuminate\Support\Facades\DB;
+use Modules\Auth\Domain\Models\Value\SocialId;
+use Modules\Auth\Domain\Models\Value\SocialProvider;
 
 class DBFacadeUserRepository implements UserRepositoryInterface
 {
@@ -42,6 +44,8 @@ class DBFacadeUserRepository implements UserRepositoryInterface
             'is_admin' => $user->isAdmin(),
             'password' => $user->getAuthPassword(),
             'remember_token' => $user->getRememberToken(),
+            'google_id' => $user->getGoogleId()->getId(),
+            'github_id' => $user->getGithubId()->getId(),
             'updated_at' => new DateTime()
         ];
 
@@ -55,7 +59,9 @@ class DBFacadeUserRepository implements UserRepositoryInterface
             email: $result->email,
             admin: $result->is_admin,
             hashedPassword: $result->password,
-            rememberToken: $result->remember_token
+            rememberToken: $result->remember_token,
+            googleId: !$result->google_id ? null : new SocialId($result->google_id, SocialProvider::GOOGLE),
+            githubId: !$result->github_id ? null : new SocialId($result->github_id, SocialProvider::GITHUB),
         );
     }
 
