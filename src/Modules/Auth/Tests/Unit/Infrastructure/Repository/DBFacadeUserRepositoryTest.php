@@ -29,7 +29,8 @@ class UserRepositoryTest extends TestCase
             name: $faker->name(),
             email: $faker->email(),
             hashedPassword: Hash::make($faker->password()),
-            admin: $faker->boolean()
+            admin: $faker->boolean(),
+            rememberToken: 'token'
         );
 
         $this->userRepository = new DBFacadeUserRepository();
@@ -117,7 +118,7 @@ class UserRepositoryTest extends TestCase
         $result->email = $this->user->getEmail();
         $result->is_admin = $this->user->isAdmin();
         $result->password = $this->user->getAuthPassword();
-        $result->remember_token = null;
+        $result->remember_token = $this->user->getRememberToken();
 
         $queryBuilder->shouldReceive('where')->once()->andReturn($queryBuilder);
         $queryBuilder->shouldReceive('first')->once()->andReturn($result);
@@ -130,8 +131,10 @@ class UserRepositoryTest extends TestCase
                 $this->assertEquals($data['email'], $user->getEmail()); 
                 $this->assertEquals($data['password'], $user->getAuthPassword()); 
                 $this->assertEquals($data['is_admin'], $user->isAdmin()); 
+                $this->assertEquals($data['remember_token'], $user->getRememberToken()); 
                 $this->assertArrayHasKey('updated_at', $data);
                 $this->assertNotNull($data['updated_at']);
+                $this->assertNotNull($data['remember_token']);
                 return true;
             }));
 
@@ -158,10 +161,12 @@ class UserRepositoryTest extends TestCase
                 $this->assertEquals($data['email'], $user->getEmail()); 
                 $this->assertEquals($data['password'], $user->getAuthPassword()); 
                 $this->assertEquals($data['is_admin'], $user->isAdmin()); 
+                $this->assertEquals($data['remember_token'], $user->getRememberToken()); 
                 $this->assertArrayHasKey('created_at', $data);
                 $this->assertArrayHasKey('updated_at', $data);
                 $this->assertNotNull($data['created_at']);
                 $this->assertNotNull($data['updated_at']);
+                $this->assertNotNull($data['remember_token']);
                 return true;
             }));
 
