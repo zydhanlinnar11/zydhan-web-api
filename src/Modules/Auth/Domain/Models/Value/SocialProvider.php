@@ -2,7 +2,7 @@
 
 namespace Modules\Auth\Domain\Models\Value;
 
-enum SocialProvider: string
+enum SocialProvider
 {
     case GOOGLE;
     case GITHUB;
