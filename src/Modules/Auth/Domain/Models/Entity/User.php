@@ -4,6 +4,9 @@ namespace Modules\Auth\Domain\Models\Entity;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Hash;
+use InvalidArgumentException;
+use Modules\Auth\Domain\Models\Value\SocialId;
+use Modules\Auth\Domain\Models\Value\SocialProvider;
 use Modules\Auth\Domain\Models\Value\UserId;
 
 class User implements Authenticatable
@@ -15,7 +18,14 @@ class User implements Authenticatable
         private string $hashedPassword,
         private bool $admin = false,
         private ?string $rememberToken = NULL,
-    ) { }
+        private ?SocialId $googleId = NULL,
+        private ?SocialId $githubId = NULL,
+    ) {
+        if (($googleId && ($googleId->getSocialProvider() !== SocialProvider::GOOGLE))
+            || ($githubId && $githubId->getSocialProvider() !== SocialProvider::GITHUB)) {
+            throw new InvalidArgumentException("social_provider_doesn't_match");
+        }
+    }
 
     public function getUserId(): UserId
     {
