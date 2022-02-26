@@ -11,9 +11,13 @@
 |
 */
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Modules\Auth\Http\Controllers\AuthController;
+use Modules\Auth\Http\Controllers\SocialAuthController;
 
 Route::prefix('auth')->name('auth.')->group(function() {
     Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/{provider:string}/redirect', [SocialAuthController::class, 'handleRedirect']);
+    Route::get('/{provider:string}/callback', [SocialAuthController::class, 'handleCallback']);
 });
