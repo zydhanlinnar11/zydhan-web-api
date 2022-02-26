@@ -20,6 +20,8 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->boolean('is_admin');
             $table->rememberToken();
+            $table->string('github_id')->nullable();
+            $table->string('google_id')->nullable();
             $table->timestamps();
         });
     }
