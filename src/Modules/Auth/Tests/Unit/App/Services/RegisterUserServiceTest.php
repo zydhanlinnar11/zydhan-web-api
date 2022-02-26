@@ -42,7 +42,7 @@ class RegisterUserServiceTest extends TestCase
         );
         $this->userFactory->shouldReceive('createNewUser')
             ->andReturn($user);
-        $this->userRepository->shouldReceive('create')->with($user);
+        $this->userRepository->shouldReceive('save')->with($user);
 
         $registerUserService = new RegisterUserService(
             $this->userFactory,

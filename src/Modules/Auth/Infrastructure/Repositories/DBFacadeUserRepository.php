@@ -21,12 +21,15 @@ class DBFacadeUserRepository implements UserRepositoryInterface
         return $this->mapDBResultToModel($result);
     }
 
-    public function create(User $user): User
+    public function save(User $user): ?User
     {
         $data = $this->userDataToArray($user);
-        $data = array_merge($data, ['created_at' => $data['updated_at']]);
 
-        DB::table('users')->insert($data);
+        if (!$this->findById($user->getUserId())) {
+            $data = array_merge($data, ['created_at' => $data['updated_at']]);
+        }
+
+        DB::table('users')->updateOrInsert($data);
 
         return $user;
     }

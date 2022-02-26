@@ -20,6 +20,6 @@ class RegisterUserService
             $registerUserRequest->password
         );
 
-        $this->userRepository->create($user);
+        $this->userRepository->save($user);
     }
 }
