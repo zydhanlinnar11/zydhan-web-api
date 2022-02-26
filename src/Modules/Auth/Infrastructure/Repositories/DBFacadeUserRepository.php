@@ -44,8 +44,8 @@ class DBFacadeUserRepository implements UserRepositoryInterface
             'is_admin' => $user->isAdmin(),
             'password' => $user->getAuthPassword(),
             'remember_token' => $user->getRememberToken(),
-            'google_id' => $user->getGoogleId()->getId(),
-            'github_id' => $user->getGithubId()->getId(),
+            'google_id' => $user->getGoogleId()?->getId(),
+            'github_id' => $user->getGithubId()?->getId(),
             'updated_at' => new DateTime()
         ];
 
