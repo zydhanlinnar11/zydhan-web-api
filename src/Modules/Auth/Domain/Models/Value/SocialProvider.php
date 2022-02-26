@@ -2,10 +2,10 @@
 
 namespace Modules\Auth\Domain\Models\Value;
 
-enum SocialProvider
+enum SocialProvider: string
 {
-    case GOOGLE;
-    case GITHUB;
+    case GOOGLE = 'google';
+    case GITHUB = 'github';
 
     public function name(): string
     {
