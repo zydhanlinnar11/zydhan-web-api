@@ -41,6 +41,7 @@ class DBFacadeUserRepository implements UserRepositoryInterface
             'email' => $user->getEmail(),
             'is_admin' => $user->isAdmin(),
             'password' => $user->getAuthPassword(),
+            'remember_token' => $user->getRememberToken(),
             'updated_at' => new DateTime()
         ];
 
@@ -54,6 +55,7 @@ class DBFacadeUserRepository implements UserRepositoryInterface
             email: $result->email,
             admin: $result->is_admin,
             hashedPassword: $result->password,
+            rememberToken: $result->remember_token
         );
     }
 

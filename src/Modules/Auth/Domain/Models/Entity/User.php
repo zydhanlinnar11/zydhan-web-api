@@ -14,6 +14,7 @@ class User implements Authenticatable
         private string $email,
         private string $hashedPassword,
         private bool $admin = false,
+        private ?string $rememberToken = NULL,
     ) { }
 
     public function getUserId(): UserId
@@ -66,9 +67,9 @@ class User implements Authenticatable
         return $this->hashedPassword;
     }
 
-    public function getRememberToken(): string
+    public function getRememberToken(): ?string
     {
-        return '';
+        return $this->rememberToken;
     }
 
     public function getRememberTokenName(): string
@@ -78,6 +79,16 @@ class User implements Authenticatable
 
     public function setRememberToken($value)
     {
-        return;
+        $this->rememberToken = $value;
+    }
+
+    public function getGoogleId(): ?SocialId
+    {
+        return $this->googleId;
+    }
+
+    public function getGithubId(): ?SocialId
+    {
+        return $this->githubId;
     }
 }

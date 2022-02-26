@@ -60,6 +60,7 @@ class UserRepositoryTest extends TestCase
         $result->email = $this->user->getEmail();
         $result->is_admin = $this->user->isAdmin();
         $result->password = $this->user->getAuthPassword();
+        $result->remember_token = null;
 
         $queryBuilder->shouldReceive('first')
             ->once()
@@ -90,6 +91,7 @@ class UserRepositoryTest extends TestCase
         $result->email = $this->user->getEmail();
         $result->is_admin = $this->user->isAdmin();
         $result->password = $this->user->getAuthPassword();
+        $result->remember_token = null;
 
         $queryBuilder->shouldReceive('first')
             ->once()
@@ -115,6 +117,7 @@ class UserRepositoryTest extends TestCase
         $result->email = $this->user->getEmail();
         $result->is_admin = $this->user->isAdmin();
         $result->password = $this->user->getAuthPassword();
+        $result->remember_token = null;
 
         $queryBuilder->shouldReceive('where')->once()->andReturn($queryBuilder);
         $queryBuilder->shouldReceive('first')->once()->andReturn($result);

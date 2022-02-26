@@ -25,13 +25,28 @@ class UserProvider implements \Illuminate\Contracts\Auth\UserProvider
 
     public function retrieveByToken($identifier, $token)
     {
+        try {
+            $user = $this->userRepository->findById(new UserId($identifier));
 
-        // dd($token);
-        return null;
+            if (!$user) {
+                return null;
+            }
+
+            $rememberToken = $user->getRememberToken();
+
+            return $rememberToken && hash_equals($rememberToken, $token)
+                        ? $user : null;
+        } catch(\Exception $e) {
+            return null;
+        }
     }
 
     public function updateRememberToken(Authenticatable $user, $token)
     {
+        $user->setRememberToken($token);
+
+        $this->userRepository->save($user);
+
         return null;
     }
 
