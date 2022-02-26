@@ -28,7 +28,6 @@ class RegisterUserServiceTest extends TestCase
         $this->registerUserRequest = new RegisterUserRequest(
             name: $faker->name(),
             email: $faker->email(),
-            username: $faker->userName(),
             password: $faker->password()
         );
     }
@@ -38,7 +37,6 @@ class RegisterUserServiceTest extends TestCase
             userId: new UserId(),
             name: $this->registerUserRequest->name,
             email: $this->registerUserRequest->email,
-            username: $this->registerUserRequest->username,
             hashedPassword: Hash::make($this->registerUserRequest->password),
             admin: false
         );

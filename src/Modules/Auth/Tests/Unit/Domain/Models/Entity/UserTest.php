@@ -12,7 +12,6 @@ class UserTest extends TestCase
     private string $name;
     private string $email;
     private string $hashedPassword;
-    private string $username;
     private bool $isAdmin;
 
     protected function setUp(): void
@@ -24,7 +23,6 @@ class UserTest extends TestCase
         $this->name = $faker->name();
         $this->email = $faker->email();
         $this->hashedPassword = Hash::make($faker->password());
-        $this->username = $faker->userName();
         $this->isAdmin = $faker->boolean();
     }
 
@@ -35,7 +33,6 @@ class UserTest extends TestCase
             name: $this->name,
             email: $this->email,
             hashedPassword: $this->hashedPassword,
-            username: $this->username,
             admin: $this->isAdmin
         );
 
@@ -48,7 +45,6 @@ class UserTest extends TestCase
             name: $this->name,
             email: $this->email,
             hashedPassword: $this->hashedPassword,
-            username: $this->username,
             admin: $this->isAdmin
         );
 
@@ -60,7 +56,6 @@ class UserTest extends TestCase
             name: $faker->name(),
             email: $faker->email(),
             hashedPassword: Hash::make($faker->password()),
-            username: $faker->userName(),
             admin: $faker->boolean()
         )));
     }
@@ -72,7 +67,6 @@ class UserTest extends TestCase
             name: $this->name,
             email: $this->email,
             hashedPassword: $this->hashedPassword,
-            username: $this->username,
             admin: $this->isAdmin
         ))->getUserId()->equals($this->userId));
     }
@@ -84,7 +78,6 @@ class UserTest extends TestCase
             name: $this->name,
             email: $this->email,
             hashedPassword: $this->hashedPassword,
-            username: $this->username,
             admin: $this->isAdmin
         ))->getName() === $this->name);
     }
@@ -96,21 +89,8 @@ class UserTest extends TestCase
             name: $this->name,
             email: $this->email,
             hashedPassword: $this->hashedPassword,
-            username: $this->username,
             admin: $this->isAdmin
         ))->getEmail() === $this->email);
-    }
-
-    public function testBisaGetUsername()
-    {
-        $this->assertTrue((new User(
-            userId: $this->userId,
-            name: $this->name,
-            email: $this->email,
-            hashedPassword: $this->hashedPassword,
-            username: $this->username,
-            admin: $this->isAdmin
-        ))->getUsername() === $this->username);
     }
 
     public function testBisaGetStatusAdmin()
@@ -120,7 +100,6 @@ class UserTest extends TestCase
             name: $this->name,
             email: $this->email,
             hashedPassword: $this->hashedPassword,
-            username: $this->username,
             admin: $this->isAdmin
         ))->isAdmin() === $this->isAdmin);
     }
@@ -134,7 +113,6 @@ class UserTest extends TestCase
             name: $this->name,
             email: $this->email,
             hashedPassword: Hash::make($password),
-            username: $this->username,
             admin: $this->isAdmin
         );
         $this->assertFalse($user->isPasswordCorrect($password . $faker->password()));
@@ -149,7 +127,6 @@ class UserTest extends TestCase
             name: $this->name,
             email: $this->email,
             hashedPassword: Hash::make($password),
-            username: $this->username,
             admin: $this->isAdmin
         );
         $this->assertTrue($user->isPasswordCorrect($password));

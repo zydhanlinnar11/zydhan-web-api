@@ -12,7 +12,6 @@ class User implements Authenticatable
         private UserId $userId,
         private string $name,
         private string $email,
-        private string $username,
         private string $hashedPassword,
         private bool $admin = false,
     ) { }
@@ -32,11 +31,6 @@ class User implements Authenticatable
         return $this->email;
     }
 
-    public function getUsername(): string
-    {
-        return $this->username;
-    }
-
     public function isAdmin(): bool
     {
         return $this->admin;
@@ -47,10 +41,9 @@ class User implements Authenticatable
         $userIdEqual = $user->getUserId()->equals($this->getUserId());
         $nameEqual = $user->getName() === $this->getName();
         $emailEqual = $user->getEmail() === $this->getEmail();
-        $usernameEqual = $user->getUsername() === $this->getUsername();
         $isAdminEqual = $user->isAdmin() === $this->isAdmin();
 
-        return ($userIdEqual && $nameEqual && $emailEqual && $usernameEqual && $isAdminEqual);
+        return ($userIdEqual && $nameEqual && $emailEqual && $isAdminEqual);
     }
 
     public function isPasswordCorrect(string $password): bool

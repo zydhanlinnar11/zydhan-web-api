@@ -7,7 +7,6 @@ class RegisterUserRequest
     const validationRule = [
         'name' => 'required',
         'email' => 'required|email',
-        'username' => 'required',
         'password' => 'required|confirmed',
         'password_confirmation' => 'required',
     ];
@@ -15,7 +14,6 @@ class RegisterUserRequest
     public function __construct(
         public string $name,
         public string $email,
-        public string $username,
         public string $password,
     ) { }
 }

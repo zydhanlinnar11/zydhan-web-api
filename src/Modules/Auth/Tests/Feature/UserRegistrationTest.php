@@ -18,13 +18,12 @@ class UserRegistrationTest extends TestCase
         $this->faker = Factory::create();
     }
     
-    public function test_name_email_username_password_passconfirm_cant_be_empty()
+    public function test_name_email_password_passconfirm_cant_be_empty()
     {
         $password = $this->faker->password();
         $data = [
             'name' => $this->faker->name(),
             'email' => $this->faker->email(),
-            'username' => $this->faker->username(),
             'password' => $password,
             'password_confirmation' => $password
         ];
@@ -38,13 +37,8 @@ class UserRegistrationTest extends TestCase
         $response = $this->postJson('/auth/register', $data);
         $response->assertStatus(422);
 
-        unset($data['username']);
-        $data['email'] = $this->faker->email();
-        $response = $this->postJson('/auth/register', $data);
-        $response->assertStatus(422);
-
         unset($data['password']);
-        $data['username'] = $this->faker->username();
+        $data['email'] = $this->faker->email();
         $response = $this->postJson('/auth/register', $data);
         $response->assertStatus(422);
 
@@ -58,7 +52,6 @@ class UserRegistrationTest extends TestCase
         $data = [
             'name' => $this->faker->name(),
             'email' => $this->faker->email(),
-            'username' => $this->faker->username(),
             'password' => 'pass',
             'password_confirmation' => 'pass_different'
         ];
@@ -72,12 +65,12 @@ class UserRegistrationTest extends TestCase
         $data = [
             'name' => $this->faker->name(),
             'email' => $this->faker->email(),
-            'username' => $this->faker->username(),
             'password' => $password,
             'password_confirmation' => $password
         ];
 
         $response = $this->postJson('/auth/register', $data);
+        var_dump($response);
         $response->assertStatus(201);
     }
 }

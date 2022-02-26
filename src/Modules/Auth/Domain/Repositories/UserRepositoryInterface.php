@@ -9,6 +9,5 @@ interface UserRepositoryInterface
 {
     public function findById(UserId $userId): ?User;
     public function findByEmail(string $email): ?User;
-    public function findByUsername(string $username): ?User;
     public function create(User $user): User;
 }

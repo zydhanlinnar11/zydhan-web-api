@@ -9,7 +9,6 @@ interface UserFactoryInterface
     public function createNewUser(
         string $name,
         string $email,
-        string $username,
         string $password,
     ) : User;
 

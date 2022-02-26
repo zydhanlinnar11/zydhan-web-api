@@ -17,7 +17,6 @@ class RegisterUserService
         $user = $this->userFactory->createNewUser(
             $registerUserRequest->name,
             $registerUserRequest->email,
-            $registerUserRequest->username,
             $registerUserRequest->password
         );
 

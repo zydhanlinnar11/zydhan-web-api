@@ -29,7 +29,6 @@ class UserRepositoryTest extends TestCase
             name: $faker->name(),
             email: $faker->email(),
             hashedPassword: Hash::make($faker->password()),
-            username: $faker->userName(),
             admin: $faker->boolean()
         );
 
@@ -59,7 +58,6 @@ class UserRepositoryTest extends TestCase
         $result->id = $this->user->getUserId()->getId();
         $result->name = $this->user->getName();
         $result->email = $this->user->getEmail();
-        $result->username = $this->user->getUsername();
         $result->is_admin = $this->user->isAdmin();
         $result->password = $this->user->getAuthPassword();
 
@@ -68,37 +66,6 @@ class UserRepositoryTest extends TestCase
             ->andReturn($result);
 
         $user = $this->userRepository->findByEmail($this->user->getEmail());
-
-        $this->assertTrue($this->user->equals($user));
-    }
-
-    public function testFindByUsernameMengembalikanUserYangBenar()
-    {
-        $queryBuilder = $this->queryBuilderMock;
-
-        DB::shouldReceive('table')
-            ->once()
-            ->with('users')
-            ->andReturn($queryBuilder);
-
-        $queryBuilder->shouldReceive('where')
-            ->once()
-            ->with('username', $this->user->getUsername())
-            ->andReturn($queryBuilder);
-
-        $result = new stdClass();
-        $result->id = $this->user->getUserId()->getId();
-        $result->name = $this->user->getName();
-        $result->email = $this->user->getEmail();
-        $result->username = $this->user->getUsername();
-        $result->is_admin = $this->user->isAdmin();
-        $result->password = $this->user->getAuthPassword();
-
-        $queryBuilder->shouldReceive('first')
-            ->once()
-            ->andReturn($result);
-
-        $user = $this->userRepository->findByUsername($this->user->getUsername());
 
         $this->assertTrue($this->user->equals($user));
     }
@@ -121,7 +88,6 @@ class UserRepositoryTest extends TestCase
         $result->id = $this->user->getUserId()->getId();
         $result->name = $this->user->getName();
         $result->email = $this->user->getEmail();
-        $result->username = $this->user->getUsername();
         $result->is_admin = $this->user->isAdmin();
         $result->password = $this->user->getAuthPassword();
 
@@ -151,7 +117,6 @@ class UserRepositoryTest extends TestCase
                 $this->assertEquals($data['name'], $user->getName()); 
                 $this->assertEquals($data['email'], $user->getEmail()); 
                 $this->assertEquals($data['password'], $user->getAuthPassword()); 
-                $this->assertEquals($data['username'], $user->getUsername()); 
                 $this->assertEquals($data['is_admin'], $user->isAdmin()); 
                 $this->assertArrayHasKey('created_at', $data);
                 $this->assertArrayHasKey('updated_at', $data);

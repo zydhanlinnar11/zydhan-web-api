@@ -44,7 +44,6 @@ class AuthController extends Controller
             $registerUserRequest = new RegisterUserRequest(
                 name: $validated['name'],
                 email: $validated['email'],
-                username: $validated['username'],
                 password: $validated['password'],
             );
 
