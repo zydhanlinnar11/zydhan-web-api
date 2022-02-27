@@ -10,6 +10,7 @@ use Modules\Auth\App\Services\RegisterUser\RegisterUserRequest;
 use Modules\Auth\App\Services\RegisterUser\RegisterUserService;
 use Modules\Auth\Domain\Exceptions\AbstractDomainException;
 use Modules\Auth\Http\Requests\LoginRequest;
+use Modules\Auth\Transformers\AuthenticatedUserResource;
 
 class AuthController extends Controller
 {
@@ -121,5 +122,9 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
     
         return response()->json(['status' => 'success', 'data' => null]);
+    }
+
+    public function getAuthenticatedUser(Request $request) {
+        return (new AuthenticatedUserResource($request->user()))->toArray($request);
     }
 }

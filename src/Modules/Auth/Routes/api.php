@@ -17,4 +17,5 @@ use Modules\Auth\Http\Controllers\AuthController;
 
 Route::middleware('api')->prefix('auth')->name('auth.')->group(function() {
     Route::post('/register', [AuthController::class, 'store']);
+    Route::middleware('auth:sanctum')->get('/authenticated-user', [AuthController::class, 'getAuthenticatedUser']);
 });
