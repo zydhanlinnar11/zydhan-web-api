@@ -94,7 +94,7 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request) {
         try {
-            if(Auth::attempt($request->safe(['username', 'password']))) {
+            if(Auth::attempt($request->safe(['email', 'password']))) {
                 return response()->json(['status' => 'success', 'data' => null], 200);
             }
 
