@@ -17,4 +17,5 @@ interface CommentRepositoryInterface
      */
     public function findAllByPostId(PostId $postId);
     public function save(Comment $comment): bool;
+    public function delete(Comment $comment): bool;
 }

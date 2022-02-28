@@ -82,4 +82,17 @@ class QueryBuilderCommentRepository implements CommentRepositoryInterface
             updatedAt: new DateTime($result->updated_at),
         );
     }
+
+    public function delete(Comment $comment): bool
+    {
+        try {
+            $this->table
+                    ->where('id', '=', $comment->getId()->toString())
+                    ->delete();
+
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
 }
