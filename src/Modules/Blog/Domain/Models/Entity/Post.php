@@ -2,6 +2,7 @@
 
 namespace Modules\Blog\Domain\Models\Entity;
 
+use DateTime;
 use Modules\Auth\Domain\Models\Value\UserId;
 use Modules\Blog\Domain\Models\Value\PostId;
 use Modules\Blog\Domain\Models\Value\PostVisibility\PostVisibility;
@@ -16,6 +17,8 @@ class Post
         private string $markdown,
         private string $slug,
         private PostVisibility $visibility,
+        private DateTime $createdAt,
+        private DateTime $updatedAt,
     ) { }
 
     public function getId(): PostId
@@ -51,5 +54,15 @@ class Post
     public function getVisibility(): PostVisibility
     {
         return $this->visibility;
+    }
+
+    public function getCreatedAt(): DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt(): DateTime
+    {
+        return $this->updatedAt;
     }
 }
