@@ -2,6 +2,7 @@
 
 namespace Modules\Blog\Transformers;
 
+use DateTimeZone;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class HomePagePostsResource extends JsonResource
@@ -30,7 +31,7 @@ class HomePagePostsResource extends JsonResource
                 'title' => $post->getTitle(),
                 'cover_url' => "https://storage.googleapis.com/zydhan-web.appspot.com/gambar-biner.webp",
                 'slug' => $post->getSlug(),
-                'created_at' => $post->getCreatedAt(),
+                'created_at' => $post->getCreatedAt()->setTimezone(new DateTimeZone('Asia/Jakarta'))->format('l, F d, Y'),
             ]);
         }
 

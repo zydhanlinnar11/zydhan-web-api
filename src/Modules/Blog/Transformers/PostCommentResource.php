@@ -2,6 +2,7 @@
 
 namespace Modules\Blog\Transformers;
 
+use DateTimeZone;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Auth\Domain\Repositories\UserRepositoryInterface;
 use Modules\Blog\Domain\Models\Entity\Comment;
@@ -34,7 +35,7 @@ class PostCommentResource extends JsonResource
             array_push($arr, [
                 'id' => $comment->getId()->toString(),
                 'comment' => $comment->getComment(),
-                'createdAt' => $comment->getCreatedAt(),
+                'createdAt' => $comment->getCreatedAt()->setTimezone(new DateTimeZone('Asia/Jakarta'))->format('l, F d, Y'),
                 'user_name' => $user->getName(),
             ]);
         }

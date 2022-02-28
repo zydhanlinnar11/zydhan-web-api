@@ -2,6 +2,7 @@
 
 namespace Modules\Blog\Transformers;
 
+use DateTimeZone;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Blog\Domain\Models\Entity\Post;
 
@@ -24,7 +25,7 @@ class PostViewResource extends JsonResource
             'title' => $this->post->getTitle(),
             'description' => $this->post->getDescription(),
             'markdown' => $this->post->getMarkdown(),
-            'createdAt' => $this->post->getCreatedAt()
+            'createdAt' => $this->post->getCreatedAt()->setTimezone(new DateTimeZone('Asia/Jakarta'))->format('l, F d, Y')
         ];
     }
 }
