@@ -17,7 +17,7 @@ use Modules\Auth\Http\Controllers\SocialAuthController;
 
 Route::prefix('auth')->name('auth.')->group(function() {
     Route::post('/login', [AuthController::class, 'login']);
-    Route::get('/{provider:string}/redirect', [SocialAuthController::class, 'handleRedirect']);
-    Route::get('/{provider:string}/callback', [SocialAuthController::class, 'handleCallback']);
+    Route::get('/{social_provider}/redirect', [SocialAuthController::class, 'handleRedirect']);
+    Route::get('/{social_provider}/callback', [SocialAuthController::class, 'handleCallback']);
     Route::delete('/logout', [AuthController::class, 'logout']);
 });

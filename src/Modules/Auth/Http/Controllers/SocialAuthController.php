@@ -18,34 +18,24 @@ class SocialAuthController extends Controller
         public UserRepositoryInterface $userRepository,
     ) { }
 
-    public function handleRedirect(string $provider)
+    public function handleRedirect(SocialProvider $social_provider)
     {
-        try {
-            SocialProvider::from($provider);
-            return Socialite::driver($provider)->redirect();
-        } catch(ValueError $e) {
-            abort(404);
-        }
+        return Socialite::driver($social_provider->name())->redirect();
     }
 
-    public function handleCallback(string $provider)
+    public function handleCallback(SocialProvider $social_provider)
     {
-        try {
-            $socialProvider = SocialProvider::from($provider);
-            $socialUser = Socialite::driver($provider)->user();
+        $socialUser = Socialite::driver($social_provider->name())->user();
 
-            $request = new LoginFromSocialRequest(
-                socialId: $socialUser->getId(),
-                name: $socialUser->getName(),
-                email: $socialUser->getEmail(),
-                socialProvider: $socialProvider
-            );
-            $service = new LoginFromSocialService($this->userFactory, $this->userRepository);
-            $service->execute($request);
+        $request = new LoginFromSocialRequest(
+            socialId: $socialUser->getId(),
+            name: $socialUser->getName(),
+            email: $socialUser->getEmail(),
+            socialProvider: $social_provider
+        );
+        $service = new LoginFromSocialService($this->userFactory, $this->userRepository);
+        $service->execute($request);
 
-            return view('auth::index');
-        } catch(ValueError $e) {
-            abort(404);
-        }
+        return view('auth::index');
     }
 }
