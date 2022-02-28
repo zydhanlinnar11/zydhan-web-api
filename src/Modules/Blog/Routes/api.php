@@ -29,6 +29,10 @@ Route::prefix('blog')->name('blog.')->group(function() {
     Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(function() {
         Route::prefix('posts')->name('posts.')->group(function() {
             Route::get('/', [AdminPostController::class, 'index']);
+            Route::post('/', [AdminPostController::class, 'store']);
+            Route::get('/{id:uuid}', [AdminPostController::class, 'show']);
+            Route::patch('/{id:uuid}', [AdminPostController::class, 'update']);
+            Route::delete('/{id:uuid}', [AdminPostController::class, 'destroy']);
         });
     });
 });
