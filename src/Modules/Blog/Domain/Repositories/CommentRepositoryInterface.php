@@ -16,6 +16,6 @@ interface CommentRepositoryInterface
      * @return \Modules\Blog\Domain\Models\Entity\Comment[]
      */
     public function findAllByPostId(PostId $postId);
-    public function save(Comment $comment): bool;
-    public function delete(Comment $comment): bool;
+    public function save(Comment $comment): Comment;
+    public function delete(Comment $comment): void;
 }

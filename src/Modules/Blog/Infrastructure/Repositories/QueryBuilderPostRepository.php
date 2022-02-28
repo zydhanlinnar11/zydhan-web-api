@@ -70,15 +70,11 @@ class QueryBuilderPostRepository implements PostRepositoryInterface
         return $arr;
     }
 
-    public function save(Post $post): bool
+    public function save(Post $post): Post
     {
-        try {
-            $this->table->updateOrInsert($this->toArray($post));
+        $this->table->updateOrInsert($this->toArray($post));
 
-            return true;
-        } catch (\Exception $e) {
-            return false;
-        }
+        return $post;
     }
 
     private function toArray(Post $post): array

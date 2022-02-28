@@ -31,15 +31,11 @@ class QueryBuilderCommentRepository implements CommentRepositoryInterface
         return $this->mapResultToDomainModel($result);
     }
 
-    public function save(Comment $comment): bool
+    public function save(Comment $comment): Comment
     {
-        try {
-            $this->table->updateOrInsert($this->toArray($comment));
+        $this->table->updateOrInsert($this->toArray($comment));
 
-            return true;
-        } catch (\Exception $e) {
-            return false;
-        }
+        return $comment;
     }
 
     public function findAllByPostId(PostId $postId)
@@ -83,16 +79,10 @@ class QueryBuilderCommentRepository implements CommentRepositoryInterface
         );
     }
 
-    public function delete(Comment $comment): bool
+    public function delete(Comment $comment): void
     {
-        try {
-            $this->table
-                    ->where('id', '=', $comment->getId()->toString())
-                    ->delete();
-
-            return true;
-        } catch (\Exception $e) {
-            return false;
-        }
+        $this->table
+                ->where('id', '=', $comment->getId()->toString())
+                ->delete();
     }
 }

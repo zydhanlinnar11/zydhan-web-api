@@ -15,5 +15,5 @@ interface PostRepositoryInterface
     public function findByVisibilities($visibilities);
     public function findById(PostId $postId): ?Post;
     public function findBySlug(string $slug): ?Post;
-    public function save(Post $post): bool;
+    public function save(Post $post): Post;
 }
