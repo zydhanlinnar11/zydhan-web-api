@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Modules\Blog\Http\Controllers\BlogController;
+use Modules\Blog\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,4 +20,7 @@ Route::prefix('blog')->name('blog.')->group(function() {
     Route::get('/posts/{slug:string}', [BlogController::class, 'show']);
     Route::get('/posts/{slug:string}/comments', [BlogController::class, 'getPostComments']);
     Route::post('/posts/{slug:string}/comments', [BlogController::class, 'createPostComment']);
+
+
+    Route::patch('/comments/{id:string}', [CommentController::class, 'update']);
 });
