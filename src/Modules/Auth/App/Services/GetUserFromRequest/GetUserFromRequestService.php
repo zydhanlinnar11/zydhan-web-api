@@ -7,7 +7,7 @@ use Modules\Auth\Domain\Models\Entity\User;
 
 class GetUserFromRequestService
 {
-    public function user(Request $request): User
+    public function user(Request $request): ?User
     {
         return $request->user();
     }
