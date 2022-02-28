@@ -135,7 +135,7 @@ class UserRepositoryTest extends TestCase
 
         $queryBuilder->shouldReceive('updateOrInsert')
             ->once()
-            ->with(Mockery::on(function(array $data) use($user) {
+            ->with(Mockery::type('array'), Mockery::on(function(array $data) use($user) {
                 $this->assertEquals($data['id'], $user->getUserId()->getId()); 
                 $this->assertEquals($data['name'], $user->getName()); 
                 $this->assertEquals($data['email'], $user->getEmail()); 
@@ -169,7 +169,7 @@ class UserRepositoryTest extends TestCase
 
         $queryBuilder->shouldReceive('updateOrInsert')
             ->once()
-            ->with(Mockery::on(function(array $data) use($user) {
+            ->with(Mockery::type('array'), Mockery::on(function(array $data) use($user) {
                 $this->assertEquals($data['id'], $user->getUserId()->getId()); 
                 $this->assertEquals($data['name'], $user->getName()); 
                 $this->assertEquals($data['email'], $user->getEmail()); 

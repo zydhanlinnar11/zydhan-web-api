@@ -72,7 +72,10 @@ class QueryBuilderPostRepository implements PostRepositoryInterface
 
     public function save(Post $post): Post
     {
-        $this->table->updateOrInsert($this->toArray($post));
+        $this->table->updateOrInsert(
+            ['id' => $post->getId()->toString()],
+            $this->toArray($post)
+        );
 
         return $post;
     }

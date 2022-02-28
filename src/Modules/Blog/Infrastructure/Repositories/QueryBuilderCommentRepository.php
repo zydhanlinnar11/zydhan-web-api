@@ -33,7 +33,10 @@ class QueryBuilderCommentRepository implements CommentRepositoryInterface
 
     public function save(Comment $comment): Comment
     {
-        $this->table->updateOrInsert($this->toArray($comment));
+        $this->table->updateOrInsert(
+            ['id' => $comment->getId()->toString()],
+            $this->toArray($comment)
+        );
 
         return $comment;
     }

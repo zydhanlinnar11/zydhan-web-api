@@ -31,7 +31,10 @@ class DBFacadeUserRepository implements UserRepositoryInterface
             $data = array_merge($data, ['created_at' => $data['updated_at']]);
         }
 
-        DB::table('users')->updateOrInsert($data);
+        DB::table('users')->updateOrInsert(
+            ['id' => $user->getUserId()->getId()],
+            $data
+        );
 
         return $user;
     }
