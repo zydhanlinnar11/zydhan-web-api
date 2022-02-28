@@ -4,6 +4,7 @@ namespace Modules\Blog\Providers;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Modules\Blog\Domain\Repositories\PostRepositoryInterface;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -24,6 +25,14 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
+
+        Route::bind('post', function (string $slug) {
+            $post = $this->app->make(PostRepositoryInterface::class)->findBySlug($slug);
+            if(!$post) {
+                abort(404);
+            }
+            return $post;
+        });
     }
 
     /**

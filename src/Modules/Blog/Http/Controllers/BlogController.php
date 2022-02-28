@@ -9,6 +9,7 @@ use Modules\Auth\Facade\Auth;
 use Modules\Blog\App\Services\CreatePostComment\CreatePostCommentRequest;
 use Modules\Blog\App\Services\CreatePostComment\CreatePostCommentService;
 use Modules\Blog\Domain\Factories\CommentFactoryInterface;
+use Modules\Blog\Domain\Models\Entity\Post;
 use Modules\Blog\Domain\Models\Value\PostId;
 use Modules\Blog\Domain\Models\Value\PostVisibility;
 use Modules\Blog\Domain\Repositories\CommentRepositoryInterface;
@@ -50,13 +51,12 @@ class BlogController extends Controller
     /**
      * Show the specified resource.
      * @param Request $request
-     * @param string $slug
+     * @param Post $post
      * @return Response
      */
-    public function show(Request $request, string $slug)
+    public function show(Request $request, Post $post)
     {
         try {
-            $post = $this->postRepository->findBySlug($slug);
             $data = (new PostViewResource($post))->toArray($request);
 
             return response()->json(['status' => 'success', 'data' => $data]);
@@ -68,10 +68,9 @@ class BlogController extends Controller
         } 
     }
 
-    public function getPostComments(Request $request, string $slug)
+    public function getPostComments(Request $request, Post $post)
     {
         try {
-            $post = $this->postRepository->findBySlug($slug);
             $comments = $this->commentRepository->findAllByPostId($post->getId());
             $data = (new PostCommentResource($comments, $this->userRepository))->toArray($request);
 
@@ -84,18 +83,9 @@ class BlogController extends Controller
         }
     }
 
-    public function createPostComment(Request $request, string $slug)
+    public function createPostComment(Request $request, Post $post)
     {
-        $user = Auth::user($request);
-        if(!$user) {
-            abort(401);
-        }
-        
-        $post = $this->postRepository->findBySlug($slug);
-        if(!$post) {
-            abort(404);
-        }
-        
+        $user = Auth::user($request);        
         $comment = $request->validate(CreatePostCommentRequest::validationRule)['comment'];
         
         try {

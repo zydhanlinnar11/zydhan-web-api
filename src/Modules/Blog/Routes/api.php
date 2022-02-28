@@ -17,14 +17,17 @@ use Modules\Blog\Http\Controllers\CommentController;
 |
 */
 Route::prefix('blog')->name('blog.')->group(function() {
-    Route::get('/posts', [BlogController::class, 'index']);
-    Route::get('/posts/{slug:string}', [BlogController::class, 'show']);
-    Route::get('/posts/{slug:string}/comments', [BlogController::class, 'getPostComments']);
-    Route::post('/posts/{slug:string}/comments', [BlogController::class, 'createPostComment']);
+    Route::prefix('posts')->name('posts.')->group(function () {
+        Route::get('/', [BlogController::class, 'index']);
+        Route::get('/{post}', [BlogController::class, 'show']);
+        Route::get('/{post}/comments', [BlogController::class, 'getPostComments']);
+        Route::middleware('auth:sanctum')->post('/{post}/comments', [BlogController::class, 'createPostComment']);
+    });
 
-
-    Route::patch('/comments/{id:string}', [CommentController::class, 'update']);
-    Route::delete('/comments/{id:string}', [CommentController::class, 'destroy']);
+    Route::prefix('comments')->name('comments.')->group(function () {
+        Route::patch('/{id:string}', [CommentController::class, 'update']);
+        Route::delete('/{id:string}', [CommentController::class, 'destroy']);
+    });
 
     Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(function() {
         Route::prefix('posts')->name('posts.')->group(function() {
