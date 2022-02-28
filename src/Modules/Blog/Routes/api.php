@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Modules\Blog\Http\Controllers\AdminPostController;
 use Modules\Blog\Http\Controllers\BlogController;
 use Modules\Blog\Http\Controllers\CommentController;
 
@@ -24,4 +25,10 @@ Route::prefix('blog')->name('blog.')->group(function() {
 
     Route::patch('/comments/{id:string}', [CommentController::class, 'update']);
     Route::delete('/comments/{id:string}', [CommentController::class, 'destroy']);
+
+    Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(function() {
+        Route::prefix('posts')->name('posts.')->group(function() {
+            Route::get('/', [AdminPostController::class, 'index']);
+        });
+    });
 });
