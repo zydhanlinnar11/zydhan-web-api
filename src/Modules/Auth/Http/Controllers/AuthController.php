@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Modules\Auth\Facade\Auth as FacadeAuth;
 use Modules\Auth\App\Services\RegisterUser\RegisterUserRequest;
 use Modules\Auth\App\Services\RegisterUser\RegisterUserService;
 use Modules\Auth\Domain\Exceptions\AbstractDomainException;
@@ -125,6 +126,6 @@ class AuthController extends Controller
     }
 
     public function getAuthenticatedUser(Request $request) {
-        return (new AuthenticatedUserResource($request->user()))->toArray($request);
+        return (new AuthenticatedUserResource(FacadeAuth::user($request)))->toArray($request);
     }
 }

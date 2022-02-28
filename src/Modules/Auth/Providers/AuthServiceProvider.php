@@ -4,6 +4,7 @@ namespace Modules\Auth\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
+use Modules\Auth\App\Services\GetUserFromRequest\GetUserFromRequestService;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -39,6 +40,9 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->app->register(RouteServiceProvider::class);
         $this->app->register(DependencyServiceProvider::class);
+        $this->app->bind('auth_module', function() {
+            return new GetUserFromRequestService();
+        });
     }
 
     /**
