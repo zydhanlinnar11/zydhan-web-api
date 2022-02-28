@@ -6,6 +6,7 @@ use Illuminate\Routing\Controller;
 use Laravel\Socialite\Facades\Socialite;
 use Modules\Auth\App\Services\LoginFromSocial\LoginFromSocialRequest;
 use Modules\Auth\App\Services\LoginFromSocial\LoginFromSocialService;
+use Modules\Auth\Domain\Exceptions\EmailAlreadyExistException;
 use Modules\Auth\Domain\Factories\UserFactoryInterface;
 use Modules\Auth\Domain\Models\Value\SocialProvider;
 use Modules\Auth\Domain\Repositories\UserRepositoryInterface;
@@ -33,8 +34,12 @@ class SocialAuthController extends Controller
             email: $socialUser->getEmail(),
             socialProvider: $social_provider
         );
-        $service = new LoginFromSocialService($this->userFactory, $this->userRepository);
-        $service->execute($request);
+        try {
+            $service = new LoginFromSocialService($this->userFactory, $this->userRepository);
+            $service->execute($request);
+        } catch(EmailAlreadyExistException $e) {
+            return view('auth::social_error');
+        }
 
         return view('auth::index');
     }
