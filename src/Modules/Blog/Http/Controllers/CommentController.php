@@ -88,11 +88,39 @@ class CommentController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * @param int $id
+     * @param Request $request
+     * @param string $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, string $id)
     {
-        //
+        $user = Auth::user($request);
+        if(!$user) {
+            abort(401);
+        }
+        
+        try {
+            $comment = $this->commentRepository->findById(new CommentId($id));
+            if(!$comment) {
+                abort(404);
+            }
+        } catch(InvalidArgumentException $e) {
+            abort(404);
+        }
+
+        if (!$comment->getUserId()->equals($user->getUserId()) && !$user->isAdmin()) {
+            abort(403);
+        }
+
+        try {
+            $this->commentRepository->delete($comment);
+
+            return response()->json(['status' => 'success', 'data' => null]);
+        } catch (\Exception $e) {
+            if(env('APP_DEBUG') == 'true') {
+                return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+            }
+            return response()->json(['status' => 'error', 'message' => 'Internal server error']);
+        } 
     }
 }

@@ -23,4 +23,5 @@ Route::prefix('blog')->name('blog.')->group(function() {
 
 
     Route::patch('/comments/{id:string}', [CommentController::class, 'update']);
+    Route::delete('/comments/{id:string}', [CommentController::class, 'destroy']);
 });
