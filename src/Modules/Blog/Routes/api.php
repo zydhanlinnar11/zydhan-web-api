@@ -24,9 +24,9 @@ Route::prefix('blog')->name('blog.')->group(function() {
         Route::middleware('auth:sanctum')->post('/{post}/comments', [BlogController::class, 'createPostComment']);
     });
 
-    Route::prefix('comments')->name('comments.')->group(function () {
-        Route::patch('/{id:string}', [CommentController::class, 'update']);
-        Route::delete('/{id:string}', [CommentController::class, 'destroy']);
+    Route::middleware('auth:sanctum')->prefix('comments')->name('comments.')->group(function () {
+        Route::patch('/{comment}', [CommentController::class, 'update']);
+        Route::delete('/{comment}', [CommentController::class, 'destroy']);
     });
 
     Route::middleware('auth:sanctum')->prefix('admin')->name('admin.')->group(function() {

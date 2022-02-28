@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use InvalidArgumentException;
 use Modules\Auth\Facade\Auth;
+use Modules\Blog\Domain\Models\Entity\Comment;
 use Modules\Blog\Domain\Models\Value\CommentId;
 use Modules\Blog\Domain\Repositories\CommentRepositoryInterface;
 
@@ -49,24 +50,12 @@ class CommentController extends Controller
     /**
      * Update the specified resource in storage.
      * @param Request $request
-     * @param string $id
+     * @param Comment $comment
      * @return Response
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Comment $comment)
     {
         $user = Auth::user($request);
-        if(!$user) {
-            abort(401);
-        }
-        
-        try {
-            $comment = $this->commentRepository->findById(new CommentId($id));
-            if(!$comment) {
-                abort(404);
-            }
-        } catch(InvalidArgumentException $e) {
-            abort(404);
-        }
 
         if (!$comment->getUserId()->equals($user->getUserId())) {
             abort(403);
@@ -89,24 +78,12 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      * @param Request $request
-     * @param string $id
+     * @param Comment $comment
      * @return Response
      */
-    public function destroy(Request $request, string $id)
+    public function destroy(Request $request, Comment $comment)
     {
         $user = Auth::user($request);
-        if(!$user) {
-            abort(401);
-        }
-        
-        try {
-            $comment = $this->commentRepository->findById(new CommentId($id));
-            if(!$comment) {
-                abort(404);
-            }
-        } catch(InvalidArgumentException $e) {
-            abort(404);
-        }
 
         if (!$comment->getUserId()->equals($user->getUserId()) && !$user->isAdmin()) {
             abort(403);
