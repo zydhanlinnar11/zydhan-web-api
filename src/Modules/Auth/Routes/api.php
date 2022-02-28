@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Modules\Auth\Http\Controllers\AuthController;
+use Modules\Auth\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,4 +19,8 @@ use Modules\Auth\Http\Controllers\AuthController;
 Route::middleware('api')->prefix('auth')->name('auth.')->group(function() {
     Route::post('/register', [AuthController::class, 'store']);
     Route::middleware('auth:sanctum')->get('/authenticated-user', [AuthController::class, 'getAuthenticatedUser']);
+
+    Route::middleware('auth:sanctum')->prefix('user')->name('user.')->group(function() {
+        Route::get('/', [UserController::class, 'show']);
+    });
 });
