@@ -18,4 +18,5 @@ Route::prefix('blog')->name('blog.')->group(function() {
     Route::get('/posts', [BlogController::class, 'index']);
     Route::get('/posts/{slug:string}', [BlogController::class, 'show']);
     Route::get('/posts/{slug:string}/comments', [BlogController::class, 'getPostComments']);
+    Route::post('/posts/{slug:string}/comments', [BlogController::class, 'createPostComment']);
 });
