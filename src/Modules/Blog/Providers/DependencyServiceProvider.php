@@ -3,7 +3,9 @@
 namespace Modules\Blog\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Modules\Blog\Domain\Repositories\CommentRepositoryInterface;
 use Modules\Blog\Domain\Repositories\PostRepositoryInterface;
+use Modules\Blog\Infrastructure\Repositories\QueryBuilderCommentRepository;
 use Modules\Blog\Infrastructure\Repositories\QueryBuilderPostRepository;
 
 class DependencyServiceProvider extends ServiceProvider
@@ -16,6 +18,7 @@ class DependencyServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(PostRepositoryInterface::class, QueryBuilderPostRepository::class);
+        $this->app->bind(CommentRepositoryInterface::class, QueryBuilderCommentRepository::class);
     }
 
     /**
