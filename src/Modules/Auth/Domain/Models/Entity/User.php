@@ -5,6 +5,7 @@ namespace Modules\Auth\Domain\Models\Entity;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Hash;
 use InvalidArgumentException;
+use Modules\Auth\Domain\Exceptions\AccountAlreadyLinkedException;
 use Modules\Auth\Domain\Models\Value\SocialId;
 use Modules\Auth\Domain\Models\Value\SocialProvider;
 use Modules\Auth\Domain\Models\Value\UserId;
@@ -102,5 +103,36 @@ class User implements Authenticatable
     public function getGithubId(): ?SocialId
     {
         return $this->githubId;
+    }
+
+    public function changeName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function changeEmail(string $email): void
+    {
+        $this->email = $email;
+    }
+
+    public function changePassword(string $password): void
+    {
+        $this->hashedPassword = Hash::make($password);
+    }
+
+    public function linkGoogleAccount(string $googleId): void
+    {
+        if($this->googleId) {
+            throw new AccountAlreadyLinkedException();
+        }
+        $this->googleId = new SocialId($googleId, SocialProvider::GOOGLE);
+    }
+
+    public function linkGithubAccount(string $githubId): void
+    {
+        if($this->githubId) {
+            throw new AccountAlreadyLinkedException();
+        }
+        $this->githubId = new SocialId($githubId, SocialProvider::GITHUB);
     }
 }

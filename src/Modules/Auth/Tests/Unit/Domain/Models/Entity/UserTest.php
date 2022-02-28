@@ -1,7 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Hash;
+use Modules\Auth\Domain\Exceptions\AccountAlreadyLinkedException;
 use Modules\Auth\Domain\Models\Entity\User;
+use Modules\Auth\Domain\Models\Value\SocialId;
+use Modules\Auth\Domain\Models\Value\SocialProvider;
 use Modules\Auth\Domain\Models\Value\UserId;
 use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
@@ -130,5 +133,39 @@ class UserTest extends TestCase
             admin: $this->isAdmin
         );
         $this->assertTrue($user->isPasswordCorrect($password));
+    }
+
+    public function testBisaGantiPassword()
+    {
+        $user = new User(
+            userId: $this->userId,
+            name: $this->name,
+            email: $this->email,
+            hashedPassword: $this->hashedPassword,
+            admin: $this->isAdmin
+        );
+        $faker = \Faker\Factory::create();
+        $newPassword = $faker->password();
+        
+        $user->changePassword($newPassword);
+        $this->assertTrue(Hash::check($newPassword, $user->getAuthPassword()));
+    }
+
+    public function testTidakBisaLinkSocialKalauSudahTerlink()
+    {
+        $user = new User(
+            userId: $this->userId,
+            name: $this->name,
+            email: $this->email,
+            hashedPassword: $this->hashedPassword,
+            admin: $this->isAdmin,
+            googleId: new SocialId(Uuid::uuid4(), SocialProvider::GOOGLE),
+            githubId: new SocialId(Uuid::uuid4(), SocialProvider::GITHUB)
+        );
+
+        $this->expectException(AccountAlreadyLinkedException::class);
+        $user->linkGoogleAccount(Uuid::uuid4());
+        $this->expectException(AccountAlreadyLinkedException::class);
+        $user->linkGithubAccount(Uuid::uuid4());
     }
 }
