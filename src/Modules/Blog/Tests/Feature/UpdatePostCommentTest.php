@@ -116,8 +116,16 @@ class UpdatePostCommentTest extends TestCase
     {
         $this->actingAs($this->user);
         $response = $this->patchJson('/blog/comments/'. $this->comment->getId()->toString(), [
-            'comment' => 'test-comment'
+            'comment' => 'test-updated-comment'
         ]);
         $response->assertStatus(200);
+
+        /**
+        * @var CommentRepositoryInterface $commentRepository
+        */
+        $commentRepository = $this->app->make(CommentRepositoryInterface::class);
+        $comment = $commentRepository->findById($this->comment->getId());
+        $this->assertNotNull($comment);
+        $this->assertEquals('test-updated-comment', $comment->getComment());
     }
 }

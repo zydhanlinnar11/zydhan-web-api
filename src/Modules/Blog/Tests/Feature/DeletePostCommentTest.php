@@ -125,5 +125,12 @@ class DeletePostCommentTest extends TestCase
         $this->actingAs($this->user);
         $response = $this->deleteJson('/blog/comments/'. $this->comment->getId()->toString());
         $response->assertStatus(200);
+
+        /**
+        * @var CommentRepositoryInterface $commentRepository
+        */
+        $commentRepository = $this->app->make(CommentRepositoryInterface::class);
+        $comment = $commentRepository->findById($this->comment->getId());
+        $this->assertNull($comment);
     }
 }
