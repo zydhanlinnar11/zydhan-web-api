@@ -38,6 +38,11 @@ class Comment
         return $this->comment;
     }
 
+    public function editComment(string $comment): void
+    {
+        $this->comment = $comment;
+    }
+
     public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
