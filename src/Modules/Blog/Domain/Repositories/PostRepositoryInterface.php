@@ -8,8 +8,8 @@ use Modules\Blog\Domain\Models\Value\PostId;
 interface PostRepositoryInterface
 {
     /**
-     * Get all posts.
-     * @param \Modules\Blog\Domain\Models\Value $visibilities
+     * Get all posts by visibilities.
+     * @param \Modules\Blog\Domain\Models\Value\PostVisibility[] $visibilities
      * @return \Modules\Blog\Domain\Models\Entity\Post[]
      */
     public function findByVisibilities($visibilities);
