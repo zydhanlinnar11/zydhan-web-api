@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Blog\Domain\Models\Value\PostVisibility;
+namespace Modules\Blog\Domain\Models\Value;
 
 enum PostVisibility: int
 {

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Auth\Domain\Models\Value\UserId;
 use Modules\Blog\Domain\Models\Value\PostId;
 use Modules\Blog\Domain\Models\Entity\Post;
-use Modules\Blog\Domain\Models\Value\PostVisibility\PostVisibility;
+use Modules\Blog\Domain\Models\Value\PostVisibility;
 use Modules\Blog\Domain\Repositories\PostRepositoryInterface;
 
 class QueryBuilderPostRepository implements PostRepositoryInterface

@@ -4,8 +4,7 @@ namespace Modules\Blog\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\Blog\Domain\Models\Value\PostVisibility\PostVisibility;
-use Modules\Blog\Domain\Repositories\CommentRepositoryInterface;
+use Modules\Blog\Domain\Models\Value\PostVisibility;
 use Modules\Blog\Domain\Repositories\PostRepositoryInterface;
 use Modules\Blog\Transformers\HomePagePostsResource;
 use Modules\Blog\Transformers\PostViewResource;
