@@ -35,17 +35,10 @@ class BlogController extends Controller
      */
     public function index(Request $request)
     {
-        try {
-            $posts = $this->postRepository->findByVisibilities([PostVisibility::VISIBLE]);
-            $data = (new HomePagePostsResource($posts))->toArray($request);
+        $posts = $this->postRepository->findByVisibilities([PostVisibility::VISIBLE]);
+        $data = (new HomePagePostsResource($posts))->toArray($request);
 
-            return response()->json(['status' => 'success', 'data' => $data]);
-        } catch (\Exception $e) {
-            if(env('APP_DEBUG') == 'true') {
-                return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
-            }
-            return response()->json(['status' => 'error', 'message' => 'Internal server error']);
-        } 
+        return response()->json($data);
     }
 
     /**
@@ -56,31 +49,17 @@ class BlogController extends Controller
      */
     public function show(Request $request, Post $post)
     {
-        try {
-            $data = (new PostViewResource($post))->toArray($request);
+        $data = (new PostViewResource($post))->toArray($request);
 
-            return response()->json(['status' => 'success', 'data' => $data]);
-        } catch (\Exception $e) {
-            if(env('APP_DEBUG') == 'true') {
-                return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
-            }
-            return response()->json(['status' => 'error', 'message' => 'Internal server error']);
-        } 
+        return response()->json($data);
     }
 
     public function getPostComments(Request $request, Post $post)
     {
-        try {
-            $comments = $this->commentRepository->findAllByPostId($post->getId());
-            $data = (new PostCommentResource($comments, $this->userRepository))->toArray($request);
+        $comments = $this->commentRepository->findAllByPostId($post->getId());
+        $data = (new PostCommentResource($comments, $this->userRepository))->toArray($request);
 
-            return response()->json(['status' => 'success', 'data' => $data]);
-        } catch (\Exception $e) {
-            if(env('APP_DEBUG') == 'true') {
-                return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
-            }
-            return response()->json(['status' => 'error', 'message' => 'Internal server error']);
-        }
+        return response()->json($data);
     }
 
     public function createPostComment(Request $request, Post $post)
@@ -88,22 +67,15 @@ class BlogController extends Controller
         $user = Auth::user($request);        
         $comment = $request->validate(CreatePostCommentRequest::validationRule)['comment'];
         
-        try {
-            $createPostCommentRequest = new CreatePostCommentRequest(
-                comment: $comment,
-                userId: $user->getUserId(),
-                postId: $post->getId()
-            );
+        $createPostCommentRequest = new CreatePostCommentRequest(
+            comment: $comment,
+            userId: $user->getUserId(),
+            postId: $post->getId()
+        );
 
-            $service = new CreatePostCommentService($this->commentFactory, $this->commentRepository);
-            $service->execute($createPostCommentRequest);
+        $service = new CreatePostCommentService($this->commentFactory, $this->commentRepository);
+        $service->execute($createPostCommentRequest);
 
-            return response()->json(['status' => 'success', 'data' => null], 201);
-        } catch (\Exception $e) {
-            if(env('APP_DEBUG') == 'true') {
-                return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
-            }
-            return response()->json(['status' => 'error', 'message' => 'Internal server error'], 500);
-        }
+        return response()->json(null, 201);
     }
 }

@@ -2,14 +2,11 @@
 
 namespace Modules\Blog\Http\Controllers;
 
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use InvalidArgumentException;
 use Modules\Auth\Facade\Auth;
 use Modules\Blog\Domain\Models\Entity\Comment;
-use Modules\Blog\Domain\Models\Value\CommentId;
 use Modules\Blog\Domain\Repositories\CommentRepositoryInterface;
 
 class CommentController extends Controller
@@ -62,17 +59,10 @@ class CommentController extends Controller
         }
 
         $comment_content = $request->validate(['comment' => 'required'])['comment'];
-        try {
-            $comment->editComment($comment_content);
-            $this->commentRepository->save($comment);
+        $comment->editComment($comment_content);
+        $this->commentRepository->save($comment);
 
-            return response()->json(['status' => 'success', 'data' => null]);
-        } catch (\Exception $e) {
-            if(env('APP_DEBUG') == 'true') {
-                return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
-            }
-            return response()->json(['status' => 'error', 'message' => 'Internal server error']);
-        } 
+        return response()->json(null);
     }
 
     /**
@@ -88,16 +78,8 @@ class CommentController extends Controller
         if (!$comment->getUserId()->equals($user->getUserId()) && !$user->isAdmin()) {
             abort(403);
         }
+        $this->commentRepository->delete($comment);
 
-        try {
-            $this->commentRepository->delete($comment);
-
-            return response()->json(['status' => 'success', 'data' => null]);
-        } catch (\Exception $e) {
-            if(env('APP_DEBUG') == 'true') {
-                return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
-            }
-            return response()->json(['status' => 'error', 'message' => 'Internal server error']);
-        } 
+        return response()->json(null);
     }
 }

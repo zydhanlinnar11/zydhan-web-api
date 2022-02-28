@@ -21,17 +21,10 @@ class AdminPostController extends Controller
      */
     public function index(Request $request)
     {
-        try {
-            $posts = $this->postRepository->findByVisibilities([]);
-            $data = (new HomePagePostsResource($posts))->toArray($request);
+        $posts = $this->postRepository->findByVisibilities([]);
+        $data = (new HomePagePostsResource($posts))->toArray($request);
 
-            return response()->json(['status' => 'success', 'data' => $data]);
-        } catch (\Exception $e) {
-            if(env('APP_DEBUG') == 'true') {
-                return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
-            }
-            return response()->json(['status' => 'error', 'message' => 'Internal server error']);
-        }
+        return response()->json($data);
     }
 
     /**
