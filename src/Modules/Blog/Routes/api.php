@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Modules\Blog\Http\Controllers\BlogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,7 +14,7 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:api')->get('/blog', function (Request $request) {
-    return $request->user();
+Route::prefix('blog')->name('blog.')->group(function() {
+    Route::get('/posts', [BlogController::class, 'index']);
+    Route::get('/posts/{slug:string}', [BlogController::class, 'show']);
 });
