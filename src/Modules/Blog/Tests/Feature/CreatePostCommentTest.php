@@ -47,7 +47,6 @@ class CreatePostCommentTest extends TestCase
             title: $faker->text(),
             description: $faker->text(),
             markdown: $faker->text(),
-            slug: $faker->text(),
             visibility: PostVisibility::VISIBLE,
             createdAt: now(),
             updatedAt: now()

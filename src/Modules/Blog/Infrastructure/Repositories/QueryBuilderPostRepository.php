@@ -104,7 +104,6 @@ class QueryBuilderPostRepository implements PostRepositoryInterface
             title: $result->title,
             description: $result->description,
             markdown: $result->markdown,
-            slug: $result->slug,
             visibility: PostVisibility::from($result->visibility),
             createdAt: new DateTime($result->created_at),
             updatedAt: new DateTime($result->updated_at),
