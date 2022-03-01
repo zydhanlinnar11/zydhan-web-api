@@ -5,11 +5,17 @@ namespace Modules\Auth\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Auth\Domain\Repositories\UserRepositoryInterface;
 use Modules\Auth\Facade\Auth;
+use Modules\Auth\Http\Requests\UpdateUserInfoRequest;
 use Modules\Auth\Transformers\UserResource;
 
 class UserController extends Controller
 {
+    public function __construct(
+        private UserRepositoryInterface $userRepository
+    ) { }
+
     /**
      * Show the specified resource.
      * @param Request $request
@@ -24,13 +30,17 @@ class UserController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
+     * @param UpdateUserInfoRequest $request
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserInfoRequest $request)
     {
-        //
+        $user = Auth::user($request);
+        $user->changeName($request->input('name'));
+        $user->changeEmail($request->input('email'));
+
+        $this->userRepository->save($user);
+        return response()->json(null);
     }
 
     /**
