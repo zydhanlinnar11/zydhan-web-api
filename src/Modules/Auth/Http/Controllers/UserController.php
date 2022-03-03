@@ -5,6 +5,7 @@ namespace Modules\Auth\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Auth\Domain\Models\Value\SocialProvider;
 use Modules\Auth\Domain\Repositories\UserRepositoryInterface;
 use Modules\Auth\Facade\Auth;
 use Modules\Auth\Http\Requests\UpdateUserInfoRequest;
@@ -51,5 +52,18 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function unlinkSocialAccount(Request $request, SocialProvider $social_provider)
+    {
+        $user = Auth::user($request);
+        if ($social_provider === SocialProvider::GOOGLE) {
+            $user->unlinkGoogleAccount();
+        } else {
+            $user->unlinkGithubAccount();
+        }
+
+        $this->userRepository->save($user);
+        return response()->json(null);
     }
 }

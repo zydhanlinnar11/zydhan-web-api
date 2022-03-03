@@ -23,5 +23,6 @@ Route::middleware('api')->prefix('auth')->name('auth.')->group(function() {
     Route::middleware('auth:sanctum')->prefix('user')->name('user.')->group(function() {
         Route::get('/', [UserController::class, 'show']);
         Route::patch('/', [UserController::class, 'update']);
+        Route::delete('/unlink-social/{social_provider}', [UserController::class, 'unlinkSocialAccount']);
     });
 });

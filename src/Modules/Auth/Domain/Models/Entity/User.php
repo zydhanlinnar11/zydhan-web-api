@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Hash;
 use InvalidArgumentException;
 use Modules\Auth\Domain\Exceptions\AccountAlreadyLinkedException;
+use Modules\Auth\Domain\Exceptions\AccountNotLinkedException;
 use Modules\Auth\Domain\Models\Value\SocialId;
 use Modules\Auth\Domain\Models\Value\SocialProvider;
 use Modules\Auth\Domain\Models\Value\UserId;
@@ -134,5 +135,21 @@ class User implements Authenticatable
             throw new AccountAlreadyLinkedException();
         }
         $this->githubId = new SocialId($githubId, SocialProvider::GITHUB);
+    }
+
+    public function unlinkGoogleAccount(): void
+    {
+        if(!$this->googleId) {
+            throw new AccountNotLinkedException();
+        }
+        $this->googleId = null;
+    }
+
+    public function unlinkGithubAccount(): void
+    {
+        if(!$this->githubId) {
+            throw new AccountNotLinkedException();
+        }
+        $this->githubId = null;        
     }
 }
