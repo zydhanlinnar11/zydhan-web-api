@@ -3,6 +3,8 @@
 namespace Modules\Auth\Domain\Models\Entity;
 
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use InvalidArgumentException;
 use Modules\Auth\Domain\Exceptions\AccountAlreadyLinkedException;
@@ -10,9 +12,12 @@ use Modules\Auth\Domain\Exceptions\AccountNotLinkedException;
 use Modules\Auth\Domain\Models\Value\SocialId;
 use Modules\Auth\Domain\Models\Value\SocialProvider;
 use Modules\Auth\Domain\Models\Value\UserId;
+use Modules\Auth\Notifications\ResetPasswordNotification;
 
-class User implements Authenticatable
+class User implements Authenticatable, CanResetPassword
 {
+    use Notifiable;
+
     public function __construct(
         private UserId $userId,
         private string $name,
@@ -151,5 +156,19 @@ class User implements Authenticatable
             throw new AccountNotLinkedException();
         }
         $this->githubId = null;        
+    }
+
+    public function getEmailForPasswordReset()
+    {
+        return $this->getEmail();
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $url = 'https://'. env('APP_NAME', 'zydhan.xyz')
+            .'/auth/reset-password?token='.urlencode($token)
+            .'&email='.urlencode($this->getEmailForPasswordReset());
+ 
+        $this->notify(new ResetPasswordNotification($url));
     }
 }
