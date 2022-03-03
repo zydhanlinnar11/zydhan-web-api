@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Modules\Auth\Domain\Models\Value\SocialProvider;
 use Modules\Auth\Domain\Repositories\UserRepositoryInterface;
 use Modules\Auth\Facade\Auth;
+use Modules\Auth\Http\Requests\ChangePasswordRequest;
 use Modules\Auth\Http\Requests\UpdateUserInfoRequest;
 use Modules\Auth\Transformers\UserResource;
 
@@ -64,6 +65,21 @@ class UserController extends Controller
         }
 
         $this->userRepository->save($user);
+        return response()->json(null);
+    }
+
+    public function changePassword(ChangePasswordRequest $request)
+    {
+        $user = Auth::user($request);
+        $validated = $request->validated();
+        $current_password = $validated['current_password'];
+        $new_password = $validated['new_password'];
+
+        if(!$user->isPasswordCorrect($current_password)) {
+            abort(403);
+        }
+
+        $user->changePassword($new_password);
         return response()->json(null);
     }
 }

@@ -24,5 +24,6 @@ Route::middleware('api')->prefix('auth')->name('auth.')->group(function() {
         Route::get('/', [UserController::class, 'show']);
         Route::patch('/', [UserController::class, 'update']);
         Route::delete('/unlink-social/{social_provider}', [UserController::class, 'unlinkSocialAccount']);
+        Route::patch('/change-password', [UserController::class, 'changePassword']);
     });
 });
