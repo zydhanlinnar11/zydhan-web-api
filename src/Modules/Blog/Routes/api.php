@@ -33,9 +33,9 @@ Route::prefix('blog')->name('blog.')->group(function() {
         Route::prefix('posts')->name('posts.')->group(function() {
             Route::get('/', [AdminPostController::class, 'index']);
             Route::post('/', [AdminPostController::class, 'store']);
-            Route::get('/{id:uuid}', [AdminPostController::class, 'show']);
-            Route::patch('/{id:uuid}', [AdminPostController::class, 'update']);
-            Route::delete('/{id:uuid}', [AdminPostController::class, 'destroy']);
+            Route::get('/{admin_post}', [AdminPostController::class, 'show']);
+            Route::patch('/{admin_post}', [AdminPostController::class, 'update']);
+            Route::delete('/{admin_post}', [AdminPostController::class, 'destroy']);
         });
     });
 });

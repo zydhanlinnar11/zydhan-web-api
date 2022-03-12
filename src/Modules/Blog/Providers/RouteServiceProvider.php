@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use InvalidArgumentException;
 use Modules\Blog\Domain\Models\Value\CommentId;
+use Modules\Blog\Domain\Models\Value\PostId;
 use Modules\Blog\Domain\Repositories\CommentRepositoryInterface;
 use Modules\Blog\Domain\Repositories\PostRepositoryInterface;
 
@@ -35,6 +36,18 @@ class RouteServiceProvider extends ServiceProvider
                 abort(404);
             }
             return $post;
+        });
+
+        Route::bind('admin_post', function (string $id) {
+            try {
+                $post = $this->app->make(PostRepositoryInterface::class)->findById(new PostId($id));
+                if(!$post) {
+                    abort(404);
+                }
+                return $post;
+            } catch (\InvalidArgumentException $e) {
+                abort(404);
+            }
         });
 
         Route::bind('comment', function (string $id) {
