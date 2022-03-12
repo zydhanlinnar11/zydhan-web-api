@@ -73,6 +73,7 @@ class Post
     public function changeTitle(string $title): void
     {
         $this->title = $title;
+        $this->slug = Str::slug($title);
     }
 
     public function changeDescription(string $description): void
