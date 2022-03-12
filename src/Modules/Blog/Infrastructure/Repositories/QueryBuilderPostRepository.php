@@ -108,4 +108,9 @@ class QueryBuilderPostRepository implements PostRepositoryInterface
             updatedAt: new DateTime($result->updated_at),
         );
     }
+
+    public function delete(Post $post): void
+    {
+        $this->table->where('id', '=', $post->getId()->toString())->delete();
+    }
 }
