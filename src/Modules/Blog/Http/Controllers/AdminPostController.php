@@ -12,6 +12,7 @@ use Modules\Blog\Domain\Repositories\PostRepositoryInterface;
 use Modules\Blog\Http\Requests\CreatePostRequest;
 use Modules\Blog\Services\CreatePostService;
 use Modules\Blog\Services\EditPostService;
+use Modules\Blog\Transformers\AdminPostResource;
 use Modules\Blog\Transformers\HomePagePostsResource;
 
 class AdminPostController extends Controller
@@ -52,12 +53,19 @@ class AdminPostController extends Controller
 
     /**
      * Show the specified resource.
-     * @param int $id
+     * @param Request $request
+     * @param Post $post
      * @return Response
      */
-    public function show($id)
+    public function show(Request $request, Post $post)
     {
-        //
+        $user = Auth::user($request);
+        if (!$user->isAdmin()) abort(403);
+
+        $postResource = new AdminPostResource($post);
+        $data = $postResource->toArray($request);
+
+        return response()->json($data);
     }
 
     /**
