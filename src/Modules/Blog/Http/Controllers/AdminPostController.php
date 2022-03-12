@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Blog\Domain\Factories\PostFactoryInterface;
+use Modules\Blog\Domain\Models\Entity\Post;
 use Modules\Blog\Domain\Repositories\PostRepositoryInterface;
 use Modules\Blog\Http\Requests\CreatePostRequest;
 use Modules\Blog\Services\CreatePostService;
+use Modules\Blog\Services\EditPostService;
 use Modules\Blog\Transformers\HomePagePostsResource;
 
 class AdminPostController extends Controller
@@ -59,13 +61,15 @@ class AdminPostController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
+     * @param CreatePostRequest $request
+     * @param Post $post
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(CreatePostRequest $request, Post $post)
     {
-        //
+        $service = new EditPostService($this->postRepository);
+        $service->execute($request, $post);
+        return response()->json(null);
     }
 
     /**
