@@ -5,6 +5,7 @@ namespace Modules\Blog\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Auth\Facade\Auth;
 use Modules\Blog\Domain\Factories\PostFactoryInterface;
 use Modules\Blog\Domain\Models\Entity\Post;
 use Modules\Blog\Domain\Repositories\PostRepositoryInterface;
@@ -74,11 +75,16 @@ class AdminPostController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * @param int $id
+     * @param Request $request
+     * @param Post $post
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, Post $post)
     {
-        //
+        $user = Auth::user($request);
+        if (!$user->isAdmin()) abort(403);
+
+        $this->postRepository->delete($post);
+        return response()->json(null);
     }
 }
