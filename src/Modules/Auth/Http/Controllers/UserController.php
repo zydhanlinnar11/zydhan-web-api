@@ -83,6 +83,7 @@ class UserController extends Controller
         }
 
         $user->changePassword($new_password);
+        $this->userRepository->save($user);
         return response()->json(null);
     }
 
