@@ -5,12 +5,16 @@ namespace Modules\Blog\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Blog\Domain\Factories\PostFactoryInterface;
 use Modules\Blog\Domain\Repositories\PostRepositoryInterface;
+use Modules\Blog\Http\Requests\CreatePostRequest;
+use Modules\Blog\Services\CreatePostService;
 use Modules\Blog\Transformers\HomePagePostsResource;
 
 class AdminPostController extends Controller
 {
     public function __construct(
+        private PostFactoryInterface $postFactory,
         private PostRepositoryInterface $postRepository
     ) { }
 
@@ -29,12 +33,18 @@ class AdminPostController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
+     * @param CreatePostRequest $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(CreatePostRequest $request)
     {
-        //
+        $service = new CreatePostService(
+            postFactory: $this->postFactory,
+            postRepository: $this->postRepository
+        );
+        $service->execute($request);
+
+        return response()->json(null, 201);
     }
 
     /**
