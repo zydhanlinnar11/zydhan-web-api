@@ -20,5 +20,5 @@ interface UserFactoryInterface
         string $socialId
     ) : User;
 
-    public function generateRandom() : User;
+    public function generateRandom(bool $isAdmin = false) : User;
 }

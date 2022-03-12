@@ -40,7 +40,7 @@ class UserFactory implements UserFactoryInterface
         return $user;
     }
 
-    public function generateRandom() : User
+    public function generateRandom(bool $isAdmin = false) : User
     {
         $faker = Factory::create();
 
@@ -48,7 +48,7 @@ class UserFactory implements UserFactoryInterface
             userId: new UserId(),
             name: $faker->name(),
             email: $faker->email(),
-            admin: $faker->boolean(),
+            admin: $isAdmin,
             hashedPassword: Hash::make($faker->password()),
         );
     }
