@@ -24,6 +24,7 @@ class AuthenticatedUserResource extends JsonResource
                 'google' => $this->user->getGoogleId() ? true : false,
                 'github' => $this->user->getGithubId() ? true : false,
             ],
+            'admin' => $this->user->isAdmin()
         ];
     }
 }
