@@ -27,5 +27,6 @@ class CreatePostService
         );
 
         $this->postRepository->save($post);
+        return $post->getId()->toString();
     }
 }

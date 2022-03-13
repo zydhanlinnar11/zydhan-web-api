@@ -13,7 +13,7 @@ use Modules\Blog\Http\Requests\CreatePostRequest;
 use Modules\Blog\Services\CreatePostService;
 use Modules\Blog\Services\EditPostService;
 use Modules\Blog\Transformers\AdminPostResource;
-use Modules\Blog\Transformers\HomePagePostsResource;
+use Modules\Blog\Transformers\AdminPagePostsResource;
 
 class AdminPostController extends Controller
 {
@@ -30,7 +30,7 @@ class AdminPostController extends Controller
     public function index(Request $request)
     {
         $posts = $this->postRepository->findByVisibilities([]);
-        $data = (new HomePagePostsResource($posts))->toArray($request);
+        $data = (new AdminPagePostsResource($posts))->toArray($request);
 
         return response()->json($data);
     }
@@ -46,9 +46,9 @@ class AdminPostController extends Controller
             postFactory: $this->postFactory,
             postRepository: $this->postRepository
         );
-        $service->execute($request);
+        $id = $service->execute($request);
 
-        return response()->json(null, 201);
+        return response()->json([ 'id' => $id ], 201);
     }
 
     /**

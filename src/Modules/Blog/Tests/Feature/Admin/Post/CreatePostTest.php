@@ -48,6 +48,7 @@ class CreatePostTest extends TestCase
         
         $slug = Str::slug($data['title']);
         $post = $postRepository->findBySlug($slug);
+        $response->assertJson(['id' => $post->getId()->toString()]);
         $this->assertNotNull($post);
         $this->assertEquals($data['title'], $post->getTitle());
         $this->assertEquals($data['description'], $post->getDescription());
