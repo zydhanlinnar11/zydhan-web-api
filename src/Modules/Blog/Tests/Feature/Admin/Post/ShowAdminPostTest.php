@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Blog\Tests\Feature;
+namespace Modules\Blog\Tests\Feature\Admin\Post;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;

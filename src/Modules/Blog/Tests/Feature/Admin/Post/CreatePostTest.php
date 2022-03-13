@@ -1,78 +1,45 @@
 <?php
 
-namespace Modules\Blog\Tests\Feature;
+namespace Modules\Blog\Tests\Feature\Admin\Post;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 use Modules\Auth\Domain\Factories\UserFactoryInterface;
-use Modules\Auth\Domain\Models\Entity\User;
-use Modules\Blog\Domain\Factories\PostFactoryInterface;
 use Modules\Blog\Domain\Models\Value\PostVisibility;
 use Modules\Blog\Domain\Repositories\PostRepositoryInterface;
-use Ramsey\Uuid\Uuid;
 
-class EditPostTest extends TestCase
+class CreatePostTest extends TestCase
 {
     use WithFaker, RefreshDatabase;
     private UserFactoryInterface $userFactory;
-    private PostRepositoryInterface $postRepository;
     private array $data;
     private string $url;
-    private string $urlWithId;
-    private User $userAdmin;
 
     protected function setUp(): void
     {
         parent::setUp();
 
+        $this->url = '/blog/admin/posts';
         $this->userFactory = $this->app->make(UserFactoryInterface::class);
-        $data = [
+        $this->data = [
             'title' => $this->faker()->text(64),
             'description' => $this->faker()->text(),
             'visibility' => PostVisibility::VISIBLE,
             'markdown' => $this->faker()->text(),
         ];
-        $this->url = '/blog/admin/posts/';
-        
-        /**
-         * @var UserFactoryInterface $userFactory
-         */
-        $userFactory = $this->app->make(UserFactoryInterface::class);
-        $this->userAdmin = $userFactory->generateRandom(true);
-        /**
-         * @var PostFactoryInterface $postFactory
-         */
-        $postFactory = $this->app->make(PostFactoryInterface::class);
-        $post = $postFactory->createNewPost(
-            userId: $this->userAdmin->getUserId(),
-            title: $data['title'],
-            description: $data['description'],
-            markdown: $data['markdown'],
-            visibility: $data['visibility'],
-        );
-        
-        $this->postRepository = $this->app->make(PostRepositoryInterface::class);
-        $this->postRepository->save($post);
-        $this->urlWithId = $this->url . $post->getId()->toString();
-
-        $this->data = [
-            'title' => $this->faker()->text(64),
-            'description' => $this->faker()->text(),
-            'visibility' => PostVisibility::UNLISTED,
-            'markdown' => $this->faker()->text(),
-        ];
     }
     
-    public function testCanEditPost()
+    public function testCanSavePost()
     {
-        $user = $this->userAdmin;
+        
+        $user = $this->userFactory->generateRandom(true);
         $this->actingAs($user);
 
         $data = $this->data;
-        $response = $this->patchJson($this->urlWithId, $data);
-        $response->assertStatus(200);
+        $response = $this->postJson($this->url, $data);
+        $response->assertStatus(201);
         
         /**
          * @var PostRepositoryInterface $postRepository
@@ -90,70 +57,61 @@ class EditPostTest extends TestCase
         $this->assertNotNull($post->getCreatedAt());
         $this->assertNotNull($post->getUpdatedAt());
     }
-    
+
     public function testForbiddenIfNotAdmin()
     {
         $user = $this->userFactory->generateRandom();
         $this->actingAs($user);
         
-        $response = $this->patchJson($this->urlWithId, $this->data);
+        $response = $this->postJson($this->url, $this->data);
         $response->assertStatus(403);
     }
     
     public function testTitleCantBeEmpty()
     {
         
-        $user = $this->userAdmin;
+        $user = $this->userFactory->generateRandom(true);
         $this->actingAs($user);
 
         $data = $this->data;
         unset($data['title']);
-        $response = $this->patchJson($this->urlWithId, $data);
+        $response = $this->postJson($this->url, $data);
         $response->assertStatus(422);
     }
     
     public function testDescriptionCantBeEmpty()
     {
         
-        $user = $this->userAdmin;
+        $user = $this->userFactory->generateRandom(true);
         $this->actingAs($user);
 
         $data = $this->data;
         unset($data['description']);
-        $response = $this->patchJson($this->urlWithId, $data);
+        $response = $this->postJson($this->url, $data);
         $response->assertStatus(422);
     }
     
     public function testVisibilityCantBeEmpty()
     {
         
-        $user = $this->userAdmin;
+        $user = $this->userFactory->generateRandom(true);
         $this->actingAs($user);
 
         $data = $this->data;
         unset($data['visibility']);
-        $response = $this->patchJson($this->urlWithId, $data);
+        $response = $this->postJson($this->url, $data);
         $response->assertStatus(422);
     }
     
     public function testMarkdownCantBeEmpty()
     {
         
-        $user = $this->userAdmin;
+        $user = $this->userFactory->generateRandom(true);
         $this->actingAs($user);
 
         $data = $this->data;
         unset($data['markdown']);
-        $response = $this->patchJson($this->urlWithId, $data);
+        $response = $this->postJson($this->url, $data);
         $response->assertStatus(422);
-    }
-    
-    public function test404IfNotFound()
-    {
-        $user = $this->userAdmin;
-        $this->actingAs($user);
-
-        $response = $this->patchJson($this->url . Uuid::uuid4(), $this->data);
-        $response->assertStatus(404);
     }
 }
