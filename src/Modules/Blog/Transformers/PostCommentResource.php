@@ -4,6 +4,7 @@ namespace Modules\Blog\Transformers;
 
 use DateTimeZone;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 use Modules\Auth\Domain\Repositories\UserRepositoryInterface;
 use Modules\Blog\Domain\Models\Entity\Comment;
 
@@ -37,6 +38,7 @@ class PostCommentResource extends JsonResource
                 'comment' => $comment->getComment(),
                 'createdAt' => $comment->getCreatedAt()->setTimezone(new DateTimeZone('Asia/Jakarta'))->format('l, F d, Y'),
                 'user_name' => $user->getName(),
+                'is_own_comment' => Auth::guard('sanctum')->id() === $user->getUserId()->getId()
             ]);
         }
 
