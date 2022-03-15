@@ -15,6 +15,7 @@ use Modules\Blog\Domain\Models\Value\PostVisibility;
 use Modules\Blog\Domain\Repositories\CommentRepositoryInterface;
 use Modules\Blog\Domain\Repositories\PostRepositoryInterface;
 use Modules\Blog\Transformers\HomePagePostsResource;
+use Modules\Blog\Transformers\PortfolioPostResource;
 use Modules\Blog\Transformers\PostCommentResource;
 use Modules\Blog\Transformers\PostViewResource;
 
@@ -77,5 +78,18 @@ class BlogController extends Controller
         $service->execute($createPostCommentRequest);
 
         return response()->json(null, 201);
+    }
+    
+    /**
+     * Display a listing of the resource for portfolio.
+     * @param Request $request
+     * @return Response
+     */
+    public function portfolio(Request $request)
+    {
+        $posts = $this->postRepository->findByVisibilities([PostVisibility::VISIBLE]);
+        $data = (new PortfolioPostResource($posts))->toArray($request);
+
+        return response()->json($data);
     }
 }
