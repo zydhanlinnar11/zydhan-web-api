@@ -58,15 +58,15 @@ class AdminPostController extends Controller
     /**
      * Show the specified resource.
      * @param Request $request
-     * @param Post $post
+     * @param string $id
      * @return Response
      */
-    public function show(Request $request, Post $post)
+    public function show(Request $request, string $id)
     {
         $user = Auth::user($request);
         if (!$user->isAdmin()) abort(403);
 
-        $postResource = $this->adminEditPostQuery->execute($post->getId()->toString());
+        $postResource = $this->adminEditPostQuery->execute($id);
 
         return response()->json($postResource);
     }

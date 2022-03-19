@@ -20,7 +20,7 @@ Route::prefix('blog')->name('blog.')->group(function() {
     Route::prefix('posts')->name('posts.')->group(function () {
         Route::get('/', [BlogController::class, 'index']);
         Route::get('/portfolio', [BlogController::class, 'portfolio']);
-        Route::get('/{post}', [BlogController::class, 'show']);
+        Route::get('/{slug}', [BlogController::class, 'show']);
         Route::get('/{post}/comments', [BlogController::class, 'getPostComments']);
         Route::middleware('auth:sanctum')->post('/{post}/comments', [BlogController::class, 'createPostComment']);
     });
@@ -34,7 +34,7 @@ Route::prefix('blog')->name('blog.')->group(function() {
         Route::prefix('posts')->name('posts.')->group(function() {
             Route::get('/', [AdminPostController::class, 'index']);
             Route::post('/', [AdminPostController::class, 'store']);
-            Route::get('/{admin_post}', [AdminPostController::class, 'show']);
+            Route::get('/{id}', [AdminPostController::class, 'show']);
             Route::patch('/{admin_post}', [AdminPostController::class, 'update']);
             Route::delete('/{admin_post}', [AdminPostController::class, 'destroy']);
         });

@@ -48,13 +48,12 @@ class BlogController extends Controller
 
     /**
      * Show the specified resource.
-     * @param Request $request
-     * @param Post $post
+     * @param string $slug
      * @return Response
      */
-    public function show(Request $request, Post $post)
+    public function show(string $slug)
     {
-        $data = $this->viewPostQuery->execute($post->getId()->toString());
+        $data = $this->viewPostQuery->execute($slug);
 
         return response()->json($data);
     }
