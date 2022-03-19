@@ -12,14 +12,17 @@ use Modules\Blog\Domain\Repositories\PostRepositoryInterface;
 use Modules\Blog\Http\Requests\CreatePostRequest;
 use Modules\Blog\Services\CreatePostService;
 use Modules\Blog\Services\EditPostService;
-use Modules\Blog\Transformers\AdminPostResource;
-use Modules\Blog\Transformers\AdminPagePostsResource;
+use Modules\Blog\Transformers\AdminEditPost\AdminEditPostQueryInterface;
+use Modules\Blog\Transformers\AdminPosts\AdminPostResource;
+use Modules\Blog\Transformers\AdminPosts\AdminPostsQueryInterface;
 
 class AdminPostController extends Controller
 {
     public function __construct(
         private PostFactoryInterface $postFactory,
-        private PostRepositoryInterface $postRepository
+        private PostRepositoryInterface $postRepository,
+        private AdminPostsQueryInterface $adminPostsQuery,
+        private AdminEditPostQueryInterface $adminEditPostQuery,
     ) { }
 
     /**
@@ -29,10 +32,9 @@ class AdminPostController extends Controller
      */
     public function index(Request $request)
     {
-        $posts = $this->postRepository->findByVisibilities([]);
-        $data = (new AdminPagePostsResource($posts))->toArray($request);
+        $data = $this->adminPostsQuery->execute();
 
-        return response()->json($data);
+        return response()->json(AdminPostResource::collection($data));
     }
 
     /**
@@ -62,10 +64,9 @@ class AdminPostController extends Controller
         $user = Auth::user($request);
         if (!$user->isAdmin()) abort(403);
 
-        $postResource = new AdminPostResource($post);
-        $data = $postResource->toArray($request);
+        $postResource = $this->adminEditPostQuery->execute($post->getId()->toString());
 
-        return response()->json($data);
+        return response()->json($postResource);
     }
 
     /**

@@ -1,14 +1,16 @@
 <?php
 
-namespace Modules\Blog\Transformers;
+namespace Modules\Blog\Transformers\AdminPosts;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Modules\Blog\Domain\Models\Entity\Post;
 
 class AdminPostResource extends JsonResource
 {
     public function __construct(
-        private Post $post,
+        public string $id,
+        public string $title,
+        public string $coverUrl,
+        public string $created_at,
     ) { }
 
     /**
@@ -20,10 +22,10 @@ class AdminPostResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'title' => $this->post->getTitle(),
-            'description' => $this->post->getDescription(),
-            'visibility' => $this->post->getVisibility(),
-            'markdown' => $this->post->getMarkdown(),
+            'id' => $this->id,
+            'title' => $this->title,
+            'cover_url' => $this->coverUrl,
+            'created_at' => $this->created_at,
         ];
     }
 }
