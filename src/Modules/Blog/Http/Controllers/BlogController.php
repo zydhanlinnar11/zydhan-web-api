@@ -10,15 +10,15 @@ use Modules\Blog\App\Services\CreatePostComment\CreatePostCommentRequest;
 use Modules\Blog\App\Services\CreatePostComment\CreatePostCommentService;
 use Modules\Blog\Domain\Factories\CommentFactoryInterface;
 use Modules\Blog\Domain\Models\Entity\Post;
-use Modules\Blog\Domain\Models\Value\PostId;
 use Modules\Blog\Domain\Models\Value\PostVisibility;
 use Modules\Blog\Domain\Repositories\CommentRepositoryInterface;
 use Modules\Blog\Domain\Repositories\PostRepositoryInterface;
-use Modules\Blog\Transformers\HomePagePostsResource;
 use Modules\Blog\Transformers\HomePosts\HomePostResource;
 use Modules\Blog\Transformers\HomePosts\HomePostsQueryInterface;
 use Modules\Blog\Transformers\PortfolioPostResource;
 use Modules\Blog\Transformers\PostCommentResource;
+use Modules\Blog\Transformers\PostComments\PostCommentResource as PostCommentsPostCommentResource;
+use Modules\Blog\Transformers\PostComments\PostCommentsQueryInterface;
 use Modules\Blog\Transformers\PostViewResource;
 
 class BlogController extends Controller
@@ -29,6 +29,7 @@ class BlogController extends Controller
         private UserRepositoryInterface $userRepository,
         private CommentFactoryInterface $commentFactory,
         private HomePostsQueryInterface $homePostsQuery,
+        private PostCommentsQueryInterface $postCommentsQuery,
     ) { }
 
 
@@ -57,12 +58,11 @@ class BlogController extends Controller
         return response()->json($data);
     }
 
-    public function getPostComments(Request $request, Post $post)
+    public function getPostComments(Post $post)
     {
-        $comments = $this->commentRepository->findAllByPostId($post->getId());
-        $data = (new PostCommentResource($comments, $this->userRepository))->toArray($request);
+        $data = $this->postCommentsQuery->execute($post->getId()->toString());
 
-        return response()->json($data);
+        return response()->json(PostCommentsPostCommentResource::collection($data));
     }
 
     public function createPostComment(Request $request, Post $post)

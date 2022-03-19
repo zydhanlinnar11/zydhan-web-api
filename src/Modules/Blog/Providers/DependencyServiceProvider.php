@@ -10,9 +10,11 @@ use Modules\Blog\Domain\Factories\PostFactoryInterface;
 use Modules\Blog\Domain\Repositories\CommentRepositoryInterface;
 use Modules\Blog\Domain\Repositories\PostRepositoryInterface;
 use Modules\Blog\Infrastructure\Queries\QueryBuilderHomePostsQuery;
+use Modules\Blog\Infrastructure\Queries\QueryBuilderPostCommentsQuery;
 use Modules\Blog\Infrastructure\Repositories\QueryBuilderCommentRepository;
 use Modules\Blog\Infrastructure\Repositories\QueryBuilderPostRepository;
 use Modules\Blog\Transformers\HomePosts\HomePostsQueryInterface;
+use Modules\Blog\Transformers\PostComments\PostCommentsQueryInterface;
 
 class DependencyServiceProvider extends ServiceProvider
 {
@@ -29,6 +31,7 @@ class DependencyServiceProvider extends ServiceProvider
         $this->app->bind(PostFactoryInterface::class, PostFactory::class);
 
         $this->app->bind(HomePostsQueryInterface::class, QueryBuilderHomePostsQuery::class);
+        $this->app->bind(PostCommentsQueryInterface::class, QueryBuilderPostCommentsQuery::class);
     }
 
     /**
