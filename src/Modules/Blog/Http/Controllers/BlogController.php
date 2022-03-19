@@ -15,6 +15,8 @@ use Modules\Blog\Domain\Models\Value\PostVisibility;
 use Modules\Blog\Domain\Repositories\CommentRepositoryInterface;
 use Modules\Blog\Domain\Repositories\PostRepositoryInterface;
 use Modules\Blog\Transformers\HomePagePostsResource;
+use Modules\Blog\Transformers\HomePosts\HomePostResource;
+use Modules\Blog\Transformers\HomePosts\HomePostsQueryInterface;
 use Modules\Blog\Transformers\PortfolioPostResource;
 use Modules\Blog\Transformers\PostCommentResource;
 use Modules\Blog\Transformers\PostViewResource;
@@ -26,20 +28,20 @@ class BlogController extends Controller
         private CommentRepositoryInterface $commentRepository,
         private UserRepositoryInterface $userRepository,
         private CommentFactoryInterface $commentFactory,
+        private HomePostsQueryInterface $homePostsQuery,
     ) { }
 
 
     /**
      * Display a listing of the resource.
-     * @param Request $request
+     * 
      * @return Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $posts = $this->postRepository->findByVisibilities([PostVisibility::VISIBLE]);
-        $data = (new HomePagePostsResource($posts))->toArray($request);
+        $data = $this->homePostsQuery->execute();
 
-        return response()->json($data);
+        return response()->json(HomePostResource::collection($data));
     }
 
     /**
