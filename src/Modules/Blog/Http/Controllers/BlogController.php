@@ -10,13 +10,12 @@ use Modules\Blog\App\Services\CreatePostComment\CreatePostCommentRequest;
 use Modules\Blog\App\Services\CreatePostComment\CreatePostCommentService;
 use Modules\Blog\Domain\Factories\CommentFactoryInterface;
 use Modules\Blog\Domain\Models\Entity\Post;
-use Modules\Blog\Domain\Models\Value\PostVisibility;
 use Modules\Blog\Domain\Repositories\CommentRepositoryInterface;
 use Modules\Blog\Domain\Repositories\PostRepositoryInterface;
 use Modules\Blog\Transformers\HomePosts\HomePostResource;
 use Modules\Blog\Transformers\HomePosts\HomePostsQueryInterface;
-use Modules\Blog\Transformers\PortfolioPostResource;
-use Modules\Blog\Transformers\PostCommentResource;
+use Modules\Blog\Transformers\PortfolioPosts\PortfolioPostResource;
+use Modules\Blog\Transformers\PortfolioPosts\PortfolioPostsQueryInterface;
 use Modules\Blog\Transformers\PostComments\PostCommentResource as PostCommentsPostCommentResource;
 use Modules\Blog\Transformers\PostComments\PostCommentsQueryInterface;
 use Modules\Blog\Transformers\PostViewResource;
@@ -30,6 +29,7 @@ class BlogController extends Controller
         private CommentFactoryInterface $commentFactory,
         private HomePostsQueryInterface $homePostsQuery,
         private PostCommentsQueryInterface $postCommentsQuery,
+        private PortfolioPostsQueryInterface $portfolioPostsQuery,
     ) { }
 
 
@@ -89,9 +89,8 @@ class BlogController extends Controller
      */
     public function portfolio(Request $request)
     {
-        $posts = $this->postRepository->findByVisibilities([PostVisibility::VISIBLE]);
-        $data = (new PortfolioPostResource($posts))->toArray($request);
+        $data = $this->portfolioPostsQuery->execute();
 
-        return response()->json($data);
+        return response()->json(PortfolioPostResource::collection($data));
     }
 }
