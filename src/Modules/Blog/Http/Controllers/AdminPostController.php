@@ -32,6 +32,8 @@ class AdminPostController extends Controller
      */
     public function index(Request $request)
     {
+        $user = Auth::user($request);
+        if (!$user->isAdmin()) abort(403);
         $data = $this->adminPostsQuery->execute();
 
         return response()->json(AdminPostResource::collection($data));
