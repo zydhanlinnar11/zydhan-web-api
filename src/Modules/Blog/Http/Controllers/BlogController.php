@@ -16,9 +16,9 @@ use Modules\Blog\Transformers\HomePosts\HomePostResource;
 use Modules\Blog\Transformers\HomePosts\HomePostsQueryInterface;
 use Modules\Blog\Transformers\PortfolioPosts\PortfolioPostResource;
 use Modules\Blog\Transformers\PortfolioPosts\PortfolioPostsQueryInterface;
-use Modules\Blog\Transformers\PostComments\PostCommentResource as PostCommentsPostCommentResource;
+use Modules\Blog\Transformers\PostComments\PostCommentResource;
 use Modules\Blog\Transformers\PostComments\PostCommentsQueryInterface;
-use Modules\Blog\Transformers\PostViewResource;
+use Modules\Blog\Transformers\ViewPost\ViewPostQueryInterface;
 
 class BlogController extends Controller
 {
@@ -30,6 +30,7 @@ class BlogController extends Controller
         private HomePostsQueryInterface $homePostsQuery,
         private PostCommentsQueryInterface $postCommentsQuery,
         private PortfolioPostsQueryInterface $portfolioPostsQuery,
+        private ViewPostQueryInterface $viewPostQuery,
     ) { }
 
 
@@ -53,7 +54,7 @@ class BlogController extends Controller
      */
     public function show(Request $request, Post $post)
     {
-        $data = (new PostViewResource($post))->toArray($request);
+        $data = $this->viewPostQuery->execute($post->getId()->toString());
 
         return response()->json($data);
     }
@@ -62,7 +63,7 @@ class BlogController extends Controller
     {
         $data = $this->postCommentsQuery->execute($post->getId()->toString());
 
-        return response()->json(PostCommentsPostCommentResource::collection($data));
+        return response()->json(PostCommentResource::collection($data));
     }
 
     public function createPostComment(Request $request, Post $post)

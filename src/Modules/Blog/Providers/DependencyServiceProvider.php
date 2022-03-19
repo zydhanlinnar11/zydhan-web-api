@@ -14,6 +14,7 @@ use Modules\Blog\Infrastructure\Queries\QueryBuilderAdminPostsQuery;
 use Modules\Blog\Infrastructure\Queries\QueryBuilderHomePostsQuery;
 use Modules\Blog\Infrastructure\Queries\QueryBuilderPortfolioPostsQuery;
 use Modules\Blog\Infrastructure\Queries\QueryBuilderPostCommentsQuery;
+use Modules\Blog\Infrastructure\Queries\QueryBuilderViewPostQuery;
 use Modules\Blog\Infrastructure\Repositories\QueryBuilderCommentRepository;
 use Modules\Blog\Infrastructure\Repositories\QueryBuilderPostRepository;
 use Modules\Blog\Transformers\AdminEditPost\AdminEditPostQueryInterface;
@@ -21,6 +22,7 @@ use Modules\Blog\Transformers\AdminPosts\AdminPostsQueryInterface;
 use Modules\Blog\Transformers\HomePosts\HomePostsQueryInterface;
 use Modules\Blog\Transformers\PortfolioPosts\PortfolioPostsQueryInterface;
 use Modules\Blog\Transformers\PostComments\PostCommentsQueryInterface;
+use Modules\Blog\Transformers\ViewPost\ViewPostQueryInterface;
 
 class DependencyServiceProvider extends ServiceProvider
 {
@@ -41,6 +43,7 @@ class DependencyServiceProvider extends ServiceProvider
         $this->app->bind(AdminPostsQueryInterface::class, QueryBuilderAdminPostsQuery::class);
         $this->app->bind(AdminEditPostQueryInterface::class, QueryBuilderAdminEditPostQuery::class);
         $this->app->bind(PortfolioPostsQueryInterface::class, QueryBuilderPortfolioPostsQuery::class);
+        $this->app->bind(ViewPostQueryInterface::class, QueryBuilderViewPostQuery::class);
     }
 
     /**
