@@ -10,9 +10,16 @@ class QueryBuilderViewPostQuery implements ViewPostQueryInterface
 {
     public function execute(string $slug): ViewPostResource
     {
-        $post = DB::table('posts')
+        $posts = DB::table('posts')
                     ->select(['title', 'description', 'created_at', 'slug', 'markdown'])
-                    ->get()[0];
+                    ->where('slug', '=', $slug)
+                    ->get();
+
+        if ($posts->count() === 0) {
+            abort(404);
+        }
+
+        $post = $posts[0];
 
         return new ViewPostResource(
             slug: $post->slug,

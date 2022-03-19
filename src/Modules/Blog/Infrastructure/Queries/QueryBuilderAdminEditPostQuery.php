@@ -10,10 +10,16 @@ class QueryBuilderAdminEditPostQuery implements AdminEditPostQueryInterface
 {
     public function execute(string $id): AdminEditPostResource
     {
-        $post = DB::table('posts')
+        $posts = DB::table('posts')
                     ->where('id', '=', $id)
                     ->select(['title', 'description', 'visibility', 'markdown', 'slug'])
-                    ->get()[0];
+                    ->get();
+
+        if ($posts->count() === 0) {
+            abort(404);
+        }
+
+        $post = $posts[0];
 
         return new AdminEditPostResource(
             title: $post->title,
