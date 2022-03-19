@@ -2,6 +2,8 @@
 
 namespace Modules\Blog\Infrastructure\Queries;
 
+use DateTime;
+use DateTimeZone;
 use Illuminate\Support\Facades\DB;
 use Modules\Blog\Transformers\ViewPost\ViewPostQueryInterface;
 use Modules\Blog\Transformers\ViewPost\ViewPostResource;
@@ -26,7 +28,7 @@ class QueryBuilderViewPostQuery implements ViewPostQueryInterface
             title: $post->title,
             description: $post->description,
             markdown: $post->markdown,
-            createdAt: $post->created_at
+            createdAt: (new DateTime($post->created_at))->setTimezone(new DateTimeZone('Asia/Jakarta'))->format('l, F d, Y')
         );
     }
 }
