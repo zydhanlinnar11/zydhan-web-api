@@ -7,10 +7,10 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class PortfolioPostResource extends JsonResource
 {
     public function __construct(
-        public string $title,
-        public string $description,
-        public string $slug,
-        public string $created_at,
+        private string $title,
+        private string $description,
+        private string $slug,
+        private string $created_at,
     ) { }
 
     /**

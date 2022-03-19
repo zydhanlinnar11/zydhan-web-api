@@ -7,10 +7,10 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class AdminPostResource extends JsonResource
 {
     public function __construct(
-        public string $id,
-        public string $title,
-        public string $coverUrl,
-        public string $created_at,
+        private string $id,
+        private string $title,
+        private string $coverUrl,
+        private string $created_at,
     ) { }
 
     /**
