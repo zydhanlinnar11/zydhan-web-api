@@ -13,6 +13,7 @@ class PostCommentResource extends JsonResource
         private string $createdAt,
         private string $user_name,
         private string $user_id,
+        private ?string $user_avatar_url,
     ) { }
 
     /**
@@ -28,7 +29,8 @@ class PostCommentResource extends JsonResource
             'comment' => $this->comment,
             'createdAt' => $this->createdAt,
             'user_name' => $this->user_name,
-            'is_own_comment' => Auth::guard('sanctum')->id() === $this->user_id
+            'is_own_comment' => Auth::guard('sanctum')->id() === $this->user_id,
+            'user_avatar_url' => $this->user_avatar_url
         ];
     }
 }

@@ -15,9 +15,9 @@ class QueryBuilderPostCommentsQuery implements PostCommentsQueryInterface
      */
     public function execute(string $postId)
     {
-        $comments = DB::table('comments', 'c')->select(['c.id', 'c.content', 'c.created_at', 'u.user_name', 'c.user_id'])
+        $comments = DB::table('comments', 'c')->select(['c.id', 'c.content', 'c.created_at', 'u.user_name', 'c.user_id', 'u.avatar_url'])
                 ->leftJoinSub(
-                    DB::table('users')->selectRaw('name AS user_name, id'),
+                    DB::table('users')->selectRaw('name AS user_name, id, avatar_url'),
                     'u', 'c.user_id', '=', 'u.id'
                 )
                 ->where('c.post_id', '=', $postId)
@@ -33,6 +33,7 @@ class QueryBuilderPostCommentsQuery implements PostCommentsQueryInterface
                 createdAt: (new DateTime($comment->created_at))->setTimezone(new DateTimeZone('Asia/Jakarta'))->format('l, F d, Y'),
                 user_name: $comment->user_name,
                 user_id: $comment->user_id,
+                user_avatar_url: $comment->avatar_url,
             ));
         }
 
