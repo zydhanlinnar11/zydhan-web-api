@@ -10,6 +10,7 @@ use Modules\Auth\Domain\Models\Value\SocialId;
 use Modules\Auth\Domain\Models\Value\SocialProvider;
 use Modules\Auth\Domain\Models\Value\UserId;
 use Modules\Auth\Domain\Repositories\UserRepositoryInterface;
+use Ramsey\Uuid\Uuid;
 
 class UserFactory implements UserFactoryInterface
 {
@@ -34,7 +35,8 @@ class UserFactory implements UserFactoryInterface
             name: $name,
             email: $email,
             hashedPassword: Hash::make($password),
-            admin: false
+            admin: false,
+            avatarUrl: 'https://avatars.dicebear.com/api/human/' . Uuid::uuid4() . '.svg'
         );
 
         return $user;
@@ -53,7 +55,7 @@ class UserFactory implements UserFactoryInterface
         );
     }
 
-    public function createNewUserFromSocial(string $name, string $email, SocialProvider $socialProvider, string $socialId): User
+    public function createNewUserFromSocial(string $name, string $email, SocialProvider $socialProvider, string $socialId, ?string $avatar): User
     {
         $faker = Factory::create();
 
@@ -71,6 +73,7 @@ class UserFactory implements UserFactoryInterface
             admin: false,
             googleId: $socialProvider === SocialProvider::GOOGLE ? new SocialId($socialId, SocialProvider::GOOGLE) : null,
             githubId: $socialProvider === SocialProvider::GITHUB ? new SocialId($socialId, SocialProvider::GITHUB) : null,
+            avatarUrl: $avatar
         );
 
         return $user;

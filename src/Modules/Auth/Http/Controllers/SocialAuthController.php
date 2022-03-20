@@ -49,7 +49,8 @@ class SocialAuthController extends Controller
                 socialId: $socialUser->getId(),
                 name: $socialUser->getName(),
                 email: $socialUser->getEmail(),
-                socialProvider: $social_provider
+                socialProvider: $social_provider,
+                avatar: $socialUser->getAvatar()
             );
             $service = new LoginFromSocialService($this->userFactory, $this->userRepository);
             $service->execute($loginFromSocialRequest);

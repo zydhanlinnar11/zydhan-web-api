@@ -49,6 +49,7 @@ class DBFacadeUserRepository implements UserRepositoryInterface
             'remember_token' => $user->getRememberToken(),
             'google_id' => $user->getGoogleId()?->getId(),
             'github_id' => $user->getGithubId()?->getId(),
+            'avatar_url' => $user->getAvatar(),
             'updated_at' => new DateTime()
         ];
 
@@ -65,6 +66,7 @@ class DBFacadeUserRepository implements UserRepositoryInterface
             rememberToken: $result->remember_token,
             googleId: !$result->google_id ? null : new SocialId($result->google_id, SocialProvider::GOOGLE),
             githubId: !$result->github_id ? null : new SocialId($result->github_id, SocialProvider::GITHUB),
+            avatarUrl: $result->avatar_url
         );
     }
 

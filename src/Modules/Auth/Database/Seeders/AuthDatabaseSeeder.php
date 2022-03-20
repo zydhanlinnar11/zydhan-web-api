@@ -16,6 +16,6 @@ class AuthDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        $this->call(ZydblogUserSeeder::class);
+        $this->call(ProfilePictureTableSeeder::class);
     }
 }

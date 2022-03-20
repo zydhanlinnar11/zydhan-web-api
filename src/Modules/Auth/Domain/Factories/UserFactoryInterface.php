@@ -17,7 +17,8 @@ interface UserFactoryInterface
         string $name,
         string $email,
         SocialProvider $socialProvider,
-        string $socialId
+        string $socialId,
+        ?string $avatar
     ) : User;
 
     public function generateRandom(bool $isAdmin = false) : User;

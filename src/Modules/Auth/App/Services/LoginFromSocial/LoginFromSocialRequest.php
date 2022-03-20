@@ -10,6 +10,7 @@ class LoginFromSocialRequest
         public string $socialId,
         public string $name,
         public string $email,
-        public SocialProvider $socialProvider
+        public SocialProvider $socialProvider,
+        public ?string $avatar,
     ) { }
 }

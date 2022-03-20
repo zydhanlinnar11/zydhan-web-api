@@ -27,6 +27,7 @@ class User implements Authenticatable, CanResetPassword
         private ?string $rememberToken = NULL,
         private ?SocialId $googleId = NULL,
         private ?SocialId $githubId = NULL,
+        private ?string $avatarUrl = NULL,
     ) {
         if (($googleId && ($googleId->getSocialProvider() !== SocialProvider::GOOGLE))
             || ($githubId && $githubId->getSocialProvider() !== SocialProvider::GITHUB)) {
@@ -170,5 +171,10 @@ class User implements Authenticatable, CanResetPassword
             .'&email='.urlencode($this->getEmailForPasswordReset());
  
         $this->notify(new ResetPasswordNotification($url));
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatarUrl;
     }
 }

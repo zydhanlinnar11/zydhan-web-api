@@ -24,7 +24,8 @@ class LoginFromSocialService
                 name: $request->name,
                 email: $request->email,
                 socialProvider: $request->socialProvider,
-                socialId: $request->socialId
+                socialId: $request->socialId,
+                avatar: $request->avatar
             );
 
             $this->userRepository->save($user);
