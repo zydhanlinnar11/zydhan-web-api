@@ -32,7 +32,7 @@ class AuthorizationController extends Controller
             'iat' => time(),
             'exp' => time() + self::$JWT_EXPIRATION_SECONDS,
         ];
-        $jwt = JWT::encode($data, config('key'), 'HS256');
+        $jwt = JWT::encode($data, config('app.key'), 'HS256');
 
         return response()->json(['token' => $jwt]);
     }
