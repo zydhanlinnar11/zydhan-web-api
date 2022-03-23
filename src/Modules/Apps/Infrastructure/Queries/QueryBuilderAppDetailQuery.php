@@ -14,6 +14,8 @@ class QueryBuilderAppDetailQuery implements AppDetailQueryInterface
 
         if(!$result || $result->count() !== 1) return null;
 
-        return new AppDetail($result[0]['id'], $result[0]['name'], $result[0]['redirect_uri']);
+        $appDetail = $result[0];
+
+        return new AppDetail($appDetail->id, $appDetail->name, $appDetail->redirect_uri);
     }
 }
