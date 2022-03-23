@@ -70,4 +70,20 @@ class CreateTokenTest extends TestCase
 
         $response->assertStatus(400);
     }
+
+    public function test422IfAppIdOrRedirectMissing()
+    {
+        $this->actingAs($this->user);
+        $queryString = 'redirect_uri=' . $this->application->getRedirectURI();
+
+        $response = $this->getJson('/apps/create-token?' . $queryString);
+
+        $response->assertUnprocessable();
+
+        $queryString = 'app_id=' . $this->application->getId()->getId();
+
+        $response = $this->getJson('/apps/create-token?' . $queryString);
+
+        $response->assertUnprocessable();
+    }
 }
