@@ -54,6 +54,7 @@ class AuthorizationController extends Controller
         return response()->json([
             'id' => $user->getUserId()->getId(),
             'name' => $user->getName(),
+            'email' => $user->getEmail(),
             'avatar_url' => $user->getAvatar(),
         ]);
     }
