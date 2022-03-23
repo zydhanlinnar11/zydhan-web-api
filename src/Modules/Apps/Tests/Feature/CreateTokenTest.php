@@ -38,7 +38,7 @@ class CreateTokenTest extends TestCase
 
     public function testSuccessReturnJWT()
     {
-        $queryString = 'app_id=' . $this->application->getId() . '&redirect_uri=' . $this->application->getRedirectURI();
+        $queryString = 'app_id=' . $this->application->getId()->getId() . '&redirect_uri=' . $this->application->getRedirectURI();
         $this->actingAs($this->user);
 
         $response = $this->getJson('/apps/create-token?' . $queryString);
@@ -48,7 +48,7 @@ class CreateTokenTest extends TestCase
 
     public function test401IfUnauthenticated()
     {
-        $queryString = 'app_id=' . $this->application->getId() . '&redirect_uri=' . $this->application->getRedirectURI();
+        $queryString = 'app_id=' . $this->application->getId()->getId() . '&redirect_uri=' . $this->application->getRedirectURI();
 
         $response = $this->getJson('/apps/create-token?' . $queryString);
 
@@ -63,7 +63,7 @@ class CreateTokenTest extends TestCase
 
         $response->assertStatus(400);
 
-        $queryString = 'app_id=' . $this->application->getId() . '&redirect_uri=' . $this->faker->text();
+        $queryString = 'app_id=' . $this->application->getId()->getId() . '&redirect_uri=' . $this->faker->text();
 
         $response = $this->getJson('/apps/create-token?' . $queryString);
 
