@@ -25,7 +25,6 @@ class AuthorizationController extends Controller
     {
         $user = Auth::user($request);
         $appDetail = $this->appDetailQuery->execute($request->appId());
-        var_dump($request->appId());
         if (!$appDetail || $appDetail->toArray($request)['redirectURI'] !== $request->redirectURI())
             return response()->json(null, 400);
 
