@@ -5,7 +5,9 @@ namespace Modules\Apps\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
 use Modules\Apps\Domain\Repositories\AppRepositoryInterface;
+use Modules\Apps\Infrastructure\Queries\QueryBuilderAppDetailQuery;
 use Modules\Apps\Infrastructure\Repositories\QueryBuilderAppRepository;
+use Modules\Apps\Transformers\AppDetail\AppDetailQueryInterface;
 
 class AppsServiceProvider extends ServiceProvider
 {
@@ -41,6 +43,7 @@ class AppsServiceProvider extends ServiceProvider
     {
         $this->app->register(RouteServiceProvider::class);
         $this->app->bind(AppRepositoryInterface::class, QueryBuilderAppRepository::class);
+        $this->app->bind(AppDetailQueryInterface::class, QueryBuilderAppDetailQuery::class);
     }
 
     /**
