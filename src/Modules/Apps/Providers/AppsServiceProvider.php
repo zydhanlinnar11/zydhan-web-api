@@ -4,6 +4,8 @@ namespace Modules\Apps\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
+use Modules\Apps\Domain\Repositories\AppRepositoryInterface;
+use Modules\Apps\Infrastructure\Repositories\QueryBuilderAppRepository;
 
 class AppsServiceProvider extends ServiceProvider
 {
@@ -38,6 +40,7 @@ class AppsServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+        $this->app->bind(AppRepositoryInterface::class, QueryBuilderAppRepository::class);
     }
 
     /**
