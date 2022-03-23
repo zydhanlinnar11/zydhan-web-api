@@ -57,6 +57,7 @@ class CreateTokenTest extends TestCase
 
     public function test400IfAppIdOrRedirectUriWrong()
     {
+        $this->actingAs($this->user);
         $queryString = 'app_id=' . \Ramsey\Uuid\Uuid::uuid4() . '&redirect_uri=' . $this->application->getRedirectURI();
 
         $response = $this->getJson('/apps/create-token?' . $queryString);
