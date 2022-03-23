@@ -8,9 +8,9 @@ use Modules\Apps\Transformers\AppDetail\AppDetailQueryInterface;
 
 class QueryBuilderAppDetailQuery implements AppDetailQueryInterface
 {
-    public function execute(): ?AppDetail
+    public function execute(string $id): ?AppDetail
     {
-        $result = DB::table('apps')->select(['id', 'name', 'redirect_uri'])->get();
+        $result = DB::table('apps')->select(['id', 'name', 'redirect_uri'])->where('id', $id)->get();
 
         if(!$result || $result->count() !== 1) return null;
 

@@ -4,5 +4,5 @@ namespace Modules\Apps\Transformers\AppDetail;
 
 interface AppDetailQueryInterface
 {
-    public function execute(): ?AppDetail;
+    public function execute(string $id): ?AppDetail;
 }
