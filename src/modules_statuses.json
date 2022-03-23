@@ -1,4 +1,5 @@
 {
     "Auth": true,
-    "Blog": true
+    "Blog": true,
+    "Apps": true
 }
