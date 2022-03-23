@@ -15,6 +15,7 @@ use Modules\Apps\Http\Controllers\AuthorizationController;
 |
 */
 
-Route::middleware('auth:sanctum')->prefix('apps')->name('apps.')->group(function () {
-    Route::get('/create-token', [AuthorizationController::class, 'create_token']);
+Route::prefix('apps')->name('apps.')->group(function () {
+    Route::middleware('auth:sanctum')->get('/create-token', [AuthorizationController::class, 'create_token']);
+    Route::get('/user-info', [AuthorizationController::class, 'userinfo']);
 });

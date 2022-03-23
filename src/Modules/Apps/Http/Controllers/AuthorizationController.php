@@ -8,6 +8,8 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Modules\Apps\Http\Requests\CreateTokenRequest;
 use Modules\Apps\Transformers\AppDetail\AppDetailQueryInterface;
+use Modules\Auth\Domain\Models\Value\UserId;
+use Modules\Auth\Domain\Repositories\UserRepositoryInterface;
 use Modules\Auth\Facade\Auth;
 
 class AuthorizationController extends Controller
@@ -16,6 +18,7 @@ class AuthorizationController extends Controller
 
     public function __construct(
         private AppDetailQueryInterface $appDetailQuery,
+        private UserRepositoryInterface $userRepository,
     ) { }
 
     public function create_token(CreateTokenRequest $request)
@@ -39,6 +42,20 @@ class AuthorizationController extends Controller
 
     public function userinfo(Request $request)
     {
-        
+        $validated = $request->validate([
+            'token' => 'required|string'
+        ]);
+
+        $jwt = $validated['token'];
+
+        $decoded = JWT::decode($jwt, new Key(config('app.key'), 'HS256'));
+
+        $user = $this->userRepository->findById(new UserId($decoded->sub));
+
+        return response()->json([
+            'id' => $user->getUserId()->getId(),
+            'name' => $user->getName(),
+            'avatar_url' => $user->getAvatar(),
+        ]);
     }
 }
