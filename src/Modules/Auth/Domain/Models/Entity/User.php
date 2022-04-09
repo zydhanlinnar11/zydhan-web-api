@@ -166,7 +166,7 @@ class User implements Authenticatable, CanResetPassword
 
     public function sendPasswordResetNotification($token)
     {
-        $url = 'https://'. env('APP_NAME', 'zydhan.xyz')
+        $url = 'https://'. env('APP_NAME', 'zydhan.com')
             .'/auth/reset-password?token='.urlencode($token)
             .'&email='.urlencode($this->getEmailForPasswordReset());
  

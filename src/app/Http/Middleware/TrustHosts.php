@@ -15,9 +15,9 @@ class TrustHosts extends Middleware
     {
         return [
             $this->allSubdomainsOfApplicationUrl(),
-            'zydhan.xyz',
-            'www.zydhan.xyz',
-            'dev.zydhan.xyz'
+            'zydhan.com',
+            'www.zydhan.com',
+            'dev.zydhan.com'
         ];
     }
 }

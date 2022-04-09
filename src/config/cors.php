@@ -20,10 +20,10 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        'https://blog.zydhan.xyz',
-        'https://dev.zydhan.xyz',
-        'https://zydhan.xyz',
-        'https://www.zydhan.xyz',
+        'https://blog.zydhan.com',
+        'https://dev.zydhan.com',
+        'https://zydhan.com',
+        'https://www.zydhan.com',
     ],
 
     'allowed_origins_patterns' => [],
