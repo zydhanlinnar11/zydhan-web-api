@@ -43,7 +43,7 @@ class AuthorizationController extends Controller
     {
         $validated = $request->validate([
             'token' => 'required|string',
-            'additionalScope' => 'string'
+            'additionalData' => 'string'
         ]);
 
         $jwt = $validated['token'];
@@ -59,7 +59,7 @@ class AuthorizationController extends Controller
             'avatar_url' => $user->getAvatar(),
         ];
 
-        if ($validated['additionalScope']) $data['social'] = [
+        if (array_key_exists('additionalData', $validated) && $validated['additionalData'] == 'social') $data['social'] = [
             'google' => $user->getGoogleId()?->getId(),
             'github' => $user->getGithubId()?->getId(),
             'discord' => null
