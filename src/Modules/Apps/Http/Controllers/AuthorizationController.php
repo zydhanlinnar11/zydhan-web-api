@@ -42,7 +42,8 @@ class AuthorizationController extends Controller
     public function userinfo(Request $request)
     {
         $validated = $request->validate([
-            'token' => 'required|string'
+            'token' => 'required|string',
+            'additionalScope' => 'string'
         ]);
 
         $jwt = $validated['token'];
@@ -51,11 +52,19 @@ class AuthorizationController extends Controller
 
         $user = $this->userRepository->findById(new UserId($decoded->sub));
 
-        return response()->json([
+        $data = [
             'id' => $user->getUserId()->getId(),
             'name' => $user->getName(),
             'email' => $user->getEmail(),
             'avatar_url' => $user->getAvatar(),
-        ]);
+        ];
+
+        if ($validated['additionalScope']) $data['social'] = [
+            'google' => $user->getGoogleId()?->getId(),
+            'github' => $user->getGithubId()?->getId(),
+            'discord' => null
+        ];
+
+        return response()->json($data);
     }
 }
