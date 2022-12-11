@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CsrfCookieController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,11 +13,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get(
-    '/csrf-cookie',
-    CsrfCookieController::class.'@show'
-)->middleware('web')->name('sanctum.csrf-cookie');
 
 Route::prefix('/auth')->group(function() {
     Route::post('/register', [AuthController::class, 'register']);
