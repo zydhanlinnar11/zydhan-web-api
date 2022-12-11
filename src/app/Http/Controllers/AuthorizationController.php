@@ -149,9 +149,9 @@ class AuthorizationController
         $authRequest->setAuthorizationApproved(true);
 
         return $this->withErrorHandling(function () use ($authRequest) {
-            return $this->convertResponse(
-                $this->server->completeAuthorizationRequest($authRequest, new Psr7Response)
-            );
+            return response()->json([
+                'location' => $this->server->completeAuthorizationRequest($authRequest, new Psr7Response)->getHeader('Location')[0]
+            ]);
         });
     }
 
