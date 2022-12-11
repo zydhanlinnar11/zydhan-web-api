@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Auth\AuthenticationException;
-use Illuminate\Contracts\Auth\StatefulGuard;
-use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -19,7 +17,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class AuthorizationController
 {
-    use \Laravel\Passport\Http\Controllers\HandlesOAuthErrors;
+    use HandlesOAuthErrors;
 
     /**
      * The authorization server.
@@ -91,12 +89,18 @@ class AuthorizationController
         $request->session()->put('authToken', $authToken = Str::random());
         $request->session()->put('authRequest', $authRequest);
 
-        return response()->view('passport::authorize', [
-            'client' => $client,
-            'user' => $user,
+        return response()->json([
+            'client' => [
+                'id' => $client->id,
+                'name' => $client->name,
+            ],
             'scopes' => $scopes,
-            'request' => $request,
+            'state' => $request->state,
             'authToken' => $authToken,
+            'actions' => [
+                'approve' => route('passport.authorizations.approve'),
+                'deny' => route('passport.authorizations.deny')
+            ]
         ]);
     }
 

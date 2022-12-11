@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CsrfCookieController;
 use Illuminate\Support\Facades\Route;
-use Modules\Apps\Http\Controllers\AuthorizationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +23,7 @@ Route::get(
 Route::prefix('/auth')->group(function() {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
+});
 
 Route::group([
     'as' => 'passport.',
@@ -50,12 +51,12 @@ Route::group([
         ]);
     
         Route::post('/authorize', [
-            'uses' => 'ApproveAuthorizationController@approve',
+            'uses' => '\App\Http\Controllers\ApproveAuthorizationController@approve',
             'as' => 'authorizations.approve',
         ]);
     
         Route::delete('/authorize', [
-            'uses' => 'DenyAuthorizationController@deny',
+            'uses' => '\App\Http\Controllers\DenyAuthorizationController@deny',
             'as' => 'authorizations.deny',
         ]);
     
