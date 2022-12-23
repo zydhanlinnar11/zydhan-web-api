@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\Auth\Http\Controllers;
 
-use App\Http\Requests\LoginRequest;
-use App\Http\Requests\RegisterUserRequest;
 use App\Models\User;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Modules\Auth\Http\Requests\LoginRequest;
+use Modules\Auth\Http\Requests\RegisterRequest;
 
 class AuthController extends Controller
 {
@@ -18,7 +19,7 @@ class AuthController extends Controller
         return response()->json(['message' => 'Invalid credentials'], 401);
     }
 
-    public function register(RegisterUserRequest $request)
+    public function register(RegisterRequest $request)
     {
         $data = $request->validated();
         $data['password'] = Hash::make($data['password']);
