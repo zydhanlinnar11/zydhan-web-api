@@ -11,10 +11,8 @@
 |
 */
 
-use Modules\Auth\Http\Controllers\AuthController;
+use Modules\Auth\Http\Controllers\LogoutController;
 
 Route::prefix('auth')->group(function() {
-    Route::post('/register', [AuthController::class, 'register']);
-    Route::post('/login', [AuthController::class, 'login']);
-    Route::delete('/logout', [AuthController::class, 'logout']);
+    Route::delete('/logout', [LogoutController::class, 'logout']);
 });
