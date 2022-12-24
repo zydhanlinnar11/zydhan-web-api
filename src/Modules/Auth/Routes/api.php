@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Modules\Auth\Http\Controllers\SocialMediaListController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,4 +19,7 @@ Route::middleware('auth:sanctum')->prefix('auth')->group(function() {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+
 });
+
+Route::get('/auth/social-media', [SocialMediaListController::class, 'index']);
