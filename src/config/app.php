@@ -212,4 +212,8 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
+    'frontend' => [
+        'url' => env('FRONTEND_URL')
+    ]
+
 ];
