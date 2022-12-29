@@ -16,7 +16,7 @@ class SocialMediaList extends JsonResource
     {
         return [
             'id' => $this->id,
-            'url' => route('auth.redirect', $this->id),
+            'name' => $this->name,
         ];
     }
 }
