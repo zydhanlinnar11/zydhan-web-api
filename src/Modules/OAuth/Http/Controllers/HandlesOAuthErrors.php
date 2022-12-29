@@ -2,6 +2,7 @@
 
 namespace Modules\OAuth\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Modules\OAuth\Exceptions\OAuthServerException;
 use Laravel\Passport\Http\Controllers\ConvertsPsrResponses;
 use League\OAuth2\Server\Exception\OAuthServerException as LeagueException;
@@ -9,6 +10,39 @@ use League\OAuth2\Server\Exception\OAuthServerException as LeagueException;
 trait HandlesOAuthErrors
 {
     use ConvertsPsrResponses;
+
+    /**
+     * Generate a HTTP response.
+     *
+     * @param LeagueException $e
+     *
+     * @return JsonResponse
+     */
+    public function generateHttpResponse(LeagueException $e): JsonResponse
+    {
+        $payload = $e->getPayload();
+        $redirectUri = $e->getRedirectUri();
+
+        if ($redirectUri !== null) {
+            $redirectUri .= (\strstr($redirectUri, '?') === false) ? '?' : '&';
+
+            return response()->json([
+                'status' => 'error',
+                'data' => [
+                    'action' => 'redirect',
+                    'location' => $redirectUri . \http_build_query($payload),
+                ]
+            ], $e->getHttpStatusCode());
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'data' => [
+                'action' => 'display',
+                'payload' => $payload,
+            ]
+        ], $e->getHttpStatusCode());
+    }
 
     /**
      * Perform the given callback with exception handling.
@@ -23,10 +57,7 @@ trait HandlesOAuthErrors
         try {
             return $callback();
         } catch (LeagueException $e) {
-            $data = $e->getPayload();
-            $data['message'] = $e->getMessage();
-            $data['redirect_uri'] = $e->getRedirectUri();
-            throw new OAuthServerException($e, response()->json($data, $e->getHttpStatusCode()));
+            throw new OAuthServerException($e, $this->generateHttpResponse($e));
         }
     }
 }

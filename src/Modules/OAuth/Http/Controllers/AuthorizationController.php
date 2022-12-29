@@ -52,6 +52,7 @@ class AuthorizationController
                               ClientRepository $clients,
                               TokenRepository $tokens)
     {
+        /** @var \League\OAuth2\Server\RequestTypes\AuthorizationRequest $authRequest */
         $authRequest = $this->withErrorHandling(function () use ($psrRequest) {
             return $this->server->validateAuthorizationRequest($psrRequest);
         });
@@ -90,17 +91,11 @@ class AuthorizationController
         $request->session()->put('authRequest', $authRequest);
 
         return response()->json([
-            'client' => [
-                'id' => $client->id,
-                'name' => $client->name,
-            ],
+            'client_id' => $client->id,
+            'client_name' => $client->name,
             'scopes' => $scopes,
             'state' => $request->state,
-            'authToken' => $authToken,
-            'actions' => [
-                'approve' => route('passport.authorizations.approve'),
-                'deny' => route('passport.authorizations.deny')
-            ]
+            'auth_token' => $authToken,
         ]);
     }
 

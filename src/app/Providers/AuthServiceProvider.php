@@ -25,9 +25,5 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
- 
-        Passport::tokensCan([
-            'get-profile' => 'Retrieve User ID, name, e-mail, and e-mail verification date',
-        ]);
     }
 }

@@ -24,28 +24,12 @@ Route::group([
         'middleware' => 'throttle',
     ]);
     
-    Route::get('/authorize', [
-        'uses' => '\Modules\OAuth\Http\Controllers\AuthorizationController@authorize',
-        'as' => 'authorizations.authorize',
-        'middleware' => 'web',
-    ]);
-    
     $guard = config('passport.guard', null);
     
     Route::middleware(['web', $guard ? 'auth:'.$guard : 'auth'])->group(function () {
         Route::post('/token/refresh', [
             'uses' => 'TransientTokenController@refresh',
             'as' => 'token.refresh',
-        ]);
-    
-        Route::post('/authorize', [
-            'uses' => '\Modules\OAuth\Http\Controllers\ApproveAuthorizationController@approve',
-            'as' => 'authorizations.approve',
-        ]);
-    
-        Route::delete('/authorize', [
-            'uses' => '\Modules\OAuth\Http\Controllers\DenyAuthorizationController@deny',
-            'as' => 'authorizations.deny',
         ]);
     
         Route::get('/tokens', [
