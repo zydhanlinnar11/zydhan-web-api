@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\OAuth\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Laravel\Passport\Http\Controllers\ConvertsPsrResponses;

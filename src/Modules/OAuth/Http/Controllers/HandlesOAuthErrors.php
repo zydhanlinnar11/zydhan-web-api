@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\OAuth\Http\Controllers;
 
-use App\Exceptions\OAuthServerException;
+use Modules\OAuth\Exceptions\OAuthServerException;
 use Laravel\Passport\Http\Controllers\ConvertsPsrResponses;
 use League\OAuth2\Server\Exception\OAuthServerException as LeagueException;
 
