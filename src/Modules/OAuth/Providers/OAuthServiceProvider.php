@@ -3,7 +3,6 @@
 namespace Modules\OAuth\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Eloquent\Factory;
 use Modules\OAuth\Entities\OpenIdProvider;
 
 class OAuthServiceProvider extends ServiceProvider
@@ -40,6 +39,23 @@ class OAuthServiceProvider extends ServiceProvider
     {
         $this->app->register(RouteServiceProvider::class);
         $this->app->register(\Modules\OAuth\Providers\OpenIDConnectProvider::class);
+        $this->app->bind(OpenIdProvider::class, function () {
+            $frontendUrl = config('app.frontend.url', 'https://zydhan.com');
+            return new OpenIdProvider(
+                issuer: $frontendUrl,
+                authorizationEndpoint: sprintf('%s/oauth/authorize', $frontendUrl),
+                tokenEndpoint: route('passport.token'),
+                jwksUri: route('oidc.well-known.jwks'),
+                responseTypesSupported: ['code'],
+                subjectTypesSupported: ['public'],
+                idTokenSigningAlgValuesSupported: ['RS256'],
+                userInfoEndpoint: route('oidc.userinfo'),
+                scopesSupported: ['openid', 'profile', 'email'],
+                responseModesSupported: ['query'],
+                grantTypesSupported: ['authorization_code'],
+                requestUriParameterSupported: false
+            );
+        });
     }
 
     /**

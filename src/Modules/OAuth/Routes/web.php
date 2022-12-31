@@ -12,6 +12,15 @@
 */
 
 use Illuminate\Support\Facades\Route;
+use Modules\OAuth\Http\Controllers\OpenIDConfigurationController;
+
+Route::group([
+    'as' => 'oidc.well-known.',
+    'prefix' => 'oauth/oidc/.well-known',
+], function() {
+    Route::get('openid-configuration', [OpenIDConfigurationController::class, 'index'])->name('configuration');
+    Route::get('certs', [OpenIDConfigurationController::class, 'jwks'])->name('jwks');
+});
 
 Route::group([
     'as' => 'passport.',
