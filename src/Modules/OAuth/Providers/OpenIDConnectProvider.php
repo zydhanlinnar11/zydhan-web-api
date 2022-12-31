@@ -7,7 +7,6 @@ use Laravel\Passport\Bridge\AuthCodeRepository;
 use Laravel\Passport\Bridge\ClientRepository;
 use Laravel\Passport\Bridge\RefreshTokenRepository;
 use Laravel\Passport\Bridge\ScopeRepository;
-use Laravel\Passport\Passport;
 use Laravel\Passport\PassportServiceProvider;
 use League\OAuth2\Server\AuthorizationServer;
 use Modules\OAuth\Grants\AuthCodeGrant;

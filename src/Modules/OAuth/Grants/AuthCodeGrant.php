@@ -31,6 +31,18 @@ final class AuthCodeGrant extends LeagueAuthCodeGrant
     }
 
     /**
+     * @param \League\OAuth2\Server\Entities\ScopeEntityInterface[] $scopes
+     */
+    private function isOpenIdConnectRequest(array $scopes)
+    {
+        $filteredOpenIdScope = array_filter($scopes, function($scope) {
+            return $scope->getIdentifier() === 'openid';
+        });
+
+        return !empty($filteredOpenIdScope);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function respondToAccessTokenRequest(
@@ -57,11 +69,7 @@ final class AuthCodeGrant extends LeagueAuthCodeGrant
             throw OAuthServerException::invalidRequest('code', 'Cannot decrypt the authorization code', $e);
         }
 
-        $filteredOpenIdScope = array_filter($scopes, function($scope) {
-            return $scope->getIdentifier() === 'openid';
-        });
-
-        if(!empty($filteredOpenIdScope)) {
+        if($this->isOpenIdConnectRequest($scopes)) {
             $idToken = new IdToken(
                 privateKey: $this->privateKey,
                 issuer: $this->issuer,
@@ -82,6 +90,14 @@ final class AuthCodeGrant extends LeagueAuthCodeGrant
     public function validateAuthorizationRequest(ServerRequestInterface $request)
     {
         $validatedRequest = parent::validateAuthorizationRequest($request);
+
+        $scopes = $this->validateScopes(
+            $this->getQueryStringParameter('scope', $request, $this->defaultScope)
+        );
+
+        if (!$this->isOpenIdConnectRequest($scopes)) {
+            return $validatedRequest;
+        }
         
         $redirectUri = $this->getQueryStringParameter(
             'redirect_uri',
