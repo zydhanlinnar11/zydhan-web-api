@@ -4,6 +4,7 @@ namespace Modules\OAuth\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
+use Modules\OAuth\Entities\OpenIdProvider;
 
 class OAuthServiceProvider extends ServiceProvider
 {
@@ -38,6 +39,7 @@ class OAuthServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+        $this->app->register(\Modules\OAuth\Providers\OpenIDConnectProvider::class);
     }
 
     /**

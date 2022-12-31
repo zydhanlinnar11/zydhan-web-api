@@ -194,8 +194,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
-        \Modules\OAuth\Providers\OpenIDConnectProvider::class,
     ],
 
     /*
