@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group([
     'as' => 'passport.',
-    'prefix' => config('passport.path', 'oauth'),
+    'prefix' => 'oauth',
     'namespace' => '\Laravel\Passport\Http\Controllers',
     'middleware' => 'auth:sanctum',
 ], function () {
@@ -35,3 +35,10 @@ Route::group([
         'as' => 'authorizations.approve',
     ]);
 });
+
+Route::match(['GET', 'POST'], '/userinfo', [
+    'uses' => '\Modules\OAuth\Http\Controllers\UserInfoController@show',
+    'as' => 'oidc.userinfo',
+    'prefix' => 'oauth/oidc',
+    'middleware' => 'auth:api'
+]);

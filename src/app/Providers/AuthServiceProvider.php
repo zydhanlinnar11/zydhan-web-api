@@ -28,6 +28,8 @@ class AuthServiceProvider extends ServiceProvider
 
         Passport::tokensCan([
             'openid' => 'See information about the authentication',
+            'email' => 'See information about your email',
+            'profile' => 'See information about your profile (name)',
         ]);
     }
 }

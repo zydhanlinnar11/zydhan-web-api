@@ -48,14 +48,34 @@ class User extends Authenticatable
         return $this->id;
     }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
     public function setName(string $name)
     {
         $this->name = $name;
     }
 
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
     public function setEmail(string $email)
     {
         $this->email = $email;
+    }
+
+    public function getEmailVerifiedAt(): ?\DateTime
+    {
+        return $this->email_verified_at;
+    }
+
+    public function isEmailVerified(): bool
+    {
+        return $this->getEmailVerifiedAt() !== null;
     }
 
     public function setPlainPassword(string $password)
