@@ -25,5 +25,9 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+
+        Passport::tokensCan([
+            'openid' => 'See information about the authentication',
+        ]);
     }
 }
