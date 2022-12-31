@@ -63,6 +63,7 @@ final class AuthCodeGrant extends LeagueAuthCodeGrant
 
         if(!empty($filteredOpenIdScope)) {
             $idToken = new IdToken(
+                privateKey: $this->privateKey,
                 issuer: $this->issuer,
                 subject: $authCodePayload->user_id,
                 audience: $authCodePayload->client_id,

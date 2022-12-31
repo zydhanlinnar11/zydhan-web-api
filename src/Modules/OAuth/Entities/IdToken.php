@@ -3,10 +3,12 @@
 namespace Modules\OAuth\Entities;
 
 use Firebase\JWT\JWT;
+use League\OAuth2\Server\CryptKey;
 
 class IdToken
 {
     public function __construct(
+        private CryptKey $privateKey,
         private string $issuer,
         private string $subject,
         private string $audience,
@@ -19,8 +21,8 @@ class IdToken
     {
         return JWT::encode(
             payload: $this->toArray(),
-            key: config('app.key'),
-            alg: 'HS256'
+            key: $this->privateKey->getKeyContents(),
+            alg: 'RS256'
         );
     }
 
