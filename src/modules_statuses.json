@@ -1,4 +1,5 @@
 {
     "Auth": true,
-    "OAuth": true
+    "OAuth": true,
+    "Admin": true
 }
