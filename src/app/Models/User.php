@@ -41,6 +41,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'admin' => 'bool'
     ];
 
     public function getId(): int
@@ -83,8 +84,14 @@ class User extends Authenticatable
         $this->password = Hash::make($password);
     }
 
+    public function isAdmin(): bool
+    {
+        return $this->admin;
+    }
+
     public static function findByEmail(string $email): ?User
     {
         return self::where('email', $email)->first();
     }
+
 }
