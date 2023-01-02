@@ -1,6 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Modules\Guestbook\Http\Controllers\GuestbookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,13 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/guestbook', function (Request $request) {
-    return $request->user();
-});
+Route::name('guestbook.')
+    ->prefix('guestbook')
+    ->group(function() {
+        Route::name('guestbooks.')
+            ->prefix('guestbooks')
+            ->group(function() {
+                Route::get('/', [GuestbookController::class, 'index'])->name('index');
+                Route::middleware('auth:sanctum')->post('/', [GuestbookController::class, 'store'])->name('store');
+            });
+    });

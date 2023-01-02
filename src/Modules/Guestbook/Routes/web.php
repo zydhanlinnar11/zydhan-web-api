@@ -11,6 +11,3 @@
 |
 */
 
-Route::prefix('guestbook')->group(function() {
-    Route::get('/', 'GuestbookController@index');
-});

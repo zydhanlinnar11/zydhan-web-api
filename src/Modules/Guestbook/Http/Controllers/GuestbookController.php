@@ -2,78 +2,53 @@
 
 namespace Modules\Guestbook\Http\Controllers;
 
-use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Http\Request;
+use App\Models\Guestbook;
+use Database\Factories\GuestbookFactory;
 use Illuminate\Routing\Controller;
+use Modules\Guestbook\Http\Requests\StoreGuestbookRequest;
 
 class GuestbookController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * @return Renderable
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        return view('guestbook::index');
-    }
+        $guestbooks = Guestbook::with('user')
+                        ->orderByDesc('created_at')
+                        ->get();
+        $data = [];
+        /** @var Guestbook $guestbook */
+        foreach($guestbooks as $guestbook) {
+            $data[] = [
+                'id' => $guestbook->getId(),
+                'user' => $guestbook->getUser()->getName(),
+                'content' => $guestbook->getContent(),
+                'createdAt' => $guestbook->getCreatedAt(),
+            ];
+        }
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Renderable
-     */
-    public function create()
-    {
-        return view('guestbook::create');
+        return response()->json($data);
     }
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Renderable
+     *
+     * @param  \Modules\Guestbook\Http\Requests\StoreGuestbookRequest  $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(StoreGuestbookRequest $request)
     {
-        //
-    }
+        /** @var \App\Models\User $user */
+        $user = $request->user();
 
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function show($id)
-    {
-        return view('guestbook::show');
-    }
+        GuestbookFactory::createNewGuestbook(
+            userId: $user->getId(),
+            content: $request->getGuestbookContent()
+        );
 
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function edit($id)
-    {
-        return view('guestbook::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Renderable
-     */
-    public function destroy($id)
-    {
-        //
+        return response()->json([], 201);
     }
 }
