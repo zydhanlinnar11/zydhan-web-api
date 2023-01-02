@@ -26,6 +26,7 @@ class SocialMedia extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'id',
         'name',
         'socialite_name',
         'client_id',
@@ -35,6 +36,11 @@ class SocialMedia extends Model
     public function getId(): string
     {
         return $this->id;
+    }
+
+    public function setId(string $id)
+    {
+        $this->id = $id;
     }
 
     public function getName(): string

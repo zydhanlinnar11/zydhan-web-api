@@ -3,6 +3,7 @@
 namespace Modules\Admin\Http\Controllers;
 
 use App\Models\SocialMedia;
+use Database\Factories\SocialMediaFactory;
 use Illuminate\Routing\Controller;
 use Modules\Admin\Http\Requests\StoreSocialMediaRequest;
 use Modules\Admin\Http\Requests\UpdateSocialMediaRequest;
@@ -22,12 +23,20 @@ class SocialMediaController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Modules\Admin\Requests\StoreSocialMediaRequest  $request
+     * @param  \Modules\Admin\Http\Requests\StoreSocialMediaRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(StoreSocialMediaRequest $request)
     {
-        //
+        SocialMediaFactory::createNewSocialMedia(
+            id: $request->getId(),
+            name: $request->getName(),
+            socialiteName: $request->getSocialiteName(),
+            clientId: $request->getClientId(),
+            clientSecret: $request->getClientSecret()
+        );
+
+        return response()->json(['message' => 'Successfully created.'], 201);
     }
 
     /**
