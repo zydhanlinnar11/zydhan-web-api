@@ -59,6 +59,7 @@ class SocialMediaController extends Controller
      */
     public function update(UpdateSocialMediaRequest $request, SocialMedia $social_medium)
     {
+        $social_medium->setId($request->getId());
         $social_medium->setName($request->getName());
         $social_medium->setSocialiteName($request->getSocialiteName());
         $social_medium->setClientId($request->getClientId());
