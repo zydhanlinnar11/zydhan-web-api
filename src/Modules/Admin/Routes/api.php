@@ -1,6 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Modules\Admin\Http\Controllers\SocialMediaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,3 +13,11 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::middleware(['auth:sanctum', 'admin'])
+    ->name('admin.')
+    ->prefix('admin')
+    ->group(function() {
+        Route::apiResource('social-media', SocialMediaController::class)
+            ->except(['destroy']);
+    });

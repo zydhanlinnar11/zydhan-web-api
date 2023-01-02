@@ -21,11 +21,16 @@ class SocialMedia extends Model
     protected $keyType = 'string';
 
     /**
-     * The attributes that aren't mass assignable.
+     * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<int, string>
      */
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'socialite_name',
+        'client_id',
+        'client_secret',
+    ];
 
     public function getId(): string
     {
@@ -36,10 +41,20 @@ class SocialMedia extends Model
     {
         return $this->name;
     }
+
+    public function setName(string $name)
+    {
+        $this->name = $name;
+    }
     
     public function getSocialiteName(): string
     {
         return $this->socialite_name;
+    }
+
+    public function setSocialiteName(string $socialite_name)
+    {
+        $this->socialite_name = $socialite_name;
     }
 
     public function getClientId(): string
@@ -47,9 +62,19 @@ class SocialMedia extends Model
         return $this->client_id;
     }
 
+    public function setClientId(string $client_id)
+    {
+        $this->client_id = $client_id;
+    }
+
     public function getClientSecret(): string
     {
         return $this->client_secret;
+    }
+
+    public function setClientSecret(string $client_secret)
+    {
+        $this->client_secret = $client_secret;
     }
 
     /**
