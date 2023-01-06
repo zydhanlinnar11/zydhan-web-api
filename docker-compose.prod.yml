@@ -1,0 +1,13 @@
+services:
+  zydhan-web-api:
+    container_name: zydhan-web-api
+    image: zydhanlinnar11/zydhan-web-api:latest
+    volumes:
+      - ./src:/var/www/html
+    env_file: .env.prod
+    networks:
+      - nginx-proxy-network
+
+networks:
+  nginx-proxy-network:
+    external: true
