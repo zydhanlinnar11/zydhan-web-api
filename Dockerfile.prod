@@ -2,9 +2,11 @@ FROM composer:2.4.4 as vendor
 
 # Install composer packages
 WORKDIR /app
+COPY src/composer.json .
+COPY src/composer.lock .
+RUN composer install --no-dev --no-scripts
 COPY src/ .
-RUN mkdir -p bootstrap/cache \
-    && composer install --optimize-autoloader --no-dev
+RUN mkdir -p bootstrap/cache && composer dump-autoload --optimize
 
 FROM php:fpm-alpine
 # Setup supervisor, nginx, php extensions, config, user, and missing folders
@@ -16,7 +18,6 @@ RUN echo "Asia/Jakarta" > /etc/timezone \
     && mkdir -p /var/log/supervisord/ \
     && mkdir -p /etc/nginx \
     && mkdir -p storage/app/public \
-    && mkdir -p storage/app/file_uploads \
     && mkdir -p storage/framework/cache \
     && mkdir -p storage/framework/sessions \
     && mkdir -p storage/framework/testing \
@@ -33,7 +34,6 @@ COPY config/php-jakarta-timezone.ini /usr/local/etc/php/conf.d/php-jakarta-timez
 COPY --from=vendor /app/vendor /var/www/html/vendor
 COPY src/ .
 RUN chown -R www-data:www-data /var/www \
-    && cp .env.example .env \
     && php artisan storage:link
 
 CMD php artisan config:cache && php artisan route:cache && php artisan event:cache && /usr/bin/supervisord -c /etc/supervisor.d/supervisord.ini
