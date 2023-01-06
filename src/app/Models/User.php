@@ -94,4 +94,19 @@ class User extends Authenticatable
         return self::where('email', $email)->first();
     }
 
+    /**
+     * The social media that belong to the user.
+     */
+    public function socialMedia()
+    {
+        return $this->belongsToMany(SocialMedia::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Collection<int, \App\Models\SocialMedia>
+     */
+    public function getSocialMedia(): \Illuminate\Database\Eloquent\Collection
+    {
+        return $this->socialMedia;
+    }
 }
