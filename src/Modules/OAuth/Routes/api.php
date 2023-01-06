@@ -34,7 +34,13 @@ Route::group([
         'uses' => '\Modules\OAuth\Http\Controllers\ApproveAuthorizationController@approve',
         'as' => 'authorizations.approve',
     ]);
+
 });
+
+Route::get('/oauth/clients/info', [
+    'uses' => '\Modules\OAuth\Http\Controllers\ClientInfoController@info',
+    'as' => 'oauth.clients.info',
+]);
 
 Route::match(['GET', 'POST'], '/userinfo', [
     'uses' => '\Modules\OAuth\Http\Controllers\UserInfoController@show',

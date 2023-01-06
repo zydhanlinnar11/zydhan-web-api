@@ -21,6 +21,7 @@ return [
         'auth/*',
         'oauth/authorize',
         'oauth/oidc/userinfo',
+        'oauth/clients/info',
         'admin/*',
         'guestbook/*',
     ],
