@@ -4,16 +4,16 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>@yield('title') - zydhan.com</title>
+        <title>Module Auth</title>
 
-       {{-- Laravel Mix - CSS File --}}
-       <link rel="stylesheet" href="{{ mix('css/auth.css') }}">
-       <script src="https://kit.fontawesome.com/ecbefee5af.js" crossorigin="anonymous"></script>
+       {{-- Laravel Vite - CSS File --}}
+       {{-- {{ module_vite('build-auth', 'Resources/assets/sass/app.scss') }} --}}
+
     </head>
-    <body class="bg-gray-900 text-white scroll-smooth">
+    <body>
         @yield('content')
 
-        {{-- Laravel Mix - JS File --}}
-        <script src="{{ mix('js/auth.js') }}"></script>
+        {{-- Laravel Vite - JS File --}}
+        {{-- {{ module_vite('build-auth', 'Resources/assets/js/app.js') }} --}}
     </body>
 </html>

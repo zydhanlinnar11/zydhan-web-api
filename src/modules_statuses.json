@@ -1,5 +1,6 @@
 {
     "Auth": true,
-    "Blog": true,
-    "Apps": true
+    "OAuth": true,
+    "Admin": true,
+    "Guestbook": true
 }

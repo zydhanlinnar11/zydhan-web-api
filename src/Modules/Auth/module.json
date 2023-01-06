@@ -7,7 +7,5 @@
     "providers": [
         "Modules\\Auth\\Providers\\AuthServiceProvider"
     ],
-    "aliases": {},
-    "files": [],
-    "requires": []
+    "files": []
 }

@@ -2,10 +2,11 @@ version: '3.8'
 services:
   zydhan-web-api:
     container_name: zydhan-web-api
-    image: zydhanlinnar11/laravel-docker-image:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     volumes:
       - ./src:/var/www/html
-      - ./database:/database
     env_file: .env
     dns:
       - 1.1.1.1
@@ -14,7 +15,10 @@ services:
       - 'host.docker.internal:host-gateway'
     networks:
       - nginx-proxy-network
+      - mysql-network
 
 networks:
   nginx-proxy-network:
+    external: true
+  mysql-network:
     external: true

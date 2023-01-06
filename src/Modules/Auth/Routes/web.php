@@ -12,12 +12,12 @@
 */
 
 use Illuminate\Support\Facades\Route;
-use Modules\Auth\Http\Controllers\AuthController;
-use Modules\Auth\Http\Controllers\SocialAuthController;
+use Modules\Auth\Http\Controllers\CallbackController;
+use Modules\Auth\Http\Controllers\LogoutController;
+use Modules\Auth\Http\Controllers\RedirectController;
 
 Route::prefix('auth')->name('auth.')->group(function() {
-    Route::post('/login', [AuthController::class, 'login']);
-    Route::get('/{social_provider}/redirect', [SocialAuthController::class, 'handleRedirect']);
-    Route::get('/{social_provider}/callback', [SocialAuthController::class, 'handleCallback']);
-    Route::delete('/logout', [AuthController::class, 'logout']);
+    Route::get('/{socialMedia}/redirect', [RedirectController::class, 'redirect'])->name('redirect');
+    Route::get('/{socialMedia}/callback', [CallbackController::class, 'handle'])->name('callback');
+    Route::delete('/logout', [LogoutController::class, 'logout'])->name('logout');
 });

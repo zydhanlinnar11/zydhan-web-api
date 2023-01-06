@@ -15,16 +15,20 @@ return [
     |
     */
 
-    'paths' => ['*'],
+    'paths' => [
+        'api/*',
+        'sanctum/csrf-cookie',
+        'auth/*',
+        'oauth/authorize',
+        'oauth/oidc/userinfo',
+        'oauth/clients/info',
+        'admin/*',
+        'guestbook/*',
+    ],
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [
-        'https://blog.zydhan.com',
-        'https://dev.zydhan.com',
-        'https://zydhan.com',
-        'https://www.zydhan.com',
-    ],
+    'allowed_origins' => ['*'],
 
     'allowed_origins_patterns' => [],
 

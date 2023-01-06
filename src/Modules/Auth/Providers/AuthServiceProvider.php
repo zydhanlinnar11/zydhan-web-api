@@ -4,7 +4,6 @@ namespace Modules\Auth\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
-use Modules\Auth\App\Services\GetUserFromRequest\GetUserFromRequestService;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -39,10 +38,6 @@ class AuthServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
-        $this->app->register(DependencyServiceProvider::class);
-        $this->app->bind('auth_module', function() {
-            return new GetUserFromRequestService();
-        });
     }
 
     /**
@@ -89,8 +84,10 @@ class AuthServiceProvider extends ServiceProvider
 
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, $this->moduleNameLower);
+            $this->loadJsonTranslationsFrom($langPath, $this->moduleNameLower);
         } else {
             $this->loadTranslationsFrom(module_path($this->moduleName, 'Resources/lang'), $this->moduleNameLower);
+            $this->loadJsonTranslationsFrom(module_path($this->moduleName, 'Resources/lang'), $this->moduleNameLower);
         }
     }
 
