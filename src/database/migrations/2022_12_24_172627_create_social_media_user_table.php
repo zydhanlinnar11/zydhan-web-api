@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('social_media_user', function (Blueprint $table) {
             $table->string('social_media_id');
-            $table->string('user_id');
+            $table->foreignId('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->string('identifier');
             $table->primary(['social_media_id', 'user_id']);
             $table->timestamps();
