@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Modules\Auth\Http\Controllers\SocialMediaListController;
+use Modules\Auth\Http\Controllers\UnlinkSocialController;
+use Modules\Auth\Http\Controllers\UpdatePersonalInfoController;
 use Modules\Auth\Http\Controllers\UserInfoController;
 
 /*
@@ -18,6 +19,8 @@ use Modules\Auth\Http\Controllers\UserInfoController;
 
 Route::middleware('auth:sanctum')->prefix('auth')->group(function() {
     Route::get('/user', [UserInfoController::class, 'show']);
+    Route::patch('/user', [UpdatePersonalInfoController::class, 'update']);
+    Route::delete('/user/social-media/{socialMedia}', [UnlinkSocialController::class, 'unlink']);
 });
 
 Route::get('/auth/social-media', [SocialMediaListController::class, 'index']);

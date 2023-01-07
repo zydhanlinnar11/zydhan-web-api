@@ -29,6 +29,17 @@ class CallbackController extends Controller
                     ->wherePivot('identifier', $socialUser->getId())
                     ->first();
 
+        /** @var \App\Models\User $authenticatedUser */
+        $authenticatedUser = Auth::user('sanctum');
+        if($authenticatedUser) {
+            if($user !== NULL) {
+                return abort(403, 'already_linked_to_another_user');
+            }
+            $socialMedia->linkUser($authenticatedUser->getId(), $socialUser->getId());
+
+            return response()->json(['message' => 'Account linked', 200]);
+        }
+
         if (!$user) {
             $userWithSameEmail = User::findByEmail($socialUser->getEmail());
             if($userWithSameEmail) {

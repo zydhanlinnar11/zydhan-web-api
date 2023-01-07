@@ -92,4 +92,18 @@ class SocialMedia extends Model
                 ->withPivot('identifier')
                 ->withTimestamps();
     }
+
+    public function linkUser(int $userId, string|int $socialAccountIdentifier)
+    {
+        $this->users()
+                ->attach(
+                    id: $userId,
+                    attributes: ['identifier' => strval($socialAccountIdentifier)]
+                );
+    }
+
+    public function unlinkUser(int $userId)
+    {
+        $this->users()->detach($userId);
+    }
 }
